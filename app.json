@@ -1,0 +1,12 @@
+{
+  "name": "SchwarzschildRayTracing",
+  "displayName": "SchwarzschildRayTracing",
+  "expo": {
+    "name": "SchwarzschildRayTracing",
+    "slug": "SchwarzschildRayTracing",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
