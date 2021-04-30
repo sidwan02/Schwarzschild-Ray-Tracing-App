@@ -1,22 +1,9 @@
-import math
-
 import numpy as np
 from scipy.integrate import solve_ivp
-import matplotlib as mpl
-from cycler import cycler
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from itertools import takewhile
-from array import array
 
 
-# https://stackoverflow.com/questions/1987694/how-to-print-the-full-numpy-array-without-truncation
-# np.set_printoptions(threshold=np.inf)
-#
-# mpl.rcParams['agg.path.chunksize'] = 10000
-
-
-def diffEquationNumSolver(phi, y):
+def diff_equation_num_solver(phi, y):
     u = y[0]
     w = y[1]
 
@@ -39,7 +26,7 @@ def jac(t, y):
     return jac_mat
 
 
-def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
+def get_ray_trace_coords(x_ray, y_ray, delta0):
     def limit_200(t, y):  # when r i.e. M/u = 100 <=> u - M/100 = 0
         global flag
         if flag == 1:
@@ -117,9 +104,6 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
     all_b = []
 
     def delta_evolution(x, y, y_beam):
-        print('x', x)
-        print('y', y)
-
         delta_x = np.array([x1 - x2 for x1, x2 in zip(x, x[1:])])
 
         delta_y = np.array([y1 - y2 for y1, y2 in zip(y, y[1:])])
@@ -152,18 +136,6 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
 
         return delta
 
-    # ====================
-
-    if defevol == 'On':
-        fig, axs = plt.subplots(1, 2, sharex=True)
-    else:
-        fig, axs = plt.subplots(1)
-
-    plt.suptitle(
-        f"Schwarzschild Ray Tracing | Beams → {{(x, y) : x = {x_ray}, y = {y_ray}}} \n | Emission Angle = {delta0} \n defevol = {defevol}")
-    # https://www.edureka.co/community/18327/nameerror-name-raw-input-is-not-defined#:~:text=There%20may%20a%20problem%20with%20your%20python%20version.&text=From%20Python3.,int()%20or%20float().
-
-    # print("y_beam", y_beam)
     r0 = np.sqrt(np.square(x_ray) + np.square(y_ray))
     # for some reason not having negative makes the source in the negative of the y_beam param
     theta = -np.arctan(y_ray / x_ray)
@@ -172,19 +144,13 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
 
     delta0 = delta0 * np.pi / 180
 
-    B = r0 / np.sqrt(1 - (2 * M / r0))
-
-    b = B * np.sin(delta0)
-
-    print('b:', b)
-    all_b.append(b)
-
     if delta0 == 0:
         m = (y_ray - 0) / (x_ray - 0)
-        x = np.linspace(x_ray, 200, 2)
-        y = m * x
+        x_trace = np.linspace(x_ray, 200, 2)
+        y_trace = m * x_trace
 
-        axs[0].plot(x, y) if defevol == 'On' else axs.plot(x, y)
+        delta = [0]
+
     else:
         # Initial State
         u0 = 1 / r0
@@ -192,7 +158,7 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
 
         y0 = [u0, w0]
 
-        sol = solve_ivp(diffEquationNumSolver, t_span=[
+        sol = solve_ivp(diff_equation_num_solver, t_span=[
             phi0, phif], y0=y0, method='LSODA', dense_output=True, events=(limit_200, limit_2),
                         jac=jac, max_step=step)
 
@@ -225,72 +191,25 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
             # print(x_prime)
             # print(-100 in x_prime)
             # if np.any(x_prime < -6):
-            if defevol == 'On':
-                print('x_prime', x_prime)
-                print('y_prime', y_prime)
-                axs[0].plot(x_prime, y_prime,
-                            label="(" + str(round(y_ray, 2)) + ", " + str(round(x_ray, 2)) + "); " + str(
-                                round(delta0 / np.pi * 180, 2)) + "°")
-            else:
-                axs.plot(x_prime, y_prime,
-                         label="(" + str(round(y_ray, 2)) + ", " + str(round(x_ray, 2)) + "); " + str(
-                             round(delta0 / np.pi * 180, 2)) + "°")
 
-            if defevol == 'On':
-                delta = delta_evolution(x_prime, y_prime, y_ray)
+            x_trace = x_prime
+            y_trace = y_prime
 
-                axs[1].plot(x_prime, delta,
-                            label="(" + str(round(y_ray, 2)) + ", " + str(round(x_ray, 2)) + "); " + str(
-                                round(delta0 / np.pi * 180, 2)) + "°")
+            delta = delta_evolution(x_prime, y_prime, y_ray)
 
         else:
-            # if np.any(minus_x_prime < -6):
-            if defevol == 'On':
-                axs[0].plot(minus_x_prime, minus_y_prime,
-                            label="(" + str(round(y_ray, 2)) + ", " + str(round(x_ray, 2)) + "); " + str(
-                                round(delta0 / np.pi * 180, 2)) + "°")
-            else:
-                axs.plot(minus_x_prime, minus_y_prime,
-                         label="(" + str(round(y_ray, 2)) + ", " + str(round(x_ray, 2)) + "); " + str(
-                             round(delta0 / np.pi * 180, 2)) + "°")
+            x_trace = minus_x_prime
+            y_trace = minus_y_prime
 
-            if defevol == 'On':
-                delta = delta_evolution(
-                    minus_x_prime, minus_y_prime, y_ray)
+            delta = delta_evolution(
+                minus_x_prime, minus_y_prime, y_ray)
 
-                axs[1].plot(minus_x_prime, delta,
-                            label="(" + str(round(y_ray, 2)) + ", " + str(round(x_ray, 2)) + "); " + str(
-                                round(delta0 / np.pi * 180, 2)) + "°")
+    print("x_trace: ", x_trace)
+    print("y_trace: ", y_trace)
+    print("delta: ", delta)
 
-        axs[0].legend(loc='upper right') if defevol == 'On' else axs.legend(
-            loc='upper right')
-
-    axs[0].scatter([0], [0]) if defevol == 'On' else axs.scatter(
-        [0], [0])  # AGN
-    # axs[0].plot([beam_loc, beam_loc], [-100, 100])
-    axs[0].set_xlabel('x') if defevol == 'On' else axs.set_xlabel('x')
-    axs[0].set_ylabel('y') if defevol == 'On' else axs.set_ylabel('y')
-    # axs[0].set_zlabel('z')
-
-    # axs[0].set_xlim(-10, 10)
-    # axs[0].set_ylim(-10, 10)
-    # axs[1].set_xlim(-10, 10)
-    # axs[1].set_ylim(-10, 10)
-    if defevol == 'On':
-        axs[1].set_xlabel('x')
-        axs[1].set_ylabel('delta')
-
-        del_max = np.amax(delta_max)
-        print('del_max', del_max)
-        plt.yticks(np.linspace(0, del_max - (del_max %
-                                             np.pi / 8) + np.pi / 8, math.ceil(del_max / np.pi / 8) + 1))
-
-    # plt.gca().set_aspect('equal', adjustable='box')
-    # axs.set_aspect('equal', adjustable='box')
-    # axs[1].set_aspect('equal', adjustable='box')
-
-    plt.show()
+    return x_trace, y_trace, delta
 
 
-get_ray_trace_coords(100, 0, 90, True)
-get_ray_trace_coords(100, 0, 90, True)
+# caution: delta0 wrt the line attaching the AGN and the light ray origin.
+get_ray_trace_coords(100, 0, 177.1)
