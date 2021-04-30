@@ -10,5 +10,5 @@ class PositionSerializer(serializers.ModelSerializer):
 
 class RayTracingSerializer(serializers.ModelSerializer):
     class Meta:
-            model = RayTracing
+        model = RayTracing
         fields = ['id', 'x', 'y', 'delta0']
