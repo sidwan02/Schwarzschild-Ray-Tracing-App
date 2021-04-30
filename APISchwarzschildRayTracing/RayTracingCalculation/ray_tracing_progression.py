@@ -170,6 +170,15 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
     # print('r0', r0)
     # print('theta', theta)
 
+    delta0 = delta0 * np.pi / 180
+
+    B = r0 / np.sqrt(1 - (2 * M / r0))
+
+    b = B * np.sin(delta0)
+
+    print('b:', b)
+    all_b.append(b)
+
     if delta0 == 0:
         m = (y_ray - 0) / (x_ray - 0)
         x = np.linspace(x_ray, 200, 2)
@@ -283,4 +292,5 @@ def get_ray_trace_coords(x_ray, y_ray, delta0, defevol):
     plt.show()
 
 
-get_ray_trace_coords(100, 0, 10, True)
+get_ray_trace_coords(100, 0, 90, True)
+get_ray_trace_coords(100, 0, 90, True)
