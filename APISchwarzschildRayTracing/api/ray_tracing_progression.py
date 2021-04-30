@@ -188,10 +188,6 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
         # print('hi')
 
         if y_ray >= 0:
-            # print(x_prime)
-            # print(-100 in x_prime)
-            # if np.any(x_prime < -6):
-
             x_trace = x_prime
             y_trace = y_prime
 
@@ -212,4 +208,4 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
 
 
 # caution: delta0 wrt the line attaching the AGN and the light ray origin.
-get_ray_trace_coords(100, 0, 177.1)
+# get_ray_trace_coords(100, 0, 177.1)

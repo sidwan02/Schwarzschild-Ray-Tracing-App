@@ -8,11 +8,13 @@ class Position(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     z = models.FloatField()
+    delta = models.FloatField()
 
 
 class RayTracing(models.Model):
     x = models.FloatField()
     y = models.FloatField()
+    z = models.FloatField()
     delta0 = models.FloatField()
 
     # def __str__(self):
