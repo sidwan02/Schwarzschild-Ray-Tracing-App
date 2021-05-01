@@ -428,10 +428,10 @@ function Home() {
   const calculateWaypoints = () => {
     let waypointsX = []
     let waypointsY = []
-    const interval = 1
+    const dist_to_div_ratio = 1/10
 
     for (let i = 0; i < x_trace.length - 1; i++) {
-      let divisions = Math.sqrt(Math.pow((x_trace[i] - x_trace[i + 1]), 2) + Math.pow((y_trace[i] - y_trace[i + 1]), 2)) / interval
+      let divisions = Math.sqrt(Math.pow((x_trace[i] - x_trace[i + 1]), 2) + Math.pow((y_trace[i] - y_trace[i + 1]), 2)) * dist_to_div_ratio
       waypointsX = waypointsX.concat(numListRangeInclusive(x_trace[i], x_trace[i + 1], divisions))
       waypointsY = waypointsY.concat(numListRangeInclusive(y_trace[i], y_trace[i + 1], divisions))
     }
@@ -486,7 +486,10 @@ function Home() {
 
           // console.log(interval)
           // if (interval < 1000){
+          // setTimeout(() => {
             requestAnimationFrame(animateTrace); // queue request for next frame
+          // }, 200);
+
           // }
         });
   }
