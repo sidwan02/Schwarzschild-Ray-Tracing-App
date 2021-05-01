@@ -1,7 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import Canvas from 'react-native-canvas';
-
 
 function Home() {
   // const requestRayTrace = (x, y, delta0) => {
@@ -46,17 +45,32 @@ function Home() {
   //   <View></View>
   // );
 
+  const windowWidth = Dimensions.get('window').width;
+  console.log(windowWidth)
+  const windowHeight = Dimensions.get('window').height;
+  console.log(windowHeight)
+
   const handleCanvas = (canvas) => {
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'purple';
-    ctx.fillRect(0, 0, 100, 100);
+    canvas.height = windowHeight
+    canvas.width = windowWidth
+
+    let ctx = canvas.getContext("2d");
+
+    // blackhole
+    ctx.arc(windowWidth / 2, windowHeight / 2, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgb(0,0,0)';
+    ctx.strokeStyle = '#000000';
+
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
   }
 
-  // render() {
-    return (
-      <Canvas ref={handleCanvas}/>
-    )
-  // }
+  return (
+    <View >
+      <Canvas ref={handleCanvas} />
+    </View>
+  )
 }
 
 export default Home;
