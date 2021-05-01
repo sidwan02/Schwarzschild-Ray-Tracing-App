@@ -12,6 +12,8 @@ target 'SchwarzschildRayTracing' do
 
   if !ENV['CI']
     use_flipper!({ 'Flipper' => '0.80.0' })
+    pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
     post_install do |installer|
       flipper_post_install(installer)
     end
