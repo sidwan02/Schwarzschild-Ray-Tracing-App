@@ -377,7 +377,7 @@ function Home() {
   }
 
   const drawTraceSegment = (i) => {
-    console.log("drawing")
+    // console.log("drawing")
     let ctx = canvas.getContext("2d");
 
     // for (let i = 0; i < x_trace.length - 1; i++) {
@@ -391,6 +391,65 @@ function Home() {
     ctx.closePath();
     // }
   }
+
+  const numListRangeInclusive = (start, stop, divisions) => {
+    let step = Math.abs(start - stop) / divisions
+    console.log("start: ", start)
+    console.log("stop: ", stop)
+    console.log("step: ", step)
+        let list = []
+        let curVal = start
+    let condition
+        if (start < stop) {
+          while (curVal <= stop) {
+            list.push(curVal)
+          curVal += step
+
+
+            curVal = Number(parseFloat((curVal) + "").toPrecision(12))
+
+        }
+        } else {
+          while (curVal >= stop) {
+            list.push(curVal)
+
+          curVal -= step
+
+            curVal = Number(parseFloat((curVal) + "").toPrecision(12))
+
+        }
+        }
+
+
+        console.log("list: ", list)
+        return list
+    }
+
+  const calculateWaypoints = () => {
+    let waypointsX = []
+    let waypointsY = []
+    const interval = 1
+
+    for (let i = 0; i < x_trace.length - 1; i++) {
+      let divisions = Math.sqrt(Math.pow((x_trace[i] - x_trace[i + 1]), 2) + Math.pow((y_trace[i] - y_trace[i + 1]), 2)) / interval
+      waypointsX = waypointsX.concat(numListRangeInclusive(x_trace[i], x_trace[i + 1], divisions))
+      waypointsY = waypointsY.concat(numListRangeInclusive(y_trace[i], y_trace[i + 1], divisions))
+    }
+
+    x_trace = waypointsX
+    // console.log("x_trace: ", x_trace)
+    y_trace = waypointsY
+
+  }
+
+  // const divideLineSegment = (x_start, x_end, y_start, y_end, divisions) => {
+  //   let x_divided =
+  //   let y_divided = numListRangeInclusive(y_start, y_end, divisions)
+  //
+  //
+  //
+  //   return {x_divided: x_divided, y_divided:y_divided}
+  // }
 
    const canvasRelease = (e) => {
     console.log("release")
@@ -408,25 +467,27 @@ function Home() {
 
      requestRayTrace(pressCoorX, pressCoorY, delta0)
 
-     // drawTraceSegment()
+     calculateWaypoints()
+    //  console.log(x_trace)
+    // console.log(y_trace)
+
      let start = Date.now();
       let max_i = x_trace.length - 1
       let cur_i = 0
 
       requestAnimationFrame(function animateTrace(timestamp) {
-        console.log("animating")
+        // console.log("animating")
             let interval = Date.now() - start
 
           if (cur_i < max_i) {
-            console.lo
             drawTraceSegment(cur_i); // move element down
           }
           cur_i++;
 
-          console.log(interval)
-          if (interval < 1000){
+          // console.log(interval)
+          // if (interval < 1000){
             requestAnimationFrame(animateTrace); // queue request for next frame
-          }
+          // }
         });
   }
 
