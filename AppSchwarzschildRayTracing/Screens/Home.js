@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react'
-import {StyleSheet, View, Text, Dimensions, TouchableOpacity} from 'react-native';
+import React from 'react'
+import {Dimensions, InteractionManager, TouchableOpacity, View} from 'react-native';
 import Canvas from 'react-native-canvas';
-import axios from 'axios';
 
 
 function Home() {
+
+  let canvas
 
   let x_trace = []
   let y_trace = []
@@ -306,13 +307,16 @@ function Home() {
   let blackHoleX = windowWidth / 2
   let blackHoleY = windowHeight / 2
 
-  const handleCanvas = (canvas) => {
-    canvas.height = windowHeight
-    canvas.width = windowWidth
+  const handleCanvas = (can) => {
+    canvas = can
 
-    let ctx = canvas.getContext("2d");
+    can.height = windowHeight
+    can.width = windowWidth
+
+    let ctx = can.getContext("2d");
 
     // black hole
+    ctx.beginPath()
     ctx.arc(blackHoleX, blackHoleY, 10, 0, 2 * Math.PI);
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
@@ -358,6 +362,36 @@ function Home() {
     return delta0
   }
 
+  const convertCartesianToPixel = (cartX, cartY) => {
+    let pixelX, pixelY
+    pixelX = cartX + blackHoleX
+    pixelY = blackHoleY - cartY
+    return {pixelX: pixelX, pixelY: pixelY}
+  }
+
+  const convertPixelToCartesian = (pixelX, pixelY) => {
+    let cartX, cartY
+    cartX = pixelX - blackHoleX
+    cartY = blackHoleY - pixelY
+    return {cartX: cartX, cartY: cartY}
+  }
+
+  const drawTraceSegment = (i) => {
+    console.log("drawing")
+    let ctx = canvas.getContext("2d");
+
+    // for (let i = 0; i < x_trace.length - 1; i++) {
+    let pixelObjStart = convertCartesianToPixel(x_trace[i], y_trace[i])
+    let pixelObjEnd = convertCartesianToPixel(x_trace[i + 1], y_trace[i + 1])
+
+    ctx.beginPath();
+    ctx.moveTo(pixelObjStart.pixelX, pixelObjStart.pixelY);
+    ctx.lineTo(pixelObjEnd.pixelX, pixelObjEnd.pixelY);
+    ctx.stroke();
+    ctx.closePath();
+    // }
+  }
+
    const canvasRelease = (e) => {
     console.log("release")
     console.log("-------")
@@ -373,6 +407,27 @@ function Home() {
      let delta0 = getDelta0()
 
      requestRayTrace(pressCoorX, pressCoorY, delta0)
+
+     // drawTraceSegment()
+     let start = Date.now();
+      let max_i = x_trace.length - 1
+      let cur_i = 0
+
+      requestAnimationFrame(function animateTrace(timestamp) {
+        console.log("animating")
+            let interval = Date.now() - start
+
+          if (cur_i < max_i) {
+            console.lo
+            drawTraceSegment(cur_i); // move element down
+          }
+          cur_i++;
+
+          console.log(interval)
+          if (interval < 1000){
+            requestAnimationFrame(animateTrace); // queue request for next frame
+          }
+        });
   }
 
   return (
