@@ -1,49 +1,82 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {StyleSheet, View, Text, Dimensions, TouchableOpacity} from 'react-native';
 import Canvas from 'react-native-canvas';
+import axios from 'axios';
+
 
 function Home() {
-  // const requestRayTrace = (x, y, delta0) => {
-  //      const toSend = {
-  //          x : x,
-  //          y : y,
-  //          delta0 : delta0
-  //      };
-  //
-  //      let config = {
-  //          headers: {
-  //              "Content-Type": "application/json",
-  //              'Access-Control-Allow-Origin': '*',
-  //          }
-  //      }
-  //
-  //      axios.post(
-  //          "http://localhost:8000",
-  //          toSend,
-  //          config
-  //      )
-  //          .then(response => {
-  //              let x_trace = []
-  //              let y_trace = []
-  //              let z_trace = []
-  //              let delta = []
-  //
-  //              response.data.forEach(obj => {
-  //                  x_trace.push(obj["x"])
-  //                  y_trace.push(obj["y"])
-  //                  z_trace.push(obj["z"])
-  //                  delta.push(obj["dela"])
-  //              });
-  //          })
-  //
-  //          .catch(function (error) {
-  //              console.log(error);
-  //          });
-  //  }
+ //  useEffect(() => {
+ //    fetch("http://localhost:8000", {
+ //      method:"POST"
+ //    })
+ //    .then(response => response.json())
+ //      .then(data => {
+ //       let x_trace = []
+ //       let y_trace = []
+ //       let z_trace = []
+ //       let delta = []
+ //
+ //       data.forEach(obj => {
+ //           x_trace.push(obj["x"])
+ //           y_trace.push(obj["y"])
+ //           z_trace.push(obj["z"])
+ //           delta.push(obj["dela"])
+ //       })
+ //       .catch(function (error) {
+ //               console.log(error);
+ //           });
+ // })
+ //  }, [])
+  const requestRayTrace = (x, y, delta0) => {
+    console.log("requesting")
+       const toSend = {
+           x : x,
+           y : y,
+           delta0 : delta0
+       };
 
-  // return (
-  //   <View></View>
-  // );
+       let config = {
+           headers: {
+               "Content-Type": "application/json",
+               'Access-Control-Allow-Origin': '*',
+           }
+       }
+
+       /*axios.post(
+         // https://stackoverflow.com/questions/49370747/network-error-with-axios-and-react-native
+           "https://10.0.2.2:8000/",
+           toSend,
+           config
+       )
+           .then(response => {
+             console.log("GOT RESPONSE")
+               let x_trace = []
+               let y_trace = []
+               let z_trace = []
+               let delta = []
+
+               response.data.forEach(obj => {
+                   x_trace.push(obj["x"])
+                   y_trace.push(obj["y"])
+                   z_trace.push(obj["z"])
+                   delta.push(obj["delta"])
+               });
+
+               console.log(x_trace)
+           })
+
+           .catch(function (error) {
+             console.log("ERROR")
+               console.log(error);
+           });*/
+      axios.post('https://10.0.2.2:8000/').then(response => {  // localhost:8000/get works
+        console.log("worked")
+            // this.setState({foo:response.data});
+        }).catch(error => {
+          console.log("error", error)
+            // console.log(error);
+        });
+   }
 
   let pressX
   let pressY

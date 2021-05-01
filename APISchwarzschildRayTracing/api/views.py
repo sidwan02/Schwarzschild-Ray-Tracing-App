@@ -19,6 +19,8 @@ def position_list(request):
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
         data = JSONParser().parse(request)
+        print("data: ", data)
+
         serializer_ray_tracing = RayTracingSerializer(data=data)
         if serializer_ray_tracing.is_valid():
             # serializer_ray_tracing.save()
@@ -29,7 +31,7 @@ def position_list(request):
             positions = get_positions_from_params(input_items)
 
             serializer_positions = PositionSerializer(positions, many=True)
-            print(serializer_positions)
+            # print(serializer_positions)
             return JsonResponse(serializer_positions.data, status=201, safe=False)
         else:
             return JsonResponse(serializer_ray_tracing.errors, status=400)
