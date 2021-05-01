@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import {StyleSheet, View, Text, Dimensions, TouchableOpacity} from 'react-native';
 import Canvas from 'react-native-canvas';
 
 function Home() {
@@ -45,10 +45,16 @@ function Home() {
   //   <View></View>
   // );
 
+  let pressX
+  let pressY
+    let releaseX
+  let releaseY
+
   const windowWidth = Dimensions.get('window').width;
-  console.log(windowWidth)
   const windowHeight = Dimensions.get('window').height;
-  console.log(windowHeight)
+
+  let blackHoleX = windowWidth / 2
+  let blackHoleY = windowHeight / 2
 
   const handleCanvas = (canvas) => {
     canvas.height = windowHeight
@@ -56,8 +62,8 @@ function Home() {
 
     let ctx = canvas.getContext("2d");
 
-    // blackhole
-    ctx.arc(windowWidth / 2, windowHeight / 2, 10, 0, 2 * Math.PI);
+    // black hole
+    ctx.arc(blackHoleX, blackHoleY, 10, 0, 2 * Math.PI);
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
 
@@ -66,9 +72,61 @@ function Home() {
     ctx.closePath();
   }
 
+  // const canvasTap = (e) => {
+  //   // console.log(e)
+  //   console.log("tap")
+  // }
+
+  const canvasPress = (e) => {
+    // https://stackoverflow.com/questions/36862765/react-native-get-the-coordinates-of-my-touch-event
+    // console.log("press")
+    // console.log("-----")
+    // console.log(e.nativeEvent.locationX)
+    // console.log(e.nativeEvent.locationY)
+    pressX = e.nativeEvent.locationX
+    pressY = e.nativeEvent.locationY
+  }
+
+  const getDelta0 = () => {
+    let theta
+    theta = 180 * Math.PI / (Math.tan(Math.abs(pressY - releaseY) / Math.abs(pressX - pressY)))
+    if (pressX < releaseX) {
+      theta = 180 - theta // since the angle we want has 0 at +ve y axis side
+    }
+
+    let phi
+    phi = 180 * Math.PI / (Math.tan(Math.abs(releaseY - blackHoleY) / Math.abs(pressY - blackHoleX)))
+
+    let delta0
+    delta0 = theta - phi
+
+    return delta0
+  }
+
+   const canvasRelease = (e) => {
+    console.log("release")
+    console.log("-------")
+    console.log(e.nativeEvent.locationX)
+    console.log(e.nativeEvent.locationY)
+
+     releaseX = e.nativeEvent.locationX
+       releaseY = e.nativeEvent.locationY
+
+     let pressCoorX = pressX - blackHoleX
+     let pressCoorY = pressY - blackHoleY
+
+     let delta0 = getDelta0()
+
+     requestRayTrace(pressCoorX, pressCoorY, delta0)
+  }
+
   return (
-    <View >
-      <Canvas ref={handleCanvas} />
+    <View>
+      {/*https://stackoverflow.com/questions/41948900/react-native-detect-tap-on-view*/}
+      {/*onPress={canvasTap} is for just tapping*/}
+      <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
+        <Canvas ref={handleCanvas} />
+      </TouchableOpacity>
     </View>
   )
 }
