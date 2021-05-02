@@ -1,1 +1,1 @@
-web: gunicorn APISchwarzschildRayTracing.APIProject.wsgi.py
+web: gunicorn --pythonpath APISchwarzschildRayTracing APIProject.wsgi
