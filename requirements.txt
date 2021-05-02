@@ -1,5 +1,0 @@
-Django==3.2
-djangorestframework==3.12.4
-matplotlib @ file:///C:/ci/matplotlib-base_1603355780617/work
-numpy @ file:///C:/ci/numpy_and_numpy_base_1603466732592/work
-scipy @ file:///C:/ci/scipy_1604596260408/work

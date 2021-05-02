@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.integrate import solve_ivp
-import matplotlib.pyplot as plt
 
 
 def diff_equation_num_solver(phi, y):
@@ -92,10 +91,6 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
     M = 1
 
     # if you define this in the for loop only the last scatter will display
-    fig, axs = plt.subplots(2)  # projection='3d')
-    plt.suptitle(
-        'Light Ray Trajectories [x = 99.9M; y = (-10, -9, ..., 10)]; 21 Sources;\nParallel Ray Emission; Display 2M <= r <= 200M; x <= 100M; Debug = True')
-    # https://www.edureka.co/community/18327/nameerror-name-raw-input-is-not-defined#:~:text=There%20may%20a%20problem%20with%20your%20python%20version.&text=From%20Python3.,int()%20or%20float().
 
     # fascal = int(input("Have max step? Yes = 0 or No = 1: "))
     step = 1e-1
