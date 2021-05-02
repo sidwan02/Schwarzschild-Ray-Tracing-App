@@ -307,13 +307,8 @@ function Home() {
   let blackHoleX = windowWidth / 2
   let blackHoleY = windowHeight / 2
 
-  const handleCanvas = (can) => {
-    canvas = can
-
-    can.height = windowHeight
-    can.width = windowWidth
-
-    let ctx = can.getContext("2d");
+  const drawBlackHole = () => {
+    let ctx = canvas.getContext("2d");
 
     // black hole
     ctx.beginPath()
@@ -324,6 +319,15 @@ function Home() {
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
+  }
+
+  const handleCanvas = (can) => {
+    canvas = can
+
+    can.height = windowHeight
+    can.width = windowWidth
+
+    drawBlackHole()
   }
 
   // const canvasTap = (e) => {
@@ -364,19 +368,20 @@ function Home() {
 
   const convertCartesianToPixel = (cartX, cartY) => {
     let pixelX, pixelY
-    pixelX = cartX + blackHoleX
-    pixelY = blackHoleY - cartY
+    pixelX = cartX * 10 + blackHoleX
+    pixelY = blackHoleY - cartY * 10
     return {pixelX: pixelX, pixelY: pixelY}
   }
 
   const convertPixelToCartesian = (pixelX, pixelY) => {
     let cartX, cartY
-    cartX = pixelX - blackHoleX
-    cartY = blackHoleY - pixelY
+    cartX = (pixelX - blackHoleX) / 10
+    cartY = (blackHoleY - pixelY) / 10
     return {cartX: cartX, cartY: cartY}
   }
-
+  let acc_angle = 0
   const drawTraceSegment = (i) => {
+    console.log(i)
     // console.log("drawing")
     let ctx = canvas.getContext("2d");
 
@@ -384,19 +389,45 @@ function Home() {
     let pixelObjStart = convertCartesianToPixel(x_trace[i], y_trace[i])
     let pixelObjEnd = convertCartesianToPixel(x_trace[i + 1], y_trace[i + 1])
 
-    ctx.beginPath();
-    ctx.moveTo(pixelObjStart.pixelX, pixelObjStart.pixelY);
-    ctx.lineTo(pixelObjEnd.pixelX, pixelObjEnd.pixelY);
-    ctx.stroke();
-    ctx.closePath();
+    // const gradient = ctx.createLinearGradient(pixelObjStart.pixelX, pixelObjStart.pixelY, pixelObjStart.pixelX + 50, pixelObjStart.pixelY + 50);
+    // gradient.addColorStop(0, 'black');
+    // gradient.addColorStop(1, 'white');
+    // ctx.save()
+    // ctx.fillStyle = 'rgba(0,0,0,1)';
+    ctx.fillStyle = "black";
+
+    let angle = Math.PI / 2 - Math.atan((pixelObjEnd.pixelY - pixelObjStart.pixelY) / (pixelObjEnd.pixelX - pixelObjStart.pixelX))
+    // acc_angle += 0.1
+
+    // ctx.translate(pixelObjStart.pixelX, pixelObjStart.pixelY);
+    // ctx.rotate(-angle);
+    ctx.fillRect(pixelObjStart.pixelX, pixelObjStart.pixelY, 10, 10);
+    // ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.fillRect(0, 0, windowWidth, windowHeight);
+// ctx.fillRect(100, 100, 10, 100);
+//     ctx.rotate(+angle);
+//     ctx.translate(-pixelObjStart.pixelX, -pixelObjStart.pixelY);
+//     ctx.beginPath();
+
+
+    // ctx.moveTo(pixelObjStart.pixelX, pixelObjStart.pixelY);
+    // ctx.lineTo(pixelObjEnd.pixelX, pixelObjEnd.pixelY);
+    // ctx.stroke();
+    // ctx.closePath();
+    // ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // ctx.restore()
     // }
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBlackHole()
   }
 
   const numListRangeInclusive = (start, stop, divisions) => {
     let step = Math.abs(start - stop) / divisions
-    console.log("start: ", start)
-    console.log("stop: ", stop)
-    console.log("step: ", step)
+    // console.log("start: ", start)
+    // console.log("stop: ", stop)
+    // console.log("step: ", step)
         let list = []
         let curVal = start
     let condition
@@ -421,14 +452,14 @@ function Home() {
         }
 
 
-        console.log("list: ", list)
+        // console.log("list: ", list)
         return list
     }
 
   const calculateWaypoints = () => {
     let waypointsX = []
     let waypointsY = []
-    const dist_to_div_ratio = 1/10
+    const dist_to_div_ratio = 1
 
     for (let i = 0; i < x_trace.length - 1; i++) {
       let divisions = Math.sqrt(Math.pow((x_trace[i] - x_trace[i + 1]), 2) + Math.pow((y_trace[i] - y_trace[i + 1]), 2)) * dist_to_div_ratio
@@ -458,14 +489,16 @@ function Home() {
     // console.log(e.nativeEvent.locationY)
 
      releaseX = e.nativeEvent.locationX
-       releaseY = e.nativeEvent.locationY
+     releaseY = e.nativeEvent.locationY
 
-     let pressCoorX = pressX - blackHoleX
-     let pressCoorY = blackHoleY - pressY
+     // let pressCoorX = pressX - blackHoleX
+     // let pressCoorY = blackHoleY - pressY
+
+     let pressCoorObj = convertPixelToCartesian(releaseX, releaseY)
 
      let delta0 = getDelta0()
 
-     requestRayTrace(pressCoorX, pressCoorY, delta0)
+     requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0)
 
      calculateWaypoints()
     //  console.log(x_trace)
@@ -501,6 +534,7 @@ function Home() {
       <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
         <Canvas ref={handleCanvas} />
       </TouchableOpacity>
+       <Canvas ref={handleBlackHoleCanvas} />
     </View>
   )
 }
