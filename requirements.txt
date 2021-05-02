@@ -1,0 +1,6 @@
+django~=3.2
+djangorestframework~=3.12.4
+numpy~=1.19.2
+scipy~=1.5.2
+django_heroku
+gunicorn~=20.1.0

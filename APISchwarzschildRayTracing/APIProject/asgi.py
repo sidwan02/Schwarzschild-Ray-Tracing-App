@@ -1,5 +1,5 @@
 """
-ASGI config for APISchwarzschildRayTracing project.
+ASGI config for APIProject project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'APISchwarzschildRayTracing.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'APIProject.settings')
 
 application = get_asgi_application()
