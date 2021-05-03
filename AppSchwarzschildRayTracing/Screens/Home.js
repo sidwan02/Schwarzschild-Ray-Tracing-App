@@ -79,13 +79,35 @@ function Home() {
       )
           .then(response => {
             // console.log("response: ", response.data)
-            response.data.forEach(obj => {
+            if (x > 0 && y > 0) {
+               response.data.forEach(obj => {
               // console.log("obj: ", obj)
                    x_trace.push(obj["x"])
                    y_trace.push(obj["y"])
                    z_trace.push(obj["z"])
                    delta.push(obj["delta"])
                });
+
+              }
+              else if (x < 0 && y > 0) {
+              // console.log("quad 2")
+              // quad 2
+              response.data.forEach(obj => {
+              // console.log("obj: ", obj)
+                   x_trace.push(-obj["x"])
+                   y_trace.push(obj["y"])
+                   z_trace.push(obj["z"])
+                   delta.push(obj["delta"])
+               });
+
+            } else if (x < 0 && y < 0) {
+              // quad 3
+            } else if (x > 0 && y < 0) {
+              // quad 4
+            }
+
+
+
 
             // console.log("x_trace: ", x_trace)
             calculateWaypoints()
@@ -374,9 +396,9 @@ function Home() {
    //      });
    // }
 
-  let pressX
-  let pressY
-    let releaseX
+  let press_x
+  let press_Y
+    let release_x
   let releaseY
 
   const windowWidth = Dimensions.get('window').width;
@@ -421,39 +443,27 @@ function Home() {
     // console.log("-----")
     // console.log(e.nativeEvent.locationX)
     // console.log(e.nativeEvent.locationY)
-    pressX = e.nativeEvent.locationX
-    pressY = e.nativeEvent.locationY
+    press_x = e.nativeEvent.locationX
+    press_Y = e.nativeEvent.locationY
   }
 
-  const getDelta0 = (x_ray, y_ray) => {
-    // console.log(pressY)
-    // console.log(releaseY)
-    // console.log(pressX)
-    // console.log(releaseX)
-    let theta // angle to line parallel to x axis
-    theta = 180 / Math.PI * (Math.atan(Math.abs(pressY - releaseY) / Math.abs(pressX - releaseX)))
-    let phi
-    phi = 180 / Math.PI * (Math.atan(Math.abs(pressY - blackHoleY) / Math.abs(Math.abs(pressX) - blackHoleX)))
-
+  const quadOneDeltaCalc = (pressX, releaseX, pressY, releaseY, theta, phi) => {
     let delta0
-
-    if (x_ray >= 0 && y_ray >= 0) {
-      // quadrant 1
-      if (releaseY < pressY && releaseX > pressX) {
+    if (releaseY > pressY && releaseX > pressX) {
         // dir up right
         delta0 = theta - phi
-      } else if (releaseY < pressY && releaseX < pressX) {
+      } else if (releaseY > pressY && releaseX < pressX) {
         // up left
         theta = 180 - theta
         delta0 = theta - phi
         if (delta0 < 0) {
           delta0 = phi - theta
         }
-      } else if (releaseY > pressY && releaseX > pressX) {
+      } else if (releaseY < pressY && releaseX > pressX) {
         // down right
         theta = -theta
         delta0 = -(Math.abs(theta) + phi)
-      } else if (releaseY > pressY && releaseX < pressX) {
+      } else if (releaseY < pressY && releaseX < pressX) {
         // down left
         theta = -(180 - theta)
         console.log("theta: ", theta)
@@ -462,9 +472,36 @@ function Home() {
           delta0 = 180 - (Math.abs(delta0) - 180)
         }
       }
-    } else if (x_ray <= 0 && y_ray >= 0) {
+    return delta0
+  }
+
+    const quadTwoDeltaCalc = (pressX, releaseX, pressY, releaseY, theta, phi) => {
+    let delta0
+            delta0 = quadOneDeltaCalc(-pressX, -releaseX, pressY, releaseY, theta, phi)
+
+    return delta0
+  }
+
+  const getDelta0 = (press_x, release_x, press_y, release_y) => {
+    // console.log(pressY)
+    // console.log(releaseY)
+    // console.log(pressX)
+    // console.log(releaseX)
+    let blackHoleObj = convertPixelToCartesian(blackHoleX, blackHoleY)
+    let theta // angle to line parallel to x axis
+    theta = 180 / Math.PI * (Math.atan(Math.abs(press_y - release_y) / Math.abs(press_x - release_x)))
+    let phi
+    phi = 180 / Math.PI * (Math.atan(Math.abs(press_y - blackHoleObj.cartY) / Math.abs(Math.abs(press_x) - blackHoleObj.cartX)))
+
+    let delta0
+
+    if (press_x >= 0 && press_y >= 0) {
+      // quadrant 1
+      delta0 = quadOneDeltaCalc(press_x, release_x, press_y, release_y, theta, phi)
+    } else if (press_x <= 0 && press_y >= 0) {
       // quadrant 2
-    } else if (x_ray <= 0 && y_ray <= 0) {
+      delta0 = quadTwoDeltaCalc(press_x, release_x, press_y, release_y, theta, phi)
+    } else if (press_x <= 0 && press_y <= 0) {
       // quadrant 3
     } else {
       // quadrant 4
@@ -632,15 +669,16 @@ function Home() {
      x_trace = []
      y_trace = []
 
-     releaseX = e.nativeEvent.locationX
+     release_x = e.nativeEvent.locationX
      releaseY = e.nativeEvent.locationY
 
      // let pressCoorX = pressX - blackHoleX
      // let pressCoorY = blackHoleY - pressY
 
-     let pressCoorObj = convertPixelToCartesian(pressX, pressY)
+     let pressCoorObj = convertPixelToCartesian(press_x, press_Y)
+     let releaseCoorObj = convertPixelToCartesian(release_x, releaseY)
 
-     let delta0 = getDelta0(pressCoorObj.cartX, pressCoorObj.cartY)
+     let delta0 = getDelta0(pressCoorObj.cartX, releaseCoorObj.cartX, pressCoorObj.cartY, releaseCoorObj.cartY)
 
      requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0)
      // console.log("x_trace: ", x_trace)
