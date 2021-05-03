@@ -133,11 +133,13 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
 
     r0 = np.sqrt(np.square(x_ray) + np.square(y_ray))
     # for some reason not having negative makes the source in the negative of the y_beam param
-    theta = -np.arctan(y_ray / x_ray)
+    theta = -np.arctan(y_ray / np.abs(x_ray))
     # print('r0', r0)
     # print('theta', theta)
 
     delta0 = delta0 * np.pi / 180
+    if x_ray < 0:
+        delta0 = np.pi - delta0
 
     if delta0 == 0:
         m = (y_ray - 0) / (x_ray - 0)
@@ -181,6 +183,10 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
         # print('len', minus_x_prime)
 
         # print('hi')
+
+        if x_ray < 0:
+            # reflect across y axis
+            x_prime = -x_prime
 
         if y_ray >= 0 and delta0 > 0:
             x_trace = x_prime

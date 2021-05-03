@@ -426,18 +426,32 @@ function Home() {
     // console.log(releaseY)
     // console.log(pressX)
     // console.log(releaseX)
-    let theta
+    let negative_x = false
+    if (pressX < 0) {
+      negative_x = true
+      pressX = -pressX
+    }
+
+    let theta // angle to line parallel to x axis
     theta = 180 / Math.PI * (Math.atan(Math.abs(pressY - releaseY) / Math.abs(pressX - releaseX)))
     if (pressX > releaseX) {
       theta = 180 - theta // since the angle we want has 0 at +ve y axis side
     }
+
+    if (negative_x) {
+      theta = 180 - theta
+    }
+
     console.log("theta: ", theta)
+
 
     let phi
     phi = 180 / Math.PI * (Math.atan(Math.abs(pressY - blackHoleY) / Math.abs(pressX - blackHoleX)))
 
     let delta0
     delta0 = theta - phi
+
+
 
     return delta0
   }
@@ -568,7 +582,7 @@ function Home() {
      // let pressCoorX = pressX - blackHoleX
      // let pressCoorY = blackHoleY - pressY
 
-     let pressCoorObj = convertPixelToCartesian(releaseX, releaseY)
+     let pressCoorObj = convertPixelToCartesian(pressX, pressY)
 
      let delta0 = getDelta0()
 
