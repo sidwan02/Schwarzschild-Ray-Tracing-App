@@ -430,33 +430,84 @@ function Home() {
     // console.log(releaseY)
     // console.log(pressX)
     // console.log(releaseX)
-    let negative_x
-    negative_x = x_ray < 0;
-
     let theta // angle to line parallel to x axis
-    // theta = 180 / Math.PI * (Math.atan(Math.abs(Math.abs(pressY) - Math.abs(releaseY)) / Math.abs(Math.abs(pressX) - Math.abs(releaseX))))
     theta = 180 / Math.PI * (Math.atan(Math.abs(pressY - releaseY) / Math.abs(pressX - releaseX)))
-    if (pressX > releaseX) {
-      theta = 180 - theta // since the angle we want has 0 at +ve y axis side
-    }
-
-    if (negative_x) {
-      theta = 180 - theta
-      console.log("is negative")
-    } else {
-      console.log("is positive")
-    }
-
-    console.log("theta: ", theta)
-
-
     let phi
     phi = 180 / Math.PI * (Math.atan(Math.abs(pressY - blackHoleY) / Math.abs(Math.abs(pressX) - blackHoleX)))
 
     let delta0
-    delta0 = theta - phi
+
+    if (x_ray >= 0 && y_ray >= 0) {
+      // quadrant 1
+      if (releaseY < pressY && releaseX > pressX) {
+        // dir up right
+        delta0 = theta - phi
+      } else if (releaseY < pressY && releaseX < pressX) {
+        // up left
+        theta = 180 - theta
+        delta0 = theta - phi
+        if (delta0 < 0) {
+          delta0 = phi - theta
+        }
+      } else if (releaseY > pressY && releaseX > pressX) {
+        // down right
+        theta = -theta
+        delta0 = -(Math.abs(theta) + phi)
+      } else if (releaseY > pressY && releaseX < pressX) {
+        // down left
+        theta = -(180 - theta)
+        console.log("theta: ", theta)
+        delta0 = -(Math.abs(theta) + phi)
+        if (delta0 < -180) {
+          delta0 = 180 - (Math.abs(delta0) - 180)
+        }
+      }
+    } else if (x_ray <= 0 && y_ray >= 0) {
+      // quadrant 2
+    } else if (x_ray <= 0 && y_ray <= 0) {
+      // quadrant 3
+    } else {
+      // quadrant 4
+    }
 
 
+
+    // let negative_x
+    // negative_x = x_ray < 0;
+    //
+    //
+    //
+    // // theta = 180 / Math.PI * (Math.atan(Math.abs(Math.abs(pressY) - Math.abs(releaseY)) / Math.abs(Math.abs(pressX) - Math.abs(releaseX))))
+    //
+    // if (pressX > releaseX) {
+    //   theta = 180 - theta // since the angle we want has 0 at +ve y axis side
+    // }
+    //
+    // if (negative_x) {
+    //   theta = 180 - theta
+    //   console.log("is negative")
+    // } else {
+    //   console.log("is positive")
+    // }
+    //
+    // console.log("theta: ", theta)
+    //
+    //
+    // let phi
+    // phi = 180 / Math.PI * (Math.atan(Math.abs(pressY - blackHoleY) / Math.abs(Math.abs(pressX) - blackHoleX)))
+    //
+    // let delta0
+    // if (pressY > releaseY) { // remember that lower y is towards the top
+    //   // console.log("yes")
+    //   delta0 = theta - phi
+    // } else {
+    //   delta0 = -(theta + phi)
+    // }
+    //
+    //
+    //
+    //
+    //
 
     return delta0
   }
