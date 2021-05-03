@@ -102,8 +102,22 @@ function Home() {
 
             } else if (x < 0 && y < 0) {
               // quad 3
+              response.data.forEach(obj => {
+              // console.log("obj: ", obj)
+                   x_trace.push(-obj["x"])
+                   y_trace.push(-obj["y"])
+                   z_trace.push(obj["z"])
+                   delta.push(obj["delta"])
+               });
             } else if (x > 0 && y < 0) {
               // quad 4
+              response.data.forEach(obj => {
+              // console.log("obj: ", obj)
+                   x_trace.push(obj["x"])
+                   y_trace.push(-obj["y"])
+                   z_trace.push(obj["z"])
+                   delta.push(obj["delta"])
+               });
             }
 
 
@@ -475,13 +489,6 @@ function Home() {
     return delta0
   }
 
-    const quadTwoDeltaCalc = (pressX, releaseX, pressY, releaseY, theta, phi) => {
-    let delta0
-            delta0 = quadOneDeltaCalc(-pressX, -releaseX, pressY, releaseY, theta, phi)
-
-    return delta0
-  }
-
   const getDelta0 = (press_x, release_x, press_y, release_y) => {
     // console.log(pressY)
     // console.log(releaseY)
@@ -500,11 +507,13 @@ function Home() {
       delta0 = quadOneDeltaCalc(press_x, release_x, press_y, release_y, theta, phi)
     } else if (press_x <= 0 && press_y >= 0) {
       // quadrant 2
-      delta0 = quadTwoDeltaCalc(press_x, release_x, press_y, release_y, theta, phi)
+      delta0 = quadOneDeltaCalc(-press_x, -release_x, press_y, release_y, theta, phi)
     } else if (press_x <= 0 && press_y <= 0) {
       // quadrant 3
+      delta0 = quadOneDeltaCalc(-press_x, -release_x, -press_y, -release_y, theta, phi)
     } else {
       // quadrant 4
+      delta0 = quadOneDeltaCalc(press_x, release_x, -press_y, -release_y, theta, phi)
     }
 
 
