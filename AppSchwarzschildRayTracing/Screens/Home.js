@@ -4,6 +4,7 @@ import Canvas from 'react-native-canvas';
 
 // import Constants from "expo-constants";
 // const { manifest } = Constants;
+import axios from 'axios';
 
 
 function Home() {
@@ -25,32 +26,93 @@ function Home() {
     // console.log("uri: ", uri)
 
 
-    fetch('http://127.0.0.1:8000/', {
-    // fetch(uri, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        x : x,
-        y : y,
-        delta0 : delta0
-      })
-    })
-    .then((response) => {
-      console.log("GOT RESPONSE")
-      console.log(response.data)
-      response.json()
-    })
-    .then((json) => {
-      console.log("WORKED")
-      console.log(json)
-    })
-    .catch((error) => {
-      console.log("ERROR")
-      console.error(error);
-    });
+    // fetch('https://schwarzschild-ray-tracing-api.herokuapp.com/', {
+    // // fetch(uri, {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     x : x,
+    //     y : y,
+    //     delta0 : delta0
+    //   })
+    // })
+    // .then((response) => {
+    //   console.log("GOT RESPONSE")
+    //   // console.log(response)
+    //   response.json()
+    // })
+    // .then((json) => {
+    //   console.log("WORKED")
+    //   console.log("json: ", json)
+    // })
+    // .catch((error) => {
+    //   console.log("ERROR")
+    //   console.error(error);
+    // });
+
+
+      const toSend = {
+          x: x,
+          y : y,
+        z: 0,
+          delta0 : delta0
+      };
+
+      let config = {
+          headers: {
+              "Content-Type": "application/json",
+              'Access-Control-Allow-Origin': '*',
+          }
+      }
+
+      axios.post(
+          "https://schwarzschild-ray-tracing-api.herokuapp.com/",
+          toSend,
+          config
+      )
+          .then(response => {
+            // console.log("response: ", response.data)
+            response.data.forEach(obj => {
+              // console.log("obj: ", obj)
+                   x_trace.push(obj["x"])
+                   y_trace.push(obj["y"])
+                   z_trace.push(obj["z"])
+                   delta.push(obj["delta"])
+               });
+
+            // console.log("x_trace: ", x_trace)
+            calculateWaypoints()
+    //  console.log(x_trace)
+    // console.log(y_trace)
+
+     let start = Date.now();
+      let max_i = x_trace.length - 1
+      let cur_i = 0
+
+      requestAnimationFrame(function animateTrace(timestamp) {
+        // console.log("animating")
+            let interval = Date.now() - start
+
+          if (cur_i < max_i) {
+            drawTraceSegment(cur_i); // move element down
+          }
+          cur_i++;
+
+          // console.log(interval)
+          // if (interval < 1000){
+          // setTimeout(() => {
+            requestAnimationFrame(animateTrace); // queue request for next frame
+          // }, 200);
+
+          // }
+        });
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
 
 //     let data = [
 //     {
@@ -395,7 +457,7 @@ function Home() {
   }
   let acc_angle = 0
   const drawTraceSegment = (i) => {
-    console.log(i)
+    // console.log(i)
     // console.log("drawing")
     let ctx = canvas.getContext("2d");
 
@@ -511,32 +573,9 @@ function Home() {
      let delta0 = getDelta0()
 
      requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0)
+     // console.log("x_trace: ", x_trace)
+     // console.log("y_trace: ", y_trace)
 
-     calculateWaypoints()
-    //  console.log(x_trace)
-    // console.log(y_trace)
-
-     let start = Date.now();
-      let max_i = x_trace.length - 1
-      let cur_i = 0
-
-      requestAnimationFrame(function animateTrace(timestamp) {
-        // console.log("animating")
-            let interval = Date.now() - start
-
-          if (cur_i < max_i) {
-            drawTraceSegment(cur_i); // move element down
-          }
-          cur_i++;
-
-          // console.log(interval)
-          // if (interval < 1000){
-          // setTimeout(() => {
-            requestAnimationFrame(animateTrace); // queue request for next frame
-          // }, 200);
-
-          // }
-        });
   }
 
   return (
