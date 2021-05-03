@@ -53,11 +53,15 @@ function Home() {
     //   console.error(error);
     // });
 
+    if (delta0 < 0) {
+      delta0 = - (180 - Math.abs(delta0))
+    }
+
 
       const toSend = {
-          x: x,
-          y : y,
-        z: 0,
+          x: Math.abs(x),
+          y : Math.abs(y),
+          z: 0,
           delta0 : delta0
       };
 
@@ -421,18 +425,16 @@ function Home() {
     pressY = e.nativeEvent.locationY
   }
 
-  const getDelta0 = () => {
+  const getDelta0 = (x_ray, y_ray) => {
     // console.log(pressY)
     // console.log(releaseY)
     // console.log(pressX)
     // console.log(releaseX)
-    let negative_x = false
-    if (pressX < 0) {
-      negative_x = true
-      pressX = -pressX
-    }
+    let negative_x
+    negative_x = x_ray < 0;
 
     let theta // angle to line parallel to x axis
+    // theta = 180 / Math.PI * (Math.atan(Math.abs(Math.abs(pressY) - Math.abs(releaseY)) / Math.abs(Math.abs(pressX) - Math.abs(releaseX))))
     theta = 180 / Math.PI * (Math.atan(Math.abs(pressY - releaseY) / Math.abs(pressX - releaseX)))
     if (pressX > releaseX) {
       theta = 180 - theta // since the angle we want has 0 at +ve y axis side
@@ -440,13 +442,16 @@ function Home() {
 
     if (negative_x) {
       theta = 180 - theta
+      console.log("is negative")
+    } else {
+      console.log("is positive")
     }
 
     console.log("theta: ", theta)
 
 
     let phi
-    phi = 180 / Math.PI * (Math.atan(Math.abs(pressY - blackHoleY) / Math.abs(pressX - blackHoleX)))
+    phi = 180 / Math.PI * (Math.atan(Math.abs(pressY - blackHoleY) / Math.abs(Math.abs(pressX) - blackHoleX)))
 
     let delta0
     delta0 = theta - phi
@@ -584,7 +589,7 @@ function Home() {
 
      let pressCoorObj = convertPixelToCartesian(pressX, pressY)
 
-     let delta0 = getDelta0()
+     let delta0 = getDelta0(pressCoorObj.cartX, pressCoorObj.cartY)
 
      requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0)
      // console.log("x_trace: ", x_trace)

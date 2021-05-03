@@ -184,9 +184,9 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
 
         # print('hi')
 
-        if x_ray < 0:
-            # reflect across y axis
-            x_prime = -x_prime
+        # if x_ray < 0:
+        #     # reflect across y axis
+        #     x_prime = -x_prime
 
         if y_ray >= 0 and delta0 > 0:
             x_trace = x_prime
