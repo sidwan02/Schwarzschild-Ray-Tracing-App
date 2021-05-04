@@ -6,7 +6,7 @@ import AwesomeButton from "react-native-really-awesome-button-fixed";
 // import Button from "react-native-really-awesome-button-fixed";
 // import { LineChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
 import Plotly from 'react-native-plotly';
-import MyView from "../Components/MyView";
+// import MyView from "../Components/MyView";
 
 
 
@@ -19,7 +19,11 @@ function Home() {
   let z_trace = []
   let delta = []
 
+  let title
+
   const requestRayTrace = (x, y, delta0) => {
+
+
     console.log("x: ", x)
     console.log("y: ", y)
     console.log("delta0: ", delta0)
@@ -124,12 +128,26 @@ function Home() {
             }
 
 
+              dataGraph = (
+              {
+  __id: 'up',
+  x: x_trace,
+  y: y_trace,
+  type: 'scatter'
+}
+            )
 
+             setStateGraph({
+    data: [dataGraph],
+    layout: { title: 'Ray Trace from (' + x_trace[0] + ', ' + y_trace[0] + ')' }
+  })
 
             // console.log("x_trace: ", x_trace)
             calculateWaypoints()
     //  console.log(x_trace)
     // console.log(y_trace)
+
+
 
      let start = Date.now();
       let max_i = x_trace.length - 1
@@ -694,6 +712,8 @@ function Home() {
 
      let delta0 = getDelta0(pressCoorObj.cartX, releaseCoorObj.cartX, pressCoorObj.cartY, releaseCoorObj.cartY)
 
+
+
      requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0)
      // console.log("x_trace: ", x_trace)
      // console.log("y_trace: ", y_trace)
@@ -726,20 +746,25 @@ function Home() {
     justifyContent: 'center'
   })
 
-  console.log(styles.container)
+
   }
 
-  const upData = {
+  // https://snack.expo.io/@rynobax/react-native-plotly-demo
+  let dataGraph = {
   __id: 'up',
-  x: [1, 2, 3, 4, 5],
-  y: [1, 2, 3, 4, 8],
+  x: [0],
+  y: [0],
   type: 'scatter'
-};
+}
 
-const state = {
-    data: [upData],
-    layout: { title: 'Plotly.js running in React Native!' }
-  };
+
+const [stateGraph, setStateGraph] = useState(
+    {
+    data: [dataGraph],
+    layout: { title: 'No Recent Trace to Display' }
+  }
+  );
+  // = ;
 
 
   return (
@@ -809,8 +834,8 @@ const state = {
 
         <View style={styles.chartRow}>
           <Plotly
-            data={state.data}
-            layout={state.layout}
+            data={stateGraph.data}
+            layout={stateGraph.layout}
             // update={update}
             onLoad={() => console.log('loaded')}
             debug
