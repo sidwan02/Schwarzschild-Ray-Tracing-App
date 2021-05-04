@@ -6,6 +6,7 @@ import AwesomeButton from "react-native-really-awesome-button-fixed";
 // import Button from "react-native-really-awesome-button-fixed";
 // import { LineChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
 import Plotly from 'react-native-plotly';
+import MyView from "../Components/MyView";
 
 
 
@@ -715,14 +716,26 @@ const state = {
     layout: { title: 'Plotly.js running in React Native!' }
   };
 
+styles.container_visible = {
+    position: 'absolute',
+    paddingTop: 30,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+
+const thingy = "container_visible"
+
 
   return (
     <View>
       {/*https://stackoverflow.com/questions/41948900/react-native-detect-tap-on-view*/}
       {/*onPress={canvasTap} is for just tapping*/}
-      {/*<TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>*/}
-      {/*  <Canvas ref={handleCanvas} />*/}
-      {/*</TouchableOpacity>*/}
+      <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
+        <Canvas ref={handleCanvas} />
+      </TouchableOpacity>
       <Button
         onPress={displayTraceAnalysis}
         title="Trace Analysis"
@@ -774,8 +787,12 @@ const state = {
   {/*    borderRadius: 16*/}
   {/*  }}*/}
   {/*/>*/}
+      
+      {/*<MyView hide={false}>*/}
+      {/*  <Text></Text>Hi*/}
+      {/*</MyView>*/}
 
-      <View style={styles.container}>
+      <View style={styles.container_visible}>
 
         <View style={styles.chartRow}>
           <Plotly
@@ -800,7 +817,17 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
-  container: {
+  container_invisible: {
+    position: 'absolute',
+    paddingTop: 30,
+    width: '0%',
+    height: '0%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  container_visible: {
+    position: 'absolute',
     paddingTop: 30,
     width: '100%',
     height: '100%',
