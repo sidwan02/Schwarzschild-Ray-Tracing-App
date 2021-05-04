@@ -1,10 +1,12 @@
 import React from 'react'
-import {Dimensions, InteractionManager, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Dimensions, TouchableOpacity, View, Text, Button} from 'react-native';
 import Canvas from 'react-native-canvas';
-
-// import Constants from "expo-constants";
-// const { manifest } = Constants;
 import axios from 'axios';
+import AwesomeButton from "react-native-really-awesome-button-fixed";
+// import Button from "react-native-really-awesome-button-fixed";
+// import { LineChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
+import Plotly from 'react-native-plotly';
+
 
 
 function Home() {
@@ -695,15 +697,117 @@ function Home() {
 
   }
 
+  const displayTraceAnalysis = () => {
+    let ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0, 0, windowWidth, windowHeight)
+  }
+
+  const upData = {
+  __id: 'up',
+  x: [1, 2, 3, 4, 5],
+  y: [1, 2, 3, 4, 8],
+  type: 'scatter'
+};
+
+const state = {
+    data: [upData],
+    layout: { title: 'Plotly.js running in React Native!' }
+  };
+
+
   return (
     <View>
       {/*https://stackoverflow.com/questions/41948900/react-native-detect-tap-on-view*/}
       {/*onPress={canvasTap} is for just tapping*/}
-      <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
-        <Canvas ref={handleCanvas} />
-      </TouchableOpacity>
+      {/*<TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>*/}
+      {/*  <Canvas ref={handleCanvas} />*/}
+      {/*</TouchableOpacity>*/}
+      <Button
+        onPress={displayTraceAnalysis}
+        title="Trace Analysis"
+        color="#841584"
+        // accessibilityLabel="Learn more about this purple button"
+      />
+
+      {/*<Text>Bezier Line Chart</Text>*/}
+  {/*<LineChart*/}
+  {/*  data={{*/}
+  {/*    labels: ["January", "February", "March", "April", "May", "June"],*/}
+  {/*    datasets: [*/}
+  {/*      {*/}
+  {/*        data: [*/}
+  {/*          Math.random() * 100,*/}
+  {/*          Math.random() * 100,*/}
+  {/*          Math.random() * 100,*/}
+  {/*          Math.random() * 100,*/}
+  {/*          Math.random() * 100,*/}
+  {/*          Math.random() * 100*/}
+  {/*        ]*/}
+  {/*      }*/}
+  {/*    ]*/}
+  {/*  }}*/}
+  {/*  width={Dimensions.get("window").width} // from react-native*/}
+  {/*  height={220}*/}
+  {/*  yAxisLabel="$"*/}
+  {/*  yAxisSuffix="k"*/}
+  {/*  yAxisInterval={1} // optional, defaults to 1*/}
+  {/*  chartConfig={{*/}
+  {/*    backgroundColor: "#e26a00",*/}
+  {/*    backgroundGradientFrom: "#fb8c00",*/}
+  {/*    backgroundGradientTo: "#ffa726",*/}
+  {/*    decimalPlaces: 2, // optional, defaults to 2dp*/}
+  {/*    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,*/}
+  {/*    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,*/}
+  {/*    style: {*/}
+  {/*      borderRadius: 16*/}
+  {/*    },*/}
+  {/*    propsForDots: {*/}
+  {/*      r: "6",*/}
+  {/*      strokeWidth: "2",*/}
+  {/*      stroke: "#ffa726"*/}
+  {/*    }*/}
+  {/*  }}*/}
+  {/*  bezier*/}
+  {/*  style={{*/}
+  {/*    marginVertical: 8,*/}
+  {/*    borderRadius: 16*/}
+  {/*  }}*/}
+  {/*/>*/}
+
+      <View style={styles.container}>
+
+        <View style={styles.chartRow}>
+          <Plotly
+            data={state.data}
+            layout={state.layout}
+            // update={update}
+            onLoad={() => console.log('loaded')}
+            debug
+            enableFullPlotly
+          />
+        </View>
+      </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  buttonRow: {
+    flexDirection: 'row'
+  },
+  chartRow: {
+    flex: 1,
+    width: '100%'
+  },
+  container: {
+    paddingTop: 30,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
 
 export default Home;
