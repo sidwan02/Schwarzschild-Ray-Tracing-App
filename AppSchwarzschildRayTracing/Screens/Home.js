@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {StyleSheet, Dimensions, TouchableOpacity, View, Text, Button} from 'react-native';
 import Canvas from 'react-native-canvas';
 import axios from 'axios';
@@ -439,10 +439,12 @@ function Home() {
   }
 
   const handleCanvas = (can) => {
-    canvas = can
+    if (can !== null) {
+      canvas = can
 
-    can.height = windowHeight
-    can.width = windowWidth
+      can.height = windowHeight
+      can.width = windowWidth
+    }
 
     drawBlackHole()
   }
@@ -698,10 +700,33 @@ function Home() {
 
   }
 
-  const displayTraceAnalysis = () => {
-    let ctx = canvas.getContext("2d");
+  const [container_style, set_container_style] = useState(
+    {position: 'absolute',
+    paddingTop: 30,
+    width: '0%',
+    height: '0%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'}
+  );
 
-    ctx.clearRect(0, 0, windowWidth, windowHeight)
+  const displayTraceAnalysis = (e) => {
+
+    console.log(e)
+    // let ctx = canvas.getContext("2d");
+
+    // ctx.clearRect(0, 0, windowWidth, windowHeight)
+    set_container_style({
+    position: 'absolute',
+    paddingTop: 30,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  })
+
+  console.log(styles.container)
   }
 
   const upData = {
@@ -715,18 +740,6 @@ const state = {
     data: [upData],
     layout: { title: 'Plotly.js running in React Native!' }
   };
-
-styles.container_visible = {
-    position: 'absolute',
-    paddingTop: 30,
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-
-const thingy = "container_visible"
 
 
   return (
@@ -792,7 +805,7 @@ const thingy = "container_visible"
       {/*  <Text></Text>Hi*/}
       {/*</MyView>*/}
 
-      <View style={styles.container_visible}>
+      <View style={container_style}>
 
         <View style={styles.chartRow}>
           <Plotly
@@ -817,20 +830,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
-  container_invisible: {
+  container: {
     position: 'absolute',
     paddingTop: 30,
     width: '0%',
     height: '0%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  container_visible: {
-    position: 'absolute',
-    paddingTop: 30,
-    width: '100%',
-    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
