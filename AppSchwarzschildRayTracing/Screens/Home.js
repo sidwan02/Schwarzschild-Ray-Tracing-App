@@ -133,13 +133,16 @@ function Home() {
   __id: 'up',
   x: x_trace,
   y: y_trace,
-  type: 'scatter'
+  type: 'scatter',
+                mode: 'lines+markers'
 }
             )
 
              setStateGraph({
     data: [dataGraph],
-    layout: { title: 'Ray Trace from (' + x_trace[0] + ', ' + y_trace[0] + ')' }
+    layout: { width: windowWidth,
+      height: windowWidth,
+      title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ')' }
   })
 
             // console.log("x_trace: ", x_trace)
@@ -730,21 +733,42 @@ function Home() {
     justifyContent: 'center'}
   );
 
-  const displayTraceAnalysis = (e) => {
+  const [titleButton, setTitleButton] = useState('Trace Analysis');
+  const [colorButton, setColorButton] = useState('#00a3ff');
 
-    console.log(e)
-    // let ctx = canvas.getContext("2d");
+  const clickAnalysisBuildBtn = () => {
+    console.log("button click")
+    if (titleButton === 'Trace Analysis') {
+      setTitleButton('Build Traces')
+      setColorButton('rgb(255,0,0)')
 
-    // ctx.clearRect(0, 0, windowWidth, windowHeight)
-    set_container_style({
+      set_container_style({
     position: 'absolute',
     paddingTop: 30,
     width: '100%',
-    height: '100%',
+    height: (windowHeight - 5),
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'})
+    } else {
+      setTitleButton('Trace Analysis')
+      setColorButton('#00a3ff')
+
+      set_container_style({
+    position: 'absolute',
+    paddingTop: 30,
+    width: '0%',
+    height: '0%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
   })
+    }
+    // console.log(e)
+    // let ctx = canvas.getContext("2d");
+
+    // ctx.clearRect(0, 0, windowWidth, windowHeight)
+
 
 
   }
@@ -754,14 +778,17 @@ function Home() {
   __id: 'up',
   x: [0],
   y: [0],
-  type: 'scatter'
+  type: 'scatter',
+    mode: 'lines+markers'
 }
 
 
 const [stateGraph, setStateGraph] = useState(
     {
     data: [dataGraph],
-    layout: { title: 'No Recent Trace to Display' }
+    layout: { width: windowWidth,
+      height: windowWidth,
+      title: 'No Recent Trace to Display' }
   }
   );
   // = ;
@@ -775,11 +802,19 @@ const [stateGraph, setStateGraph] = useState(
         <Canvas ref={handleCanvas} />
       </TouchableOpacity>
       <Button
-        onPress={displayTraceAnalysis}
-        title="Trace Analysis"
-        color="#841584"
+        onPress={clickAnalysisBuildBtn}
+        title={titleButton}
+        color={colorButton}
         // accessibilityLabel="Learn more about this purple button"
       />
+      <View>
+        <Button
+        onPress={clickAnalysisBuildBtn}
+        title={titleButton}
+        color={colorButton}
+        // accessibilityLabel="Learn more about this purple button"
+      />
+      </View>
 
       {/*<Text>Bezier Line Chart</Text>*/}
   {/*<LineChart*/}
@@ -838,8 +873,8 @@ const [stateGraph, setStateGraph] = useState(
             layout={stateGraph.layout}
             // update={update}
             onLoad={() => console.log('loaded')}
-            debug
-            enableFullPlotly
+            // debug
+            // enableFullPlotly
           />
         </View>
       </View>
