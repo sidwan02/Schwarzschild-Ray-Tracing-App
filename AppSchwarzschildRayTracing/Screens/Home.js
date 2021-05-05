@@ -463,6 +463,24 @@ function Home() {
     ctx.closePath();
   }
 
+  const drawCoordinateAxes = () => {
+    let ctx = canvas.getContext("2d");
+
+    ctx.beginPath()
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo(0, blackHoleY);
+    ctx.lineTo(windowWidth, blackHoleY);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo(blackHoleX, 0);
+    ctx.lineTo(blackHoleX, windowHeight);
+    ctx.stroke();
+
+    ctx.closePath();
+  }
+
+
   const handleCanvas = (can) => {
     if (can !== null) {
       canvas = can
@@ -471,6 +489,8 @@ function Home() {
       can.width = windowWidth
     }
 
+
+    drawCoordinateAxes()
     drawBlackHole()
   }
 
@@ -680,6 +700,8 @@ function Home() {
     // ctx.restore()
     // }
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawCoordinateAxes()
     drawBlackHole()
   }
 
@@ -773,7 +795,7 @@ function Home() {
 
   const [container_style, set_container_style] = useState(
     {position: 'absolute',
-    paddingTop: 30,
+    paddingTop: 70,
     width: '0%',
     height: '0%',
     backgroundColor: '#fff',
@@ -792,7 +814,7 @@ function Home() {
 
       set_container_style({
     position: 'absolute',
-    paddingTop: 30,
+    paddingTop: 70,
     width: '100%',
     height: (windowHeight - 5),
     backgroundColor: '#fff',
@@ -804,7 +826,7 @@ function Home() {
 
       set_container_style({
     position: 'absolute',
-    paddingTop: 30,
+    paddingTop: 70,
     width: '0%',
     height: '0%',
     backgroundColor: '#fff',
@@ -940,7 +962,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'absolute',
-    paddingTop: 30,
+    paddingTop: 70,
     width: '0%',
     height: '0%',
     backgroundColor: '#fff',
