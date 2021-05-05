@@ -147,21 +147,33 @@ function Home() {
             //
             // )
 
-             setStateGraph({
-    data: [{
-  __id: 'up',
+              let trace1 = {
+  name: 'Ray Trace',
   x: x_trace,
   y: y_trace,
   type: 'scatter',
-                mode: 'lines+markers'
-}],
+                mode: 'lines'
+}
+
+let trace2 = {
+  name: 'Black Hole',
+  x: [0],
+  y: [0],
+  type: 'scatter',
+    mode: 'markers'
+}
+
+             setStateGraph({
+    data: [trace1, trace2],
     layout: { width: windowWidth,
       height: windowHeight - 55,
-      title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ')',
+      title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
     xaxis: {
+      title: "x-axis",
     range: [bounds1.cartX, bounds2.cartX]
   },
       yaxis: {
+      title: "y-axis",
     range: [bounds2.cartY, bounds1.cartY]
   }
     }
@@ -880,22 +892,34 @@ function Home() {
 let bounds1 = convertPixelToCartesian(0, 0)
   let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
-const [stateGraph, setStateGraph] = useState(
-    {
-    data: [{
-  __id: 'up',
+  let trace1 = {
+  name: 'Ray Trace',
   x: [0],
   y: [0],
   type: 'scatter',
-    mode: 'lines+markers'
-}],
+    mode: 'lines'
+}
+
+let trace2 = {
+  name: 'Black Hole',
+  x: [0],
+  y: [0],
+  type: 'scatter',
+    mode: 'markers'
+}
+
+const [stateGraph, setStateGraph] = useState(
+    {
+    data: [trace1, trace2],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
     xaxis: {
+      title: "x-axis",
     range: [bounds1.cartX, bounds2.cartX]
   },
       yaxis: {
+      title: "y-axis",
     range: [bounds2.cartY, bounds1.cartY]
   }
     }
