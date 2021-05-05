@@ -133,18 +133,28 @@ function Home() {
               // console.log("y_trace: ", y_trace)
 
 
-              dataGraph = (
-              {
+//               dataGraph = (
+//               {
+//   __id: 'up',
+//   x: x_trace,
+//   y: y_trace,
+//   type: 'scatter',
+//                 mode: 'lines+markers'
+// }
+//             )
+
+            // setDataGraph(
+            //
+            // )
+
+             setStateGraph({
+    data: [{
   __id: 'up',
   x: x_trace,
   y: y_trace,
   type: 'scatter',
                 mode: 'lines+markers'
-}
-            )
-
-             setStateGraph({
-    data: [dataGraph],
+}],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ')',
@@ -856,20 +866,29 @@ function Home() {
   }
 
   // https://snack.expo.io/@rynobax/react-native-plotly-demo
-  let dataGraph = {
-  __id: 'up',
-  x: [0],
-  y: [0],
-  type: 'scatter',
-    mode: 'lines+markers'
-}
+
+//   let dataGraph = {
+//   __id: 'up',
+//   x: [0],
+//   y: [0],
+//   type: 'scatter',
+//     mode: 'lines+markers'
+// }
+
+ const [dataGraph, setDataGraph] = useState()
 
 let bounds1 = convertPixelToCartesian(0, 0)
   let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
 const [stateGraph, setStateGraph] = useState(
     {
-    data: [dataGraph],
+    data: [{
+  __id: 'up',
+  x: [0],
+  y: [0],
+  type: 'scatter',
+    mode: 'lines+markers'
+}],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
