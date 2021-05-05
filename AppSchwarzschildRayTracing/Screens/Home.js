@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {StyleSheet, Dimensions, TouchableOpacity, View, Text, Button} from 'react-native';
+import {StyleSheet, Dimensions, TouchableOpacity, View, Text, Button, TextInput} from 'react-native';
 import Canvas from 'react-native-canvas';
 import axios from 'axios';
 import AwesomeButton from "react-native-really-awesome-button-fixed";
@@ -86,17 +86,19 @@ function Home() {
       )
           .then(response => {
             // console.log("response: ", response.data)
-            if (x > 0 && y > 0) {
+            if (x >= 0 && y >= 0) {
                response.data.forEach(obj => {
               // console.log("obj: ", obj)
                    x_trace.push(obj["x"])
                    y_trace.push(obj["y"])
                    z_trace.push(obj["z"])
                    delta.push(obj["delta"])
+
+                 // console.log("x_trace: ", x_trace)
                });
 
               }
-              else if (x < 0 && y > 0) {
+              else if (x < 0 && y >= 0) {
               // console.log("quad 2")
               // quad 2
               response.data.forEach(obj => {
@@ -116,7 +118,7 @@ function Home() {
                    z_trace.push(obj["z"])
                    delta.push(obj["delta"])
                });
-            } else if (x > 0 && y < 0) {
+            } else if (x >= 0 && y < 0) {
               // quad 4
               response.data.forEach(obj => {
               // console.log("obj: ", obj)
@@ -126,6 +128,8 @@ function Home() {
                    delta.push(obj["delta"])
                });
             }
+
+              // console.log("y_trace: ", y_trace)
 
 
               dataGraph = (
@@ -863,6 +867,22 @@ const [stateGraph, setStateGraph] = useState(
   );
   // = ;
 
+  const expandManualEntryDiv = () => {
+
+  }
+
+  const clickManualEntryBtn = () => {
+    console.log('x: ', xManual)
+    console.log('y: ', yManual)
+    console.log('delta0: ', delta0Manual)
+
+    requestRayTrace(xManual, yManual, delta0Manual)
+  }
+
+  const [xManual, setXManual] = useState(null)
+  const [yManual, setYManual] = useState(null)
+  const [delta0Manual, setDelta0Manual] = useState(null)
+
 
   return (
     <View>
@@ -877,14 +897,50 @@ const [stateGraph, setStateGraph] = useState(
         color={colorButton}
         // accessibilityLabel="Learn more about this purple button"
       />
-      <View>
-        <Button
-        onPress={clickAnalysisBuildBtn}
-        title={titleButton}
+
+      <View style={styles.manual_entry_btn}>
+      {/*  <Button*/}
+      {/*  onPress={expandManualEntryDiv}*/}
+      {/*  title={'v'}*/}
+      {/*  color={colorButton}*/}
+      {/*  // accessibilityLabel="Learn more about this purple button"*/}
+      {/*/>*/}
+
+        <View>
+          <TextInput
+            placeholder="x"
+            keyboardType = 'numeric'
+          value={xManual}
+          onChangeText={setXManual}/>
+          <TextInput
+            placeholder="y"
+          keyboardType = 'numeric'
+          value={yManual}
+          onChangeText={setYManual}/>
+          <TextInput
+            placeholder="delta0"
+          keyboardType = 'numeric'
+          value={delta0Manual}
+          onChangeText={setDelta0Manual}/>
+
+          <Button
+        onPress={clickManualEntryBtn}
+        title={'Trace'}
         color={colorButton}
         // accessibilityLabel="Learn more about this purple button"
       />
+        </View>
       </View>
+
+
+      {/*<View>*/}
+      {/*  <Button*/}
+      {/*  onPress={clickAnalysisBuildBtn}*/}
+      {/*  title={titleButton}*/}
+      {/*  color={colorButton}*/}
+      {/*  // accessibilityLabel="Learn more about this purple button"*/}
+      {/*/>*/}
+      {/*</View>*/}
 
       {/*<Text>Bezier Line Chart</Text>*/}
   {/*<LineChart*/}
@@ -959,6 +1015,11 @@ const styles = StyleSheet.create({
   chartRow: {
     flex: 1,
     width: '100%'
+  },
+  manual_entry_btn: {
+    position: 'absolute',
+    top: '10%',
+    left: '10%'
   },
   container: {
     position: 'absolute',
