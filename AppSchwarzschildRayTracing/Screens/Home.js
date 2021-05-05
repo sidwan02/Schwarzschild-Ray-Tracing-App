@@ -146,8 +146,15 @@ function Home() {
              setStateGraph({
     data: [dataGraph],
     layout: { width: windowWidth,
-      height: windowWidth,
-      title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ')' }
+      height: windowHeight - 55,
+      title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ')',
+    xaxis: {
+    range: [bounds1.cartX, bounds2.cartX]
+  },
+      yaxis: {
+    range: [bounds2.cartY, bounds1.cartY]
+  }
+    }
   })
 
             // console.log("x_trace: ", x_trace)
@@ -800,7 +807,7 @@ function Home() {
 
   const [container_style, set_container_style] = useState(
     {position: 'absolute',
-    paddingTop: 70,
+    paddingTop: 50,
     width: '0%',
     height: '0%',
     backgroundColor: '#fff',
@@ -819,8 +826,8 @@ function Home() {
 
       set_container_style({
     position: 'absolute',
-    paddingTop: 70,
-    width: '100%',
+    paddingTop: 50,
+    width: windowWidth,
     height: (windowHeight - 5),
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -831,7 +838,7 @@ function Home() {
 
       set_container_style({
     position: 'absolute',
-    paddingTop: 70,
+    paddingTop: 50,
     width: '0%',
     height: '0%',
     backgroundColor: '#fff',
@@ -857,13 +864,22 @@ function Home() {
     mode: 'lines+markers'
 }
 
+let bounds1 = convertPixelToCartesian(0, 0)
+  let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
 const [stateGraph, setStateGraph] = useState(
     {
     data: [dataGraph],
     layout: { width: windowWidth,
-      height: windowWidth,
-      title: 'No Recent Trace to Display' }
+      height: windowHeight - 55,
+      title: 'No Recent Trace to Display',
+    xaxis: {
+    range: [bounds1.cartX, bounds2.cartX]
+  },
+      yaxis: {
+    range: [bounds2.cartY, bounds1.cartY]
+  }
+    }
   }
   );
   // = ;
@@ -1044,7 +1060,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'absolute',
-    paddingTop: 70,
+    paddingTop: 50,
     width: '0%',
     height: '0%',
     backgroundColor: '#fff',
