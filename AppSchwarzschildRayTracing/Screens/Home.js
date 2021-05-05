@@ -6,6 +6,7 @@ import AwesomeButton from "react-native-really-awesome-button-fixed";
 // import Button from "react-native-really-awesome-button-fixed";
 // import { LineChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
 import Plotly from 'react-native-plotly';
+import CollapsibleView from "@eliav2/react-native-collapsible-view";
 // import MyView from "../Components/MyView";
 
 
@@ -898,7 +899,7 @@ const [stateGraph, setStateGraph] = useState(
         // accessibilityLabel="Learn more about this purple button"
       />
 
-      <View style={styles.manual_entry_btn}>
+      <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
       {/*  <Button*/}
       {/*  onPress={expandManualEntryDiv}*/}
       {/*  title={'v'}*/}
@@ -907,17 +908,23 @@ const [stateGraph, setStateGraph] = useState(
       {/*/>*/}
 
         <View>
+          <Text>Start x:</Text>
           <TextInput
+            style={styles.manualTextInput}
             placeholder="x"
             keyboardType = 'numeric'
           value={xManual}
           onChangeText={setXManual}/>
+          <Text>Start y:</Text>
           <TextInput
+                        style={styles.manualTextInput}
             placeholder="y"
           keyboardType = 'numeric'
           value={yManual}
           onChangeText={setYManual}/>
+          <Text>Start angle:</Text>
           <TextInput
+                        style={styles.manualTextInput}
             placeholder="delta0"
           keyboardType = 'numeric'
           value={delta0Manual}
@@ -930,7 +937,10 @@ const [stateGraph, setStateGraph] = useState(
         // accessibilityLabel="Learn more about this purple button"
       />
         </View>
-      </View>
+    </CollapsibleView>
+
+
+
 
 
       {/*<View>*/}
@@ -1016,10 +1026,21 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
-  manual_entry_btn: {
+  manualTextInput: {
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    borderRadius: 5
+  },
+  manualEntryDiv: {
     position: 'absolute',
-    top: '10%',
-    left: '10%'
+    top: '5%',
+    left: '5%',
+    backgroundColor: 'rgb(123,255,209)',
+    padding: 10,
+    borderRadius: 5,
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center'
   },
   container: {
     position: 'absolute',
