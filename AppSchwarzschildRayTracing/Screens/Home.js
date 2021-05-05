@@ -156,12 +156,16 @@ function Home() {
       let max_i = x_trace.length - 1
       let cur_i = 0
 
+            let colorStop = Math.random()
+
+    let color = rainbowStop(colorStop)
+
       requestAnimationFrame(function animateTrace(timestamp) {
         // console.log("animating")
             let interval = Date.now() - start
 
           if (cur_i < max_i) {
-            drawTraceSegment(cur_i); // move element down
+            drawTraceSegment(cur_i, color); // move element down
           }
           cur_i++;
 
@@ -597,8 +601,25 @@ function Home() {
     cartY = (blackHoleY - pixelY) / 10
     return {cartX: cartX, cartY: cartY}
   }
+
+  // https://codepen.io/mradamcole/pen/yWXyPz
+  const rainbowStop = (h) => {
+  let f = (n, k = (n + h * 12) % 12) =>
+    0.5 - 0.5 * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+  let rgb2hex = (r, g, b) =>
+    "#" +
+    [r, g, b]
+      .map(x =>
+        Math.round(x * 255)
+          .toString(16)
+          .padStart(2, 0)
+      )
+      .join("");
+  return rgb2hex(f(0), f(8), f(4));
+}
+
   let acc_angle = 0
-  const drawTraceSegment = (i) => {
+  const drawTraceSegment = (i, color) => {
     // console.log(i)
     // console.log("drawing")
     let ctx = canvas.getContext("2d");
@@ -619,11 +640,37 @@ function Home() {
 
     // ctx.translate(pixelObjStart.pixelX, pixelObjStart.pixelY);
     // ctx.rotate(-angle);
-    ctx.fillRect(pixelObjStart.pixelX, pixelObjStart.pixelY, 10, 10);
+
+
+    // ctx.fillRect(pixelObjStart.pixelX, pixelObjStart.pixelY, 10, 10);
+
+
+     ctx.beginPath()
+    ctx.arc(pixelObjStart.pixelX, pixelObjStart.pixelY, 5, 0, 2 * Math.PI);
+
+
+    // https://www.programiz.com/javascript/examples/random-between-numbers
+    // let color1 = Math.floor(Math.random() * (255 - 0 + 1)) + 255
+    //   let color2 = Math.floor(Math.random() * (255 - 0 + 1)) + 255
+    //   let color3 = Math.floor(Math.random() * (255 - 0 + 1)) + 255
+
+    // ctx.fillStyle = 'rgb(255,0,0)';
+    //     ctx.strokeStyle = 'rgb(255,0,0)';
+
+
+
+        ctx.fillStyle = color;
+    ctx.strokeStyle = color
+
+    ctx.fill();
+    ctx.stroke();
+
+
     // ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
     ctx.fillRect(0, 0, windowWidth, windowHeight);
+        ctx.closePath();
 
     // ctx.moveTo(pixelObjStart.pixelX, pixelObjStart.pixelY);
     // ctx.lineTo(pixelObjEnd.pixelX, pixelObjEnd.pixelY);
@@ -675,7 +722,8 @@ function Home() {
     const dist_to_div_ratio = 1
 
     for (let i = 0; i < x_trace.length - 1; i++) {
-      let divisions = Math.sqrt(Math.pow((x_trace[i] - x_trace[i + 1]), 2) + Math.pow((y_trace[i] - y_trace[i + 1]), 2)) * dist_to_div_ratio
+      let divisions = Math.sqrt(Math.pow((x_trace[i] - x_trace[i + 1]), 2) + Math.pow((y_trace[i] - y_trace[i + 1]), 2))
+        * dist_to_div_ratio
       waypointsX = waypointsX.concat(numListRangeInclusive(x_trace[i], x_trace[i + 1], divisions))
       waypointsY = waypointsY.concat(numListRangeInclusive(y_trace[i], y_trace[i + 1], divisions))
     }
