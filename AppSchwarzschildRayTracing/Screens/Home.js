@@ -167,7 +167,7 @@ let trace2 = {
     mode: 'markers'
 }
 
-              console.log("periastron within request: ", periastron)
+              // console.log("periastron within request: ", periastron)
 
               let trace3 = {
   name: 'Periastron',
@@ -176,6 +176,11 @@ let trace2 = {
   type: 'scatter',
     mode: 'markers'
 }
+
+              if (typeof delta0 === 'string') {
+                delta0 = parseInt(delta0)
+              }
+              // console.log(typeof delta0)
 
              setStateGraph({
     data: [trace1, trace2, trace3],
@@ -189,7 +194,13 @@ let trace2 = {
       yaxis: {
       title: "y-axis",
     range: [bounds2.cartY, bounds1.cartY]
-  }
+  },
+      legend: {
+          yanchor:"top",
+    y:0.99,
+    xanchor:"left",
+    x:0.01
+      }
     }
   })
 
@@ -806,7 +817,7 @@ let trace2 = {
       if (periastron === null) {
         periastron = {x: x, y: y_trace[i]}
       } else {
-        console.log("periastron: ", periastron)
+        // console.log("periastron: ", periastron)
         let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2))
         let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
 
@@ -941,7 +952,15 @@ const [stateGraph, setStateGraph] = useState(
       yaxis: {
       title: "y-axis",
     range: [bounds2.cartY, bounds1.cartY]
-  }
+  },
+      legend: {
+          yanchor:"top",
+    y:0.99,
+    xanchor:"left",
+    x:0.01
+      }
+
+
     }
   }
   );
