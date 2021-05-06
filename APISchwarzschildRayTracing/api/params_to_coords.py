@@ -1,6 +1,8 @@
-from .models import Position
-from .calc_ray_trace_diffequ import get_ray_trace_coords
+import numpy as np
 
+from .models import Position
+# from .calc_ray_trace_diffequ import get_ray_trace_coords
+from .calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
 def get_coords_from_params(input_items):
     print(input_items)
@@ -15,11 +17,13 @@ def get_coords_from_params(input_items):
     # print(z)
     # print(delta0)
 
-    (x_trace, y_trace, delta) = get_ray_trace_coords(x, y, delta0)
+    # (x_trace, y_trace, delta) = get_ray_trace_coords(x, y, delta0)
+    (x_trace, y_trace) = schwarzschild_get_ray_cartesian(x, y, delta0)
 
     print(x_trace)
     print(y_trace)
-    print(delta)
+    # print(delta)
+    delta = np.zeros(len(x_trace))
 
     positions = []
 
