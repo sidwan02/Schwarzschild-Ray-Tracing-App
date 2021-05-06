@@ -1,8 +1,8 @@
 from .models import Position
-from .ray_tracing_progression import get_ray_trace_coords
+from .calc_ray_trace_diffequ import get_ray_trace_coords
 
 
-def get_positions_from_params(input_items):
+def get_coords_from_params(input_items):
     print(input_items)
 
     x = input_items[0][1]

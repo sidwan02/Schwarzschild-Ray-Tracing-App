@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from .params_to_positions import get_positions_from_params
+from .params_to_coords import get_coords_from_params
 
 # Create your views here.
 
@@ -28,7 +28,7 @@ def position_list(request):
             input_items = list(serializer_ray_tracing.validated_data.items())
             # print("input_items", input_items)
 
-            positions = get_positions_from_params(input_items)
+            positions = get_coords_from_params(input_items)
 
             serializer_positions = PositionSerializer(positions, many=True)
             # print(serializer_positions)

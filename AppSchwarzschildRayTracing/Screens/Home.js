@@ -1133,7 +1133,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '5%',
     left: '5%',
-    backgroundColor: 'rgb(123,255,209)',
+    backgroundColor: 'rgb(255,255,255)',
     padding: 10,
     borderRadius: 5,
     // display: 'flex',
