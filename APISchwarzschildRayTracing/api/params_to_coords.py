@@ -4,6 +4,7 @@ from .models import Position
 # from .calc_ray_trace_diffequ import get_ray_trace_coords
 from .calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
+
 def get_coords_from_params(input_items):
     print(input_items)
 

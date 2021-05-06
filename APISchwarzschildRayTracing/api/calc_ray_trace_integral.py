@@ -251,10 +251,46 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
 # plt.fill_between(np.linspace(0.0, 2 * np.pi, 100), 2 * np.ones(100), color='k')
 # plt.show()
 
-def schwarzschild_get_ray_cartesian(x, y, delta0, rstop, npoints):
+def schwarzschild_get_ray_cartesian(x, y, delta0):
+    M = 1
+
     delta0 = np.deg2rad(delta0)
     r0 = np.sqrt(x ** 2 + y ** 2)
     theta0 = np.arccos(x / r0)
+
+    D = r0 * np.abs(np.sin(delta0)) / np.sqrt(1 - 2 / r0)
+    D_minus_Dcrit = D - Dcrit
+
+    # print("D_minus_Dcrit: ", D_minus_Dcrit)
+
+    npoints = 500
+
+    # determining rstop
+    if np.absolute(D_minus_Dcrit) < abstol:
+        # number of turns
+        rstop = 2
+    else:
+
+        escape_to_inf = False
+
+        if (2 * M < r0 < 3 * M) & (delta0 < 2 * np.pi) & (np.sin(delta0) < Dcrit * M / D):
+            escape_to_inf = True
+        elif (r0 == 3 * M) & (delta0 < np.pi):
+            escape_to_inf = True
+        elif (r0 > 3 * M) & ((delta0 <= np.pi / 2) or ((delta0 > np.pi / 2) & (np.sin(delta0) > Dcrit * M / D))):
+            escape_to_inf = True
+
+        if escape_to_inf:
+            # rstop > r0
+            if r0 > np.sqrt(20 ** 2 + 40 ** 2):  # values determined from bounds of build traces screen
+                rstop = r0 + np.sqrt(20 ** 2 + 40 ** 2) + 5  # 5 buffer
+            else:
+                rstop = np.sqrt(20 ** 2 + 40 ** 2) + 5  # 5 buffer
+        else:
+            # rstop < r0
+            rstop = 2
+
+    print("rstop: ", rstop)
 
     r_arr, theta_arr = schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints)
 
@@ -264,8 +300,8 @@ def schwarzschild_get_ray_cartesian(x, y, delta0, rstop, npoints):
     return x_arr, y_arr
 
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 6, 180, 10, 500)
-# r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(0), np.deg2rad(90), 10, 500)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.01, 0, 90)
+# r_arr, theta_arr = schwarzschild_get_ray(3, np.deg2rad(0), np.deg2rad(90), 2, 500)
 
 import matplotlib.pyplot as plt
 
