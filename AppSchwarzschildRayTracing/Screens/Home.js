@@ -20,6 +20,8 @@ function Home() {
   let z_trace = []
   let delta = []
 
+  let periastron = null
+
   let title
 
   const requestRayTrace = (x, y, delta0) => {
@@ -147,6 +149,8 @@ function Home() {
             //
             // )
 
+            calculateWaypoints()
+
               let trace1 = {
   name: 'Ray Trace',
   x: x_trace,
@@ -163,8 +167,18 @@ let trace2 = {
     mode: 'markers'
 }
 
+              console.log("periastron within request: ", periastron)
+
+              let trace3 = {
+  name: 'Periastron',
+  x: [periastron.x],
+  y: [periastron.y],
+  type: 'scatter',
+    mode: 'markers'
+}
+
              setStateGraph({
-    data: [trace1, trace2],
+    data: [trace1, trace2, trace3],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
@@ -180,7 +194,7 @@ let trace2 = {
   })
 
             // console.log("x_trace: ", x_trace)
-            calculateWaypoints()
+
     //  console.log(x_trace)
     // console.log(y_trace)
 
@@ -788,6 +802,20 @@ let trace2 = {
     // console.log("x_trace: ", x_trace)
     y_trace = waypointsY
 
+    x_trace.forEach((x, i) => {
+      if (periastron === null) {
+        periastron = {x: x, y: y_trace[i]}
+      } else {
+        console.log("periastron: ", periastron)
+        let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2))
+        let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
+
+      if (candPeriastronDist < curPeriastronDist) {
+        periastron = {x: x, y: y_trace[i]}
+      }
+      }
+    })
+
   }
 
   // const divideLineSegment = (x_start, x_end, y_start, y_end, divisions) => {
@@ -893,14 +921,6 @@ let bounds1 = convertPixelToCartesian(0, 0)
   let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
   let trace1 = {
-  name: 'Ray Trace',
-  x: [0],
-  y: [0],
-  type: 'scatter',
-    mode: 'lines'
-}
-
-let trace2 = {
   name: 'Black Hole',
   x: [0],
   y: [0],
@@ -910,7 +930,7 @@ let trace2 = {
 
 const [stateGraph, setStateGraph] = useState(
     {
-    data: [trace1, trace2],
+    data: [trace1],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
