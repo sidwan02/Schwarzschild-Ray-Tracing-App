@@ -21,10 +21,12 @@ def get_coords_from_params(input_items):
     # (x_trace, y_trace, delta) = get_ray_trace_coords(x, y, delta0)
     (x_trace, y_trace) = schwarzschild_get_ray_cartesian(x, y, delta0)
 
+    delta = np.zeros(len(x_trace))
+
     print(x_trace)
     print(y_trace)
-    # print(delta)
-    delta = np.zeros(len(x_trace))
+    print(delta)
+
 
     positions = []
 

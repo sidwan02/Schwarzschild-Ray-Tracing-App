@@ -300,11 +300,11 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
     return x_arr, y_arr
 
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3.01, 0, 90)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 90)
 # r_arr, theta_arr = schwarzschild_get_ray(3, np.deg2rad(0), np.deg2rad(90), 2, 500)
 
-import matplotlib.pyplot as plt
-
-plt.figure(figsize=(12, 12))
-plt.plot(x_arr, y_arr)
-plt.show()
+# import matplotlib.pyplot as plt
+#
+# plt.figure(figsize=(12, 12))
+# plt.plot(x_arr, y_arr)
+# plt.show()
