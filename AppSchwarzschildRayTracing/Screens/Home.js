@@ -236,6 +236,8 @@ let trace2 = {
 
           // }
         });
+
+      // console.log("done animating")
           })
           .catch(function (error) {
               console.log(error);
