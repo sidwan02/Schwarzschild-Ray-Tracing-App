@@ -137,45 +137,47 @@ def roots_fu(D, M):
 #     Fi = Fi - theta_offset
 #     return rr, Fi
 
-def get_next_rr(r0, r_acc, theta_acc, condition):
-    if r_acc[-1] == r0 or r_acc[-2] == r0:
+def get_next_rr(r_acc, theta_acc, condition):
+    if len(r_acc) == (1 or 2):
         # this is the first or second time this function is being executed
         if condition:
-            rr = np.array([r0 + 1e-5])
+            rr = r_acc[-1] + 5e-5
         else:
-            rr = np.array([r0 - 1e-5])
+            rr = r_acc[-1] - 5e-5
     else:
         delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
+        print("delta_theta: ", delta_theta)
         if delta_theta < np.deg2rad(10):
+            delta_rr = 5e-1
+        elif delta_theta < np.deg2rad(20):
             delta_rr = 1e-1
-        if delta_theta < np.deg2rad(20):
+        elif delta_theta < np.deg2rad(30):
             delta_rr = 5e-2
-        if delta_theta < np.deg2rad(30):
+        elif delta_theta < np.deg2rad(40):
             delta_rr = 1e-2
-        if delta_theta < np.deg2rad(40):
+        elif delta_theta < np.deg2rad(50):
             delta_rr = 5e-3
-        if delta_theta < np.deg2rad(50):
+        elif delta_theta < np.deg2rad(60):
             delta_rr = 1e-3
-        if delta_theta < np.deg2rad(60):
+        elif delta_theta < np.deg2rad(70):
             delta_rr = 5e-4
-        if delta_theta < np.deg2rad(70):
+        elif delta_theta < np.deg2rad(80):
             delta_rr = 1e-4
-        if delta_theta < np.deg2rad(80):
+        elif delta_theta < np.deg2rad(90):
             delta_rr = 5e-5
-        if delta_theta < np.deg2rad(90):
-            delta_rr = 1e-5
         else:
             print("delta_theta went beyond 90???")
 
+        print("delta_rr: ", delta_rr)
         if condition:
-            rr = np.array([r0 + delta_rr])
+            rr = r_acc[-1] + delta_rr
         else:
-            rr = np.array([r0 - delta_rr])
+            rr = r_acc[-1] - delta_rr
 
     return rr
 
 def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints): # condition True i.e. ray going to infinity, condition False i.e. ray falling into BH
-    print("greater than")
+    # print("greater than")
     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
     # updn = 1 for rays above the radial direction, -1 for those below
     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
@@ -190,20 +192,20 @@ def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, co
         b3, b2, b1 = roots_fu(D, 1)
 
     periastron = 1 / b2
-    print("periastron: ", periastron)
+    # print("periastron: ", periastron)
     m = (b2 - b3) / (b1 - b3)
     CC = np.sqrt(2 / (b1 - b3))
 
     if (inout == 1):  # outward rays
         # rr = np.geomspace(r0, rstop, npoints)
         # rr = np.geomspace(r0, rstop, npoints)
-        rr = get_next_rr(r0, r_acc, theta_acc, condition)
+        rr = get_next_rr(r_acc, theta_acc, condition)
         uu = 1 / rr
         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
         Fi = updn * CC * ei(phi, m)
 
     if (inout == -1):  # inward rays
-        print("inward ray")
+        # print("inward ray")
         rf = np.abs(rstop)
         if (rf < periastron):
             print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
@@ -212,7 +214,7 @@ def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, co
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
             print("r0 and rstop on the same side of periastron")
             # rr = np.geomspace(r0, rf, npoints)
-            rr = get_next_rr(r0, r_acc, theta_acc, condition)
+            rr = get_next_rr(r_acc, theta_acc, condition)
             uu = 1 / rr
             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
             Fi = -updn * CC * ei(phi, m)
@@ -228,7 +230,7 @@ def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, co
                 Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
             else:
                 # rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
-                rr_in = get_next_rr(r0, r_acc, theta_acc, condition)
+                rr_in = get_next_rr(r_acc, theta_acc, condition)
                 uu_in = 1 / rr_in
                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
                 Fi_in = -updn * CC * ei(phi_in, m)
@@ -236,7 +238,7 @@ def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, co
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
         elif (rstop < -periastron) and (r0 != rf):
-            print("blingo")
+            # print("blingo")
             # Otherwise, when r0 != rf, the radial excusrion of the ray is
             # from r0 in to periastron and then out to rf
             # r_excur = (r0-periastron) + (rf-periastron)
@@ -256,37 +258,52 @@ def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, co
             # r_out = np.amax([r0, rf])
             # Now first construct the ray between r_out and r_in in n_out points
             # rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
-            rr_out = get_next_rr(r0, r_acc, theta_acc, condition)
+            # print("r_acc: ", r_acc)
+            rr_out = get_next_rr(r_acc, theta_acc, condition)
             uu_out = 1 / rr_out
             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
             Fi_out = -updn * CC * ei(phi_out, m)
             # And then construct the ray from r_in to almost periastron
             # rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
 
-            rr_in = get_next_rr(r0, r_acc, theta_acc, condition)
+            rr_in = get_next_rr(r_acc, theta_acc, condition)
             uu_in = 1 / rr_in
             phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
             Fi_in = -updn * CC * ei(phi_in, m)
             # Add everything together to make the final ray
-            if (r0 > rf):
-                rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
-                Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+            # if (r0 > rf):
+            #     rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
+            #     Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+            # else:
+            #     rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
+            #     Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+
+            if r0 > rf:
+                rr = rr_out
+                Fi = Fi_out
             else:
-                rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
-                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                rr = rr_in
+                Fi = Fi_in
         else:
             print('this should not happen! bailing.')
             return 0
 
+    print("rr: ", rr)
+    # print("Fi: ", Fi)
+
     # Rotate so that the polar angle of the starting point matches
-    theta_offset = Fi[0] - theta0
+    theta_offset = Fi - theta0
     Fi = Fi - theta_offset
 
     if (condition and r_acc[-1] <= rstop) or ((not condition) and r_acc[-1] >= rstop):
+        # print("r_acc: ", r_acc)
+        # print("rr: ", rr)
         r_acc.append(rr)
         theta_acc.append(Fi)
-        return if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition)
+
+        return if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints)
     else:
+        print("DONE")
         return r_acc, theta_acc
 
 
@@ -379,7 +396,7 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
             condition = True
         else:
             condition = False
-        rr, theta = if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, rstop, npoints, condition)
+        rr, theta = if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, [r0], [theta0], rstop, condition, npoints)
     elif (D < Dcrit):
         print("lesser")
         rr, theta = if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
