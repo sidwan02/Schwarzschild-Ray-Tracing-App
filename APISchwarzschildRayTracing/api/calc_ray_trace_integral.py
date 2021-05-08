@@ -36,106 +36,209 @@ def roots_fu(D, M):
     return rr
 
 
-# def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
-#     print("greater than")
-#     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
-#     # updn = 1 for rays above the radial direction, -1 for those below
-#     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
-#
-#     # If ray is entirely tangential then we're at periastron
-#     if (np.cos(delta0) == 0):
-#         inout = 1
-#         b2 = 1 / r0
-#         Q = np.sqrt((r0 - 2.) * (r0 + 6.))
-#         b3, b1 = (r0 - 2. - Q) / 4 / r0, (r0 - 2. + Q) / 4 / r0
-#     else:
-#         b3, b2, b1 = roots_fu(D, 1)
-#
-#     periastron = 1 / b2
-#     print("periastron: ", periastron)
-#     m = (b2 - b3) / (b1 - b3)
-#     CC = np.sqrt(2 / (b1 - b3))
-#
-#     if (inout == 1):  # outward rays
-#         # rr = np.geomspace(r0, rstop, npoints)
-#         rr = np.geomspace(r0, rstop, npoints)
-#         uu = 1 / rr
-#         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
-#         Fi = updn * CC * ei(phi, m)
-#
-#     if (inout == -1):  # inward rays
-#         print("inward ray")
-#         rf = np.abs(rstop)
-#         if (rf < periastron):
-#             print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
-#             print('rstop cannot be smaller than periastron. bailing...')
-#             return 0
-#         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
-#             print("r0 and rstop on the same side of periastron")
-#             rr = np.geomspace(r0, rf, npoints)
-#             uu = 1 / rr
-#             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
-#             Fi = -updn * CC * ei(phi, m)
-#         elif (rstop < -periastron) and (r0 == rf):
-#             if (npoints % 2 == 0):
-#                 rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
-#                 uu_in = 1 / rr_in
-#                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-#                 Fi_in = -updn * CC * ei(phi_in, m)
-#                 # Put both sides of the ray together
-#                 rr = np.concatenate((rr_in, rr_in[::-1]))
-#                 Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
-#             else:
-#                 rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
-#                 uu_in = 1 / rr_in
-#                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-#                 Fi_in = -updn * CC * ei(phi_in, m)
-#                 # Put both sides of the ray together
-#                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
-#                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
-#         elif (rstop < -periastron) and (r0 != rf):
-#             # Otherwise, when r0 != rf, the radial excusrion of the ray is
-#             # from r0 in to periastron and then out to rf
-#             # r_excur = (r0-periastron) + (rf-periastron)
-#             r_excur = r0 + rf - 2 * periastron
-#             # Out of the total path, the part between min(rf,r0) and periastron
-#             # is symmetric
-#             r_in = np.amin([r0, rf])
-#             # So if we want npoints during the entire excursion, the number of
-#             # points between r_in and periastron should be
-#             # n_in = npoints*(2*(r_in-periastron)/r_excur)
-#             # However this excursion of r_in->periastron->r_in is symmetric. So
-#             # we really need only half as many points to cover this range.
-#             n_in = int(npoints * (r_in - periastron) / r_excur)
-#             # We reserve one point for periastron location, and reserve
-#             # the remaining points are outside r_in and inside r_out = max(r0,rf)
-#             n_out = npoints - 2 * n_in - 1
-#             r_out = np.amax([r0, rf])
-#             # Now first construct the ray between r_out and r_in in n_out points
-#             rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
-#             uu_out = 1 / rr_out
-#             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
-#             Fi_out = -updn * CC * ei(phi_out, m)
-#             # And then construct the ray from r_in to almost periastron
-#             rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
-#             uu_in = 1 / rr_in
-#             phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-#             Fi_in = -updn * CC * ei(phi_in, m)
-#             # Add everything together to make the final ray
-#             if (r0 > rf):
-#                 rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
-#                 Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
-#             else:
-#                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
-#                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-#         else:
-#             print('this should not happen! bailing.')
-#             return 0
-#
-#     # Rotate so that the polar angle of the starting point matches
-#     theta_offset = Fi[0] - theta0
-#     Fi = Fi - theta_offset
-#     return rr, Fi
+def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
+    print("greater than")
+    # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
+    # updn = 1 for rays above the radial direction, -1 for those below
+    inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
+
+    # If ray is entirely tangential then we're at periastron
+    if (np.cos(delta0) == 0):
+        inout = 1
+        b2 = 1 / r0
+        Q = np.sqrt((r0 - 2.) * (r0 + 6.))
+        b3, b1 = (r0 - 2. - Q) / 4 / r0, (r0 - 2. + Q) / 4 / r0
+    else:
+        b3, b2, b1 = roots_fu(D, 1)
+
+    periastron = 1 / b2
+    print("periastron: ", periastron)
+    m = (b2 - b3) / (b1 - b3)
+    CC = np.sqrt(2 / (b1 - b3))
+
+    if (inout == 1):  # outward rays
+        # rr = np.geomspace(r0, rstop, npoints)
+        rr = np.geomspace(r0, rstop, npoints)
+        uu = 1 / rr
+        phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+        Fi = updn * CC * ei(phi, m)
+
+    if (inout == -1):  # inward rays
+        print("inward ray")
+        rf = np.abs(rstop)
+        if (rf < periastron):
+            print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+            print('rstop cannot be smaller than periastron. bailing...')
+            return 0
+        elif (rstop > periastron):  # r0 and rstop on the same side of periastron
+            print("r0 and rstop on the same side of periastron")
+            rr = np.geomspace(r0, rf, npoints)
+            uu = 1 / rr
+            phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+            Fi = -updn * CC * ei(phi, m)
+        elif (rstop < -periastron) and (r0 == rf):
+            if (npoints % 2 == 0):
+                rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
+                uu_in = 1 / rr_in
+                phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+                Fi_in = -updn * CC * ei(phi_in, m)
+                # Put both sides of the ray together
+                rr = np.concatenate((rr_in, rr_in[::-1]))
+                Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
+            else:
+                rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
+                uu_in = 1 / rr_in
+                phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+                Fi_in = -updn * CC * ei(phi_in, m)
+                # Put both sides of the ray together
+                rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
+                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
+        elif (rstop < -periastron) and (r0 != rf):
+            # Otherwise, when r0 != rf, the radial excusrion of the ray is
+            # from r0 in to periastron and then out to rf
+            # r_excur = (r0-periastron) + (rf-periastron)
+            r_excur = r0 + rf - 2 * periastron
+            # Out of the total path, the part between min(rf,r0) and periastron
+            # is symmetric
+            r_in = np.amin([r0, rf])
+            # So if we want npoints during the entire excursion, the number of
+            # points between r_in and periastron should be
+            # n_in = npoints*(2*(r_in-periastron)/r_excur)
+            # However this excursion of r_in->periastron->r_in is symmetric. So
+            # we really need only half as many points to cover this range.
+            n_in = int(npoints * (r_in - periastron) / r_excur)
+            # We reserve one point for periastron location, and reserve
+            # the remaining points are outside r_in and inside r_out = max(r0,rf)
+            n_out = npoints - 2 * n_in - 1
+            r_out = np.amax([r0, rf])
+            # Now first construct the ray between r_out and r_in in n_out points
+            rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
+            uu_out = 1 / rr_out
+            phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
+            Fi_out = -updn * CC * ei(phi_out, m)
+            # And then construct the ray from r_in to almost periastron
+            rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
+            uu_in = 1 / rr_in
+            phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+            Fi_in = -updn * CC * ei(phi_in, m)
+            # Add everything together to make the final ray
+            if (r0 > rf):
+                rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
+                Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+            else:
+                rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
+                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+        else:
+            print('this should not happen! bailing.')
+            return 0
+
+    # Rotate so that the polar angle of the starting point matches
+    theta_offset = Fi[0] - theta0
+    Fi = Fi - theta_offset
+    return rr, Fi
+
+def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count):
+    step = 0.1
+    count = 0
+    print("greater than")
+    # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
+    # updn = 1 for rays above the radial direction, -1 for those below
+    inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
+
+    # If ray is entirely tangential then we're at periastron
+    if (np.cos(delta0) == 0):
+        inout = 1
+        b2 = 1 / r0
+        Q = np.sqrt((r0 - 2.) * (r0 + 6.))
+        b3, b1 = (r0 - 2. - Q) / 4 / r0, (r0 - 2. + Q) / 4 / r0
+    else:
+        b3, b2, b1 = roots_fu(D, 1)
+
+    periastron = 1 / b2
+    print("periastron: ", periastron)
+    m = (b2 - b3) / (b1 - b3)
+    CC = np.sqrt(2 / (b1 - b3))
+
+    if (inout == 1):  # outward rays
+        # rr = np.geomspace(r0, rstop, npoints)
+        rr = np.geomspace(r0, rstop, npoints)
+        uu = 1 / rr
+        phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+        Fi = updn * CC * ei(phi, m)
+
+    if (inout == -1):  # inward rays
+        print("inward ray")
+        rf = np.abs(rstop)
+        if (rf < periastron):
+            print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+            print('rstop cannot be smaller than periastron. bailing...')
+            return 0
+        elif (rstop > periastron):  # r0 and rstop on the same side of periastron
+            print("r0 and rstop on the same side of periastron")
+            rr = np.geomspace(r0, rf, npoints)
+            uu = 1 / rr
+            phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+            Fi = -updn * CC * ei(phi, m)
+        elif (rstop < -periastron) and (r0 == rf):
+            if (npoints % 2 == 0):
+                rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
+                uu_in = 1 / rr_in
+                phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+                Fi_in = -updn * CC * ei(phi_in, m)
+                # Put both sides of the ray together
+                rr = np.concatenate((rr_in, rr_in[::-1]))
+                Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
+            else:
+                rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
+                uu_in = 1 / rr_in
+                phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+                Fi_in = -updn * CC * ei(phi_in, m)
+                # Put both sides of the ray together
+                rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
+                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
+        elif (rstop < -periastron) and (r0 != rf):
+            # Otherwise, when r0 != rf, the radial excusrion of the ray is
+            # from r0 in to periastron and then out to rf
+            # r_excur = (r0-periastron) + (rf-periastron)
+            r_excur = r0 + rf - 2 * periastron
+            # Out of the total path, the part between min(rf,r0) and periastron
+            # is symmetric
+            r_in = np.amin([r0, rf])
+            # So if we want npoints during the entire excursion, the number of
+            # points between r_in and periastron should be
+            # n_in = npoints*(2*(r_in-periastron)/r_excur)
+            # However this excursion of r_in->periastron->r_in is symmetric. So
+            # we really need only half as many points to cover this range.
+            n_in = int(npoints * (r_in - periastron) / r_excur)
+            # We reserve one point for periastron location, and reserve
+            # the remaining points are outside r_in and inside r_out = max(r0,rf)
+            n_out = npoints - 2 * n_in - 1
+            r_out = np.amax([r0, rf])
+            # Now first construct the ray between r_out and r_in in n_out points
+            rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
+            uu_out = 1 / rr_out
+            phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
+            Fi_out = -updn * CC * ei(phi_out, m)
+            # And then construct the ray from r_in to almost periastron
+            rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
+            uu_in = 1 / rr_in
+            phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+            Fi_in = -updn * CC * ei(phi_in, m)
+            # Add everything together to make the final ray
+            if r0 > rf:
+                rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
+                Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+            else:
+                rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
+                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+        else:
+            print('this should not happen! bailing.')
+            return 0
+
+    # Rotate so that the polar angle of the starting point matches
+    theta_offset = Fi[0] - theta0
+    Fi = Fi - theta_offset
+    return rr, Fi
 
 def get_next_rr(r_acc, theta_acc, condition):
     if len(r_acc) == (1 or 2):
@@ -145,7 +248,8 @@ def get_next_rr(r_acc, theta_acc, condition):
         else:
             rr = r_acc[-1] - 5e-5
     else:
-        delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
+        # delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
+        delta_theta = np.deg2rad(10)
         print("delta_theta: ", delta_theta)
         if delta_theta < np.deg2rad(10):
             delta_rr = 5e-1
@@ -176,135 +280,135 @@ def get_next_rr(r_acc, theta_acc, condition):
 
     return rr
 
-def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints): # condition True i.e. ray going to infinity, condition False i.e. ray falling into BH
-    # print("greater than")
-    # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
-    # updn = 1 for rays above the radial direction, -1 for those below
-    inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
-
-    # If ray is entirely tangential then we're at periastron
-    if (np.cos(delta0) == 0):
-        inout = 1
-        b2 = 1 / r0
-        Q = np.sqrt((r0 - 2.) * (r0 + 6.))
-        b3, b1 = (r0 - 2. - Q) / 4 / r0, (r0 - 2. + Q) / 4 / r0
-    else:
-        b3, b2, b1 = roots_fu(D, 1)
-
-    periastron = 1 / b2
-    # print("periastron: ", periastron)
-    m = (b2 - b3) / (b1 - b3)
-    CC = np.sqrt(2 / (b1 - b3))
-
-    if (inout == 1):  # outward rays
-        # rr = np.geomspace(r0, rstop, npoints)
-        # rr = np.geomspace(r0, rstop, npoints)
-        rr = get_next_rr(r_acc, theta_acc, condition)
-        uu = 1 / rr
-        phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
-        Fi = updn * CC * ei(phi, m)
-
-    if (inout == -1):  # inward rays
-        # print("inward ray")
-        rf = np.abs(rstop)
-        if (rf < periastron):
-            print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
-            print('rstop cannot be smaller than periastron. bailing...')
-            return 0
-        elif (rstop > periastron):  # r0 and rstop on the same side of periastron
-            print("r0 and rstop on the same side of periastron")
-            # rr = np.geomspace(r0, rf, npoints)
-            rr = get_next_rr(r_acc, theta_acc, condition)
-            uu = 1 / rr
-            phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
-            Fi = -updn * CC * ei(phi, m)
-        elif (rstop < -periastron) and (r0 == rf):
-            if (npoints % 2 == 0):
-                print("bla bla blee")
-                rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
-                uu_in = 1 / rr_in
-                phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-                Fi_in = -updn * CC * ei(phi_in, m)
-                # Put both sides of the ray together
-                rr = np.concatenate((rr_in, rr_in[::-1]))
-                Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
-            else:
-                # rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
-                rr_in = get_next_rr(r_acc, theta_acc, condition)
-                uu_in = 1 / rr_in
-                phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-                Fi_in = -updn * CC * ei(phi_in, m)
-                # Put both sides of the ray together
-                rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
-                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
-        elif (rstop < -periastron) and (r0 != rf):
-            # print("blingo")
-            # Otherwise, when r0 != rf, the radial excusrion of the ray is
-            # from r0 in to periastron and then out to rf
-            # r_excur = (r0-periastron) + (rf-periastron)
-            r_excur = r0 + rf - 2 * periastron
-            # Out of the total path, the part between min(rf,r0) and periastron
-            # is symmetric
-            r_in = np.amin([r0, rf])
-            # So if we want npoints during the entire excursion, the number of
-            # points between r_in and periastron should be
-            # n_in = npoints*(2*(r_in-periastron)/r_excur)
-            # However this excursion of r_in->periastron->r_in is symmetric. So
-            # we really need only half as many points to cover this range.
-            # n_in = int(npoints * (r_in - periastron) / r_excur)
-            # We reserve one point for periastron location, and reserve
-            # the remaining points are outside r_in and inside r_out = max(r0,rf)
-            # n_out = npoints - 2 * n_in - 1
-            # r_out = np.amax([r0, rf])
-            # Now first construct the ray between r_out and r_in in n_out points
-            # rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
-            # print("r_acc: ", r_acc)
-            rr_out = get_next_rr(r_acc, theta_acc, condition)
-            uu_out = 1 / rr_out
-            phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
-            Fi_out = -updn * CC * ei(phi_out, m)
-            # And then construct the ray from r_in to almost periastron
-            # rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
-
-            rr_in = get_next_rr(r_acc, theta_acc, condition)
-            uu_in = 1 / rr_in
-            phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-            Fi_in = -updn * CC * ei(phi_in, m)
-            # Add everything together to make the final ray
-            # if (r0 > rf):
-            #     rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
-            #     Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
-            # else:
-            #     rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
-            #     Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-
-            if r0 > rf:
-                rr = rr_out
-                Fi = Fi_out
-            else:
-                rr = rr_in
-                Fi = Fi_in
-        else:
-            print('this should not happen! bailing.')
-            return 0
-
-    print("rr: ", rr)
-    # print("Fi: ", Fi)
-
-    # Rotate so that the polar angle of the starting point matches
-    theta_offset = Fi - theta0
-    Fi = Fi - theta_offset
-
-    if (condition and r_acc[-1] <= rstop) or ((not condition) and r_acc[-1] >= rstop):
-        # print("r_acc: ", r_acc)
-        # print("rr: ", rr)
-        r_acc.append(rr)
-        theta_acc.append(Fi)
-
-        return if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints)
-    else:
-        print("DONE")
-        return r_acc, theta_acc
+# def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints): # condition True i.e. ray going to infinity, condition False i.e. ray falling into BH
+#     # print("greater than")
+#     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
+#     # updn = 1 for rays above the radial direction, -1 for those below
+#     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
+#
+#     # If ray is entirely tangential then we're at periastron
+#     if (np.cos(delta0) == 0):
+#         inout = 1
+#         b2 = 1 / r0
+#         Q = np.sqrt((r0 - 2.) * (r0 + 6.))
+#         b3, b1 = (r0 - 2. - Q) / 4 / r0, (r0 - 2. + Q) / 4 / r0
+#     else:
+#         b3, b2, b1 = roots_fu(D, 1)
+#
+#     periastron = 1 / b2
+#     # print("periastron: ", periastron)
+#     m = (b2 - b3) / (b1 - b3)
+#     CC = np.sqrt(2 / (b1 - b3))
+#
+#     if (inout == 1):  # outward rays
+#         # rr = np.geomspace(r0, rstop, npoints)
+#         # rr = np.geomspace(r0, rstop, npoints)
+#         rr = get_next_rr(r_acc, theta_acc, condition)
+#         uu = 1 / rr
+#         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+#         Fi = updn * CC * ei(phi, m)
+#
+#     if (inout == -1):  # inward rays
+#         # print("inward ray")
+#         rf = np.abs(rstop)
+#         if (rf < periastron):
+#             print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+#             print('rstop cannot be smaller than periastron. bailing...')
+#             return 0
+#         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
+#             print("r0 and rstop on the same side of periastron")
+#             # rr = np.geomspace(r0, rf, npoints)
+#             rr = get_next_rr(r_acc, theta_acc, condition)
+#             uu = 1 / rr
+#             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+#             Fi = -updn * CC * ei(phi, m)
+#         elif (rstop < -periastron) and (r0 == rf):
+#             if (npoints % 2 == 0):
+#                 print("bla bla blee")
+#                 rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
+#                 uu_in = 1 / rr_in
+#                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+#                 Fi_in = -updn * CC * ei(phi_in, m)
+#                 # Put both sides of the ray together
+#                 rr = np.concatenate((rr_in, rr_in[::-1]))
+#                 Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
+#             else:
+#                 # rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
+#                 rr_in = get_next_rr(r_acc, theta_acc, condition)
+#                 uu_in = 1 / rr_in
+#                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+#                 Fi_in = -updn * CC * ei(phi_in, m)
+#                 # Put both sides of the ray together
+#                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
+#                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
+#         elif (rstop < -periastron) and (r0 != rf):
+#             # print("blingo")
+#             # Otherwise, when r0 != rf, the radial excusrion of the ray is
+#             # from r0 in to periastron and then out to rf
+#             # r_excur = (r0-periastron) + (rf-periastron)
+#             r_excur = r0 + rf - 2 * periastron
+#             # Out of the total path, the part between min(rf,r0) and periastron
+#             # is symmetric
+#             r_in = np.amin([r0, rf])
+#             # So if we want npoints during the entire excursion, the number of
+#             # points between r_in and periastron should be
+#             # n_in = npoints*(2*(r_in-periastron)/r_excur)
+#             # However this excursion of r_in->periastron->r_in is symmetric. So
+#             # we really need only half as many points to cover this range.
+#             # n_in = int(npoints * (r_in - periastron) / r_excur)
+#             # We reserve one point for periastron location, and reserve
+#             # the remaining points are outside r_in and inside r_out = max(r0,rf)
+#             # n_out = npoints - 2 * n_in - 1
+#             # r_out = np.amax([r0, rf])
+#             # Now first construct the ray between r_out and r_in in n_out points
+#             # rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
+#             # print("r_acc: ", r_acc)
+#             rr_out = get_next_rr(r_acc, theta_acc, condition)
+#             uu_out = 1 / rr_out
+#             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
+#             Fi_out = -updn * CC * ei(phi_out, m)
+#             # And then construct the ray from r_in to almost periastron
+#             # rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
+#
+#             rr_in = get_next_rr(r_acc, theta_acc, condition)
+#             uu_in = 1 / rr_in
+#             phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+#             Fi_in = -updn * CC * ei(phi_in, m)
+#             # Add everything together to make the final ray
+#             # if (r0 > rf):
+#             #     rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
+#             #     Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+#             # else:
+#             #     rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
+#             #     Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+#
+#             if r0 > rf:
+#                 rr = rr_out
+#                 Fi = Fi_out
+#             else:
+#                 rr = rr_in
+#                 Fi = Fi_in
+#         else:
+#             print('this should not happen! bailing.')
+#             return 0
+#
+#     print("rr: ", rr)
+#     # print("Fi: ", Fi)
+#
+#     # Rotate so that the polar angle of the starting point matches
+#     theta_offset = Fi - theta0
+#     Fi = Fi - theta_offset
+#
+#     if (condition and r_acc[-1] <= rstop) or ((not condition) and r_acc[-1] >= rstop):
+#         # print("r_acc: ", r_acc)
+#         # print("rr: ", rr)
+#         r_acc.append(rr)
+#         theta_acc.append(Fi)
+#
+#         return if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints)
+#     else:
+#         print("DONE")
+#         return r_acc, theta_acc
 
 
 def if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
@@ -391,12 +495,12 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
     elif (D > Dcrit):
         print("greater")
         # for r = 10, delta = 100 D > Dcrit
-        # rr, theta = if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
-        if rstop > r0:
-            condition = True
-        else:
-            condition = False
-        rr, theta = if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, [r0], [theta0], rstop, condition, npoints)
+        rr, theta = if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
+        # if rstop > r0:
+        #     condition = True
+        # else:
+        #     condition = False
+        # rr, theta = if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, [r0], [theta0], rstop, condition, npoints)
     elif (D < Dcrit):
         print("lesser")
         rr, theta = if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
