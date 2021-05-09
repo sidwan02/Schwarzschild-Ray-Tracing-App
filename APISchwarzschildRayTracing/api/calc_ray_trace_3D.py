@@ -1,35 +1,40 @@
 import numpy as np
 from calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
-def something(x, y, z, theta0, phi0):
-    # find the primed coordinates
-    X_prime = np.array([x, y, z])
-    velocity = np.array([np.sin(phi0) * np.cos(theta0), np.sin(phi0) * np.sin(theta0), np.cos(phi0)])
+
+def something(x, y, z, alpha0, beta0, gamma0):
+    # file:///C:/Users/sidwa/OneDrive/OneDriveNew/Personal/Sid/Brown%20University/Personal%20Projects/schwarzschild-ray-tracing-app/CamScanner%2005-08-2021%2023.05.pdf
+    assert np.cos(alpha0) ** 2 + np.cos(beta0) ** 2 + np.cos(gamma0) ** 2 == 1
+
+    X_prime = [x, y, z]
+    X_prime_unit = X_prime / np.linalg.norm(X_prime)
+
+    velocity = [np.cos(alpha0), np.cos(beta0), np.cos(gamma0)]
 
     Z_prime = np.cross(X_prime, velocity)
+    Z_prime_unit = Z_prime / np.linalg.norm(Z_prime)
 
-    Y_prime = np.cross(Z_prime, X_prime)
+    Y_prime_unit = np.cross(Z_prime_unit, X_prime_unit)
 
+    # X_prime_unit and velocity lie on the X'Y' plane
+    delta0 = np.arccos(np.dot(X_prime_unit, velocity) / np.linalg.norm(velocity)) # np.linalg.norm(X_prime_unit) = 1 since unit vector
+
+    x0 = np.linalg.norm(X_prime)
     y0 = 0
 
-    P = np.array([x, y, z])
-    S = np.array([0, 0, 0]) # arbitrary point lying on line
-    PS = S - P
+    x_prime_arr, y_prime_arr = schwarzschild_get_ray_cartesian(x0, y0, delta0)
 
-    x0 = np.abs(np.dot(Y_prime, PS) / np.linalg.norm(PS)) # distance b/w point and line
+    # convert primed arr to unprimed
+    # get position vectors out of each of the primed coordinates
 
-    # velocity and X_prime in same plane, simply find angle b/w those two vectors
-    delta0 = np.dot(X_prime, velocity) / (np.linalg.norm(X_prime) * np.linalg.norm(velocity))
+    positions_primed = [x_prime_arr, y_prime_arr, np.zeros(len(y_prime_arr))]
+    primed_unit_axes = [X_prime_unit, Y_prime_unit, Z_prime_unit]
 
-    x_arr_prime, y_arr_prime = schwarzschild_get_ray_cartesian(x0, y0, delta0)
+    positions = np.dot(positions_primed, primed_unit_axes)
 
-    # get the unprimed values
-    # three unknowns x, y, z; three equations for X, Y, Z dist
-    # Notice, y_arr_prime = y' dist and so on
+    return positions[0], positions[1], positions[2]
 
-    y_arr_prime * np.linalg.norm(Y_prime) * np.sqrt(x**2 + y**2 + z**2) = x * Y_prime[0] + y * Y_prime[1] + z * Y_prime[2]
 
-    x_arr_prime * np.linalg.norm(X_prime) * np.sqrt(x ** 2 + y ** 2 + z ** 2) = x * X_prime[0] + y * X_prime[1] + z * \
-                                                                                X_prime[2]
 
-    0 = x * Z_prime[0] + y * Z_prime[1] + z * Z_prime[2]
+
+
