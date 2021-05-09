@@ -209,4 +209,16 @@ def get_ray_trace_coords(x_ray, y_ray, delta0):
 
 
 # caution: delta0 wrt the line attaching the AGN and the light ray origin.
-get_ray_trace_coords(100, 0, 90)
+x_trace, y_trace, delta = get_ray_trace_coords(10, 0, 150)
+
+import matplotlib.pyplot as plt
+
+# plt.axes(projection = 'polar')
+# plt.polar(theta_arr, r_arr, 'b-')
+#
+# plt.figure(figsize=(12, 12))
+
+plt.plot(x_trace, y_trace)
+
+plt.show()
+

@@ -67,8 +67,8 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
         # print("inward ray")
         rf = np.abs(rstop)
         if (rf < periastron):
-            # print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
-            # print('rstop cannot be smaller than periastron. bailing...')
+            print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+            print('rstop cannot be smaller than periastron. bailing...')
             return 0
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
             # print("r0 and rstop on the same side of periastron")
@@ -543,20 +543,23 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
 
 def get_rstop(M, r0, delta0):
     D = r0 * np.abs(np.sin(delta0)) / np.sqrt(1 - 2 / r0)
+    B = r0 / np.sqrt(1 - 2 / r0) # D is b, B is B(r0) from Astrokubuntu
     D_minus_Dcrit = D - Dcrit
+    print("D_minus_Dcrit: ", D_minus_Dcrit)
 
     if np.absolute(D_minus_Dcrit) < abstol:
+        print("hahahahahahahah")
         # number of turns
         rstop = 2
     else:
 
         escape_to_inf = False
 
-        if (2 * M < r0 < 3 * M) & (delta0 < 2 * np.pi) & (np.sin(delta0) < Dcrit * M / D):
+        if (2 * M < r0 < 3 * M) & (delta0 < 2 * np.pi) & (np.sin(delta0) < Dcrit * M / B):
             escape_to_inf = True
         elif (r0 == 3 * M) & (delta0 < np.pi):
             escape_to_inf = True
-        elif (r0 > 3 * M) & ((delta0 <= np.pi / 2) or ((delta0 > np.pi / 2) & (np.sin(delta0) > Dcrit * M / D))):
+        elif (r0 > 3 * M) & ((delta0 <= np.pi / 2) or ((delta0 > np.pi / 2) & (np.sin(delta0) > Dcrit * M / B))):
             escape_to_inf = True
 
         if escape_to_inf:
@@ -566,6 +569,7 @@ def get_rstop(M, r0, delta0):
             else:
                 rstop = np.sqrt(20 ** 2 + 40 ** 2) + 5  # 5 buffer
         else:
+            print("so I've come here...")
             # rstop < r0
             rstop = 2
 
@@ -604,8 +608,6 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
     return x_arr, y_arr
 
 
-# x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 90)
-# r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
 
 # unlike in the vscode model, this takes in 3 points (x and y arr have size 3)
 def cur_delta(x_arr, y_arr):
@@ -643,13 +645,18 @@ def cur_delta(x_arr, y_arr):
 # # print(getDistributedPoints(2, 2, 10, 100))
 
 
-# import matplotlib.pyplot as plt
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 150)
+# r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
+
+
+import matplotlib.pyplot as plt
+
+# plt.axes(projection = 'polar')
+# plt.polar(theta_arr, r_arr, 'b-')
 #
-# # plt.axes(projection = 'polar')
-# # plt.polar(theta_arr, r_arr, 'b-')
-# #
-# # plt.figure(figsize=(12, 12))
-#
-# plt.plot(x_arr, y_arr)
-#
-# plt.show()
+# plt.figure(figsize=(12, 12))
+
+plt.plot(x_arr, y_arr)
+
+plt.show()

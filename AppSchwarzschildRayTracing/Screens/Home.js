@@ -88,6 +88,9 @@ function Home() {
           config
       )
           .then(response => {
+            if (response.data === null) {
+              console.log("DATA WAS NULL")
+            }
             // console.log("response: ", response.data)
             if (x >= 0 && y >= 0) {
                response.data.forEach(obj => {
@@ -149,7 +152,22 @@ function Home() {
             //
             // )
 
-            calculateWaypoints()
+            // this is the thing I commented out because I'm gonna hopefully make the API uniformly spaced
+            // calculateWaypoints()
+
+            x_trace.forEach((x, i) => {
+              if (periastron === null) {
+                periastron = {x: x, y: y_trace[i]}
+              } else {
+                // console.log("periastron: ", periastron)
+                let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2))
+                let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
+
+                if (candPeriastronDist < curPeriastronDist) {
+                  periastron = {x: x, y: y_trace[i]}
+                }
+              }
+            })
 
               let trace1 = {
   name: 'Ray Trace',
