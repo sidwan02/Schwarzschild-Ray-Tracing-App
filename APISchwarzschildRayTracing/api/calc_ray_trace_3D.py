@@ -2,6 +2,17 @@ import numpy as np
 from calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
 
+def find_third_dir_cos(ang1, ang2):
+    ang1 = np.deg2rad(ang1)
+    ang2 = np.deg2rad(ang2)
+
+    return np.rad2deg(np.arccos(1 - ((np.cos(ang1)) ** 2 + (np.cos(ang2)) ** 2)))
+
+
+print("booboo")
+print(find_third_dir_cos(90, 0))
+
+
 def something(x, y, z, alpha0, beta0, gamma0):
     alpha0 = np.deg2rad(alpha0)
     beta0 = np.deg2rad(beta0)
@@ -35,24 +46,33 @@ def something(x, y, z, alpha0, beta0, gamma0):
     y_arr = []
     z_arr = []
     for (x_prime, y_prime) in zip(x_prime_arr, y_prime_arr):
-        position = np.dot(x_prime, X_prime_unit) + np.dot(y_prime, Y_prime_unit) # np.dot(0, Z_prime_unit) = 0
+        position = np.dot(x_prime, X_prime_unit) + np.dot(y_prime, Y_prime_unit)  # np.dot(0, Z_prime_unit) = 0
 
         x_arr.append(position[0])
         y_arr.append(position[1])
         z_arr.append(position[2])
 
     # print()
-    return x_arr, y_arr, z_arr
+    return np.array(x_arr), np.array(y_arr), np.array(z_arr)
 
 
-x_arr, y_arr, z_arr = something(10, 0, 0, 90, 90, 0)
+# if gamma = 90 that means xy plane direction only cuz think of spherical coordinates how the phi comes from +ve z
+alpha0 = 90
+beta0 = 0
+gamma0 = 90
+x_arr, y_arr, z_arr = something(10, 0, 0, alpha0, beta0, gamma0)
 
 import matplotlib.pyplot as plt
 
 fig = plt.figure()
 
 ax = plt.axes(projection='3d')
+ax.set_xlabel('$X$')
+ax.set_ylabel('$Y$')
+ax.set_zlabel('$Z$')
 
 ax.scatter3D(x_arr, y_arr, z_arr)
+ax.scatter3D(0, 0, 0)
 
+ax.set_title("Start = [" + str(x_arr[0]) + ", " + str(y_arr[0]) + ", " + str(z_arr[0]) + "] \n velocity = [" + str(alpha0) + "°, " + str(beta0) + "°, " + str(gamma0) + "°]")
 plt.show()
