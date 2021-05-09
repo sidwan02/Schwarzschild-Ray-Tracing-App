@@ -37,7 +37,7 @@ def roots_fu(D, M):
 
 
 def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
-    print("greater than")
+    # print("greater than")
     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
     # updn = 1 for rays above the radial direction, -1 for those below
     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
@@ -52,7 +52,7 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
         b3, b2, b1 = roots_fu(D, 1)
 
     periastron = 1 / b2
-    print("periastron: ", periastron)
+    # print("periastron: ", periastron)
     m = (b2 - b3) / (b1 - b3)
     CC = np.sqrt(2 / (b1 - b3))
 
@@ -64,14 +64,14 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
         Fi = updn * CC * ei(phi, m)
 
     if (inout == -1):  # inward rays
-        print("inward ray")
+        # print("inward ray")
         rf = np.abs(rstop)
         if (rf < periastron):
-            print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
-            print('rstop cannot be smaller than periastron. bailing...')
+            # print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+            # print('rstop cannot be smaller than periastron. bailing...')
             return 0
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
-            print("r0 and rstop on the same side of periastron")
+            # print("r0 and rstop on the same side of periastron")
             rr = np.geomspace(r0, rf, npoints)
             uu = 1 / rr
             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
@@ -129,7 +129,7 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
         else:
-            print('this should not happen! bailing.')
+            # print('this should not happen! bailing.')
             return 0
 
     # Rotate so that the polar angle of the starting point matches
@@ -140,7 +140,7 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
 def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count):
     step = 0.1
     count = 0
-    print("greater than")
+    # print("greater than")
     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
     # updn = 1 for rays above the radial direction, -1 for those below
     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
@@ -155,7 +155,7 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
         b3, b2, b1 = roots_fu(D, 1)
 
     periastron = 1 / b2
-    print("periastron: ", periastron)
+    # print("periastron: ", periastron)
     m = (b2 - b3) / (b1 - b3)
     CC = np.sqrt(2 / (b1 - b3))
 
@@ -167,14 +167,14 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
         Fi = updn * CC * ei(phi, m)
 
     if (inout == -1):  # inward rays
-        print("inward ray")
+        # print("inward ray")
         rf = np.abs(rstop)
         if (rf < periastron):
-            print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
-            print('rstop cannot be smaller than periastron. bailing...')
+            # print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+            # print('rstop cannot be smaller than periastron. bailing...')
             return 0
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
-            print("r0 and rstop on the same side of periastron")
+            # print("r0 and rstop on the same side of periastron")
             rr = np.geomspace(r0, rf, npoints)
             uu = 1 / rr
             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
@@ -232,7 +232,7 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
         else:
-            print('this should not happen! bailing.')
+            # print('this should not happen! bailing.')
             return 0
 
     # Rotate so that the polar angle of the starting point matches
@@ -250,7 +250,7 @@ def get_next_rr(r_acc, theta_acc, condition):
     else:
         # delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
         delta_theta = np.deg2rad(10)
-        print("delta_theta: ", delta_theta)
+        # print("delta_theta: ", delta_theta)
         if delta_theta < np.deg2rad(10):
             delta_rr = 5e-1
         elif delta_theta < np.deg2rad(20):
@@ -272,7 +272,7 @@ def get_next_rr(r_acc, theta_acc, condition):
         else:
             print("delta_theta went beyond 90???")
 
-        print("delta_rr: ", delta_rr)
+        # print("delta_rr: ", delta_rr)
         if condition:
             rr = r_acc[-1] + delta_rr
         else:
@@ -281,7 +281,7 @@ def get_next_rr(r_acc, theta_acc, condition):
     return rr
 
 # def if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints): # condition True i.e. ray going to infinity, condition False i.e. ray falling into BH
-#     # print("greater than")
+#     # # print("greater than")
 #     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
 #     # updn = 1 for rays above the radial direction, -1 for those below
 #     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
@@ -296,7 +296,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #         b3, b2, b1 = roots_fu(D, 1)
 #
 #     periastron = 1 / b2
-#     # print("periastron: ", periastron)
+#     # # print("periastron: ", periastron)
 #     m = (b2 - b3) / (b1 - b3)
 #     CC = np.sqrt(2 / (b1 - b3))
 #
@@ -309,14 +309,14 @@ def get_next_rr(r_acc, theta_acc, condition):
 #         Fi = updn * CC * ei(phi, m)
 #
 #     if (inout == -1):  # inward rays
-#         # print("inward ray")
+#         # # print("inward ray")
 #         rf = np.abs(rstop)
 #         if (rf < periastron):
-#             print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
-#             print('rstop cannot be smaller than periastron. bailing...')
+#             # print('periastron=', periastron, ' whereas magnitude of rstop=', rf)
+#             # print('rstop cannot be smaller than periastron. bailing...')
 #             return 0
 #         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
-#             print("r0 and rstop on the same side of periastron")
+#             # print("r0 and rstop on the same side of periastron")
 #             # rr = np.geomspace(r0, rf, npoints)
 #             rr = get_next_rr(r_acc, theta_acc, condition)
 #             uu = 1 / rr
@@ -324,7 +324,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #             Fi = -updn * CC * ei(phi, m)
 #         elif (rstop < -periastron) and (r0 == rf):
 #             if (npoints % 2 == 0):
-#                 print("bla bla blee")
+#                 # print("bla bla blee")
 #                 rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
 #                 uu_in = 1 / rr_in
 #                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
@@ -342,7 +342,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
 #                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
 #         elif (rstop < -periastron) and (r0 != rf):
-#             # print("blingo")
+#             # # print("blingo")
 #             # Otherwise, when r0 != rf, the radial excusrion of the ray is
 #             # from r0 in to periastron and then out to rf
 #             # r_excur = (r0-periastron) + (rf-periastron)
@@ -362,7 +362,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #             # r_out = np.amax([r0, rf])
 #             # Now first construct the ray between r_out and r_in in n_out points
 #             # rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
-#             # print("r_acc: ", r_acc)
+#             # # print("r_acc: ", r_acc)
 #             rr_out = get_next_rr(r_acc, theta_acc, condition)
 #             uu_out = 1 / rr_out
 #             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
@@ -389,30 +389,30 @@ def get_next_rr(r_acc, theta_acc, condition):
 #                 rr = rr_in
 #                 Fi = Fi_in
 #         else:
-#             print('this should not happen! bailing.')
+#             # print('this should not happen! bailing.')
 #             return 0
 #
-#     print("rr: ", rr)
-#     # print("Fi: ", Fi)
+#     # print("rr: ", rr)
+#     # # print("Fi: ", Fi)
 #
 #     # Rotate so that the polar angle of the starting point matches
 #     theta_offset = Fi - theta0
 #     Fi = Fi - theta_offset
 #
 #     if (condition and r_acc[-1] <= rstop) or ((not condition) and r_acc[-1] >= rstop):
-#         # print("r_acc: ", r_acc)
-#         # print("rr: ", rr)
+#         # # print("r_acc: ", r_acc)
+#         # # print("rr: ", rr)
 #         r_acc.append(rr)
 #         theta_acc.append(Fi)
 #
 #         return if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, r_acc, theta_acc, rstop, condition, npoints)
 #     else:
-#         print("DONE")
+#         # print("DONE")
 #         return r_acc, theta_acc
 
 
 def if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
-    print("within lesser")
+    # print("within lesser")
     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
     # updn = 1 for rays above the radial direction, -1 for those below
     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
@@ -474,7 +474,7 @@ def if_D_eq_Dcrit_get_ray(r0, theta0, delta0, rstop_nturns, npoints):
         theta_vec = np.geomspace(0, num_turns * 2 * np.pi, npoints)
         u_vec = vec_u_Dcrit(theta_vec, theta_0)
     else:
-        print('undefined direction in D_eq_Dcrit case. bailing.')
+        # print('undefined direction in D_eq_Dcrit case. bailing.')
         return 0
 
     # Add offset the angles to rotate such the the ray passes through
@@ -487,13 +487,13 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
     D = r0 * np.abs(np.sin(delta0)) / np.sqrt(1 - 2 / r0)
     D_minus_Dcrit = D - Dcrit
 
-    print("D: ", D)
+    # print("D: ", D)
 
     if (np.abs(D_minus_Dcrit) < abstol):
-        print("equal")
+        # print("equal")
         rr, theta = if_D_eq_Dcrit_get_ray(r0, theta0, delta0, rstop, npoints)
     elif (D > Dcrit):
-        print("greater")
+        # print("greater")
         # for r = 10, delta = 100 D > Dcrit
         rr, theta = if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
         # if rstop > r0:
@@ -502,7 +502,7 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
         #     condition = False
         # rr, theta = if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, [r0], [theta0], rstop, condition, npoints)
     elif (D < Dcrit):
-        print("lesser")
+        # print("lesser")
         rr, theta = if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
 
     return rr, theta
@@ -569,29 +569,32 @@ def get_rstop(M, r0, delta0):
             # rstop < r0
             rstop = 2
 
-    print("delta0: ", delta0)
+    # print("delta0: ", delta0)
     if np.pi / 2 < delta0 < np.pi:
-        print("making rstop negative")
+        # print("making rstop negative")
         rstop = -rstop
 
     return rstop
 
 
 def schwarzschild_get_ray_cartesian(x, y, delta0):
+    print("x: ", x)
+    print("y: ", y)
+    print("delta0: ", delta0)
     M = 1
 
     delta0 = np.deg2rad(delta0)
     r0 = np.sqrt(x ** 2 + y ** 2)
     theta0 = np.arccos(x / r0)
 
-    # print("D_minus_Dcrit: ", D_minus_Dcrit)
+    # # print("D_minus_Dcrit: ", D_minus_Dcrit)
 
     npoints = 500
 
     # determining rstop
     rstop = get_rstop(M, r0, delta0)
 
-    print("rstop: ", rstop)
+    # print("rstop: ", rstop)
 
     r_arr, theta_arr = schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints)
 
@@ -601,13 +604,13 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
     return x_arr, y_arr
 
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 110)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 90)
 # r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
 
 # unlike in the vscode model, this takes in 3 points (x and y arr have size 3)
 def cur_delta(x_arr, y_arr):
-    print('x', x_arr)
-    print('y', y_arr)
+    # print('x', x_arr)
+    # print('y', y_arr)
 
     delta_x = np.array([x1 - x2 for x1, x2 in zip(x_arr, x_arr[1:])])
 
@@ -637,7 +640,7 @@ def cur_delta(x_arr, y_arr):
 #
 #     return all_values
 #
-# print(getDistributedPoints(2, 2, 10, 100))
+# # print(getDistributedPoints(2, 2, 10, 100))
 
 
 import matplotlib.pyplot as plt
