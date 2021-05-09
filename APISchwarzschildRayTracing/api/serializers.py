@@ -11,7 +11,7 @@ class Coordinate2DSerializer(serializers.ModelSerializer):
 class RayTracing2DSerializer(serializers.ModelSerializer):
     class Meta:
         model = RayTracing2D
-        fields = ['id', 'x0', 'y0', 'z0', 'delta0']
+        fields = ['id', 'x0', 'y0', 'delta0']
 
 
 class Coordinate3DSerializer(serializers.ModelSerializer):

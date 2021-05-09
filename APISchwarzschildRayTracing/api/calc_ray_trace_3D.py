@@ -1,5 +1,5 @@
 import numpy as np
-from calc_ray_trace_integral import schwarzschild_get_ray_cartesian
+from .calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
 
 def find_third_dir_cos(ang1, ang2):
@@ -13,7 +13,7 @@ print("booboo")
 print(find_third_dir_cos(90, 0))
 
 
-def something(x, y, z, alpha0, beta0, gamma0):
+def schwarzschild_3D_get_ray_cartesian(x, y, z, alpha0, beta0, gamma0):
     alpha0 = np.deg2rad(alpha0)
     beta0 = np.deg2rad(beta0)
     gamma0 = np.deg2rad(gamma0)

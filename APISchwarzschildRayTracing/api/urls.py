@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import position_list
+from .views import get_coordinates_2D, coords_3D_list
 
 urlpatterns = [
-    path('', position_list),
+    path('2D/', get_coordinates_2D),
+    path('3D/', coords_3D_list),
 ]
