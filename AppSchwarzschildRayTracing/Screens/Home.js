@@ -83,7 +83,7 @@ function Home() {
       }
 
       axios.post(
-          "https://schwarzschild-ray-tracing-api.herokuapp.com/",
+          "https://schwarzschild-ray-tracing-api.herokuapp.com/2D",
           toSend,
           config
       )
