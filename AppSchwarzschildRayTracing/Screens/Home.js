@@ -27,8 +27,8 @@ function Home() {
   const requestRayTrace = (x, y, delta0) => {
 
 
-    console.log("x: ", x)
-    console.log("y: ", y)
+    console.log("x0: ", x)
+    console.log("y0: ", y)
     console.log("delta0: ", delta0)
 
 
@@ -69,9 +69,9 @@ function Home() {
 
 
       const toSend = {
-          x: Math.abs(x),
-          y : Math.abs(y),
-          z: 0,
+          x0: Math.abs(x),
+          y0 : Math.abs(y),
+          // z: 0,
           delta0 : delta0
       };
 
@@ -83,7 +83,7 @@ function Home() {
       }
 
       axios.post(
-          "https://schwarzschild-ray-tracing-api.herokuapp.com/2D",
+          "https://schwarzschild-ray-tracing-api.herokuapp.com/2D/",
           toSend,
           config
       )
@@ -94,8 +94,8 @@ function Home() {
               // console.log("obj: ", obj)
                    x_trace.push(obj["x"])
                    y_trace.push(obj["y"])
-                   z_trace.push(obj["z"])
-                   delta.push(obj["delta"])
+                   // z_trace.push(obj["z"])
+                   // delta.push(obj["delta"])
 
                  // console.log("x_trace: ", x_trace)
                });
@@ -108,8 +108,8 @@ function Home() {
               // console.log("obj: ", obj)
                    x_trace.push(-obj["x"])
                    y_trace.push(obj["y"])
-                   z_trace.push(obj["z"])
-                   delta.push(obj["delta"])
+                   // z_trace.push(obj["z"])
+                   // delta.push(obj["delta"])
                });
 
             } else if (x < 0 && y < 0) {
@@ -118,8 +118,8 @@ function Home() {
               // console.log("obj: ", obj)
                    x_trace.push(-obj["x"])
                    y_trace.push(-obj["y"])
-                   z_trace.push(obj["z"])
-                   delta.push(obj["delta"])
+                   // z_trace.push(obj["z"])
+                   // delta.push(obj["delta"])
                });
             } else if (x >= 0 && y < 0) {
               // quad 4
@@ -127,8 +127,8 @@ function Home() {
               // console.log("obj: ", obj)
                    x_trace.push(obj["x"])
                    y_trace.push(-obj["y"])
-                   z_trace.push(obj["z"])
-                   delta.push(obj["delta"])
+                   // z_trace.push(obj["z"])
+                   // delta.push(obj["delta"])
                });
             }
 
