@@ -604,7 +604,7 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
     return x_arr, y_arr
 
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 90)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 90)
 # r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
 
 # unlike in the vscode model, this takes in 3 points (x and y arr have size 3)
@@ -643,13 +643,13 @@ def cur_delta(x_arr, y_arr):
 # # print(getDistributedPoints(2, 2, 10, 100))
 
 
-import matplotlib.pyplot as plt
-
-# plt.axes(projection = 'polar')
-# plt.polar(theta_arr, r_arr, 'b-')
+# import matplotlib.pyplot as plt
 #
-# plt.figure(figsize=(12, 12))
-
-plt.plot(x_arr, y_arr)
-
-plt.show()
+# # plt.axes(projection = 'polar')
+# # plt.polar(theta_arr, r_arr, 'b-')
+# #
+# # plt.figure(figsize=(12, 12))
+#
+# plt.plot(x_arr, y_arr)
+#
+# plt.show()

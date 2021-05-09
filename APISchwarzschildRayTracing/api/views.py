@@ -1,11 +1,11 @@
 from django.shortcuts import render, HttpResponse
-from .models import Position
+from .models import Position2D
 from .serializers import PositionSerializer, RayTracingSerializer
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from .params_to_coords import get_coords_from_params
+from .params_to_coords import get_2D_coords_from_params
 
 # Create your views here.
 
@@ -14,7 +14,7 @@ from .params_to_coords import get_coords_from_params
 def position_list(request):
     # must have GET if statement branch because otherwise the localhost complains
     if request.method == "GET":
-        positions = Position.objects.all()
+        positions = Position2D.objects.all()
         serializer = PositionSerializer(positions, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
@@ -28,7 +28,7 @@ def position_list(request):
             input_items = list(serializer_ray_tracing.validated_data.items())
             # print("input_items", input_items)
 
-            positions = get_coords_from_params(input_items)
+            positions = get_2D_coords_from_params(input_items)
 
             serializer_positions = PositionSerializer(positions, many=True)
             # print(serializer_positions)

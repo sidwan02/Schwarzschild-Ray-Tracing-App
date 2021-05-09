@@ -57,22 +57,26 @@ def something(x, y, z, alpha0, beta0, gamma0):
 
 
 # if gamma = 90 that means xy plane direction only cuz think of spherical coordinates how the phi comes from +ve z
-alpha0 = 90
-beta0 = 0
-gamma0 = 90
-x_arr, y_arr, z_arr = something(10, 0, 0, alpha0, beta0, gamma0)
-
-import matplotlib.pyplot as plt
-
-fig = plt.figure()
-
-ax = plt.axes(projection='3d')
-ax.set_xlabel('$X$')
-ax.set_ylabel('$Y$')
-ax.set_zlabel('$Z$')
-
-ax.scatter3D(x_arr, y_arr, z_arr)
-ax.scatter3D(0, 0, 0)
-
-ax.set_title("Start = [" + str(x_arr[0]) + ", " + str(y_arr[0]) + ", " + str(z_arr[0]) + "] \n velocity = [" + str(alpha0) + "°, " + str(beta0) + "°, " + str(gamma0) + "°]")
-plt.show()
+# x0 = 5
+# y0 = 3
+# z0 = 6
+# alpha0 = 60
+# beta0 = 60
+# gamma0 = 135
+# x_arr, y_arr, z_arr = something(x0, y0, z0, alpha0, beta0, gamma0)
+#
+# import matplotlib.pyplot as plt
+#
+# fig = plt.figure()
+#
+# ax = plt.axes(projection='3d')
+# ax.set_xlabel('$X$')
+# ax.set_ylabel('$Y$')
+# ax.set_zlabel('$Z$')
+#
+# ax.scatter3D(x_arr, y_arr, z_arr)
+# ax.scatter3D(0, 0, 0)
+#
+# ax.set_title("Start = <" + str(x0) + ", " + str(y0) + ", " + str(z0) + "> \n velocity = <" + str(alpha0) + "°, " + str(beta0) + "°, " + str(gamma0) + "°>")
+#
+# plt.show()
