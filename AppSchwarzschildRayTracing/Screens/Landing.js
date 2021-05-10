@@ -13,34 +13,46 @@ import Trace3D from "./Trace3D";
 
 function Landing() {
 
+  const [trace2DVisibility, setTrace2DVisibility] = useState(true)
+  const [trace3DVisibility, setTrace3DVisibility] = useState(false)
 
+  const trace2DBtnClick = () => {
+    console.log("2D clicked")
+    setTrace2DVisibility(true)
+  }
+
+    const trace3DBtnClick = () => {
+    console.log("3D clicked")
+    setTrace3DVisibility(true)
+  }
 
   return (
     <View>
-      <View style={styles.btn1Container}>
-        <Button
-          // onclick={}
-        title="2D Trace"
-        color="green"
-        // accessibilityLabel="Learn more about this purple button"
-      />
-      </View>
+      {/*<View style={styles.btn1Container}>*/}
+      {/*  <Button*/}
+      {/*    onPress={trace2DBtnClick}*/}
+      {/*  title="2D Trace"*/}
+      {/*  color="green"*/}
+      {/*  // accessibilityLabel="Learn more about this purple button"*/}
+      {/*/>*/}
+      {/*</View>*/}
 
-      <View style={styles.btn2Container}>
-        <Button
-          // onclick={}
-        title="3D Trace"
-        color="green"
-        // accessibilityLabel="Learn more about this purple button"
-      />
-      </View>
-      {/*<Trace2D/>*/}
-      {/*<Trace3D/>*/}
+      {/*<View style={styles.btn2Container}>*/}
+      {/*  <Button*/}
+      {/*    onPress={trace3DBtnClick}*/}
+      {/*  title="3D Trace"*/}
+      {/*  color="green"*/}
+      {/*  // accessibilityLabel="Learn more about this purple button"*/}
+      {/*/>*/}
+      {/*</View>*/}
+
+      <Trace2D visible={trace2DVisibility} />
+      <Trace3D visible={trace3DVisibility}/>
     </View>
   )
 }
 const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   btn1Container: {

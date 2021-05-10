@@ -11,7 +11,14 @@ import CollapsibleView from "@eliav2/react-native-collapsible-view";
 
 
 
-function Trace3D() {
+function Trace3D(props) {
+
+  if (props.visible === false) {
+   return (
+    <View>
+    </View>
+  )
+  }
 
   return (
     <View>

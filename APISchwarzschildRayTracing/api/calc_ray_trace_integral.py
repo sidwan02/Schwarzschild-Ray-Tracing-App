@@ -57,8 +57,8 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
     CC = np.sqrt(2 / (b1 - b3))
 
     if (inout == 1):  # outward rays
-        # rr = np.geomspace(r0, rstop, npoints)
-        rr = np.geomspace(r0, rstop, npoints)
+        # rr = np.linspace(r0, rstop, npoints)
+        rr = np.linspace(r0, rstop, npoints)
         uu = 1 / rr
         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
         Fi = updn * CC * ei(phi, m)
@@ -72,13 +72,13 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
             return 0
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
             # print("r0 and rstop on the same side of periastron")
-            rr = np.geomspace(r0, rf, npoints)
+            rr = np.linspace(r0, rf, npoints)
             uu = 1 / rr
             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
             Fi = -updn * CC * ei(phi, m)
         elif (rstop < -periastron) and (r0 == rf):
             if (npoints % 2 == 0):
-                rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
+                rr_in = np.linspace(r0, periastron, int(npoints / 2), endpoint=False)
                 uu_in = 1 / rr_in
                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
                 Fi_in = -updn * CC * ei(phi_in, m)
@@ -86,7 +86,7 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
                 rr = np.concatenate((rr_in, rr_in[::-1]))
                 Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
             else:
-                rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
+                rr_in = np.linspace(r0, periastron, int((npoints - 1) / 2))
                 uu_in = 1 / rr_in
                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
                 Fi_in = -updn * CC * ei(phi_in, m)
@@ -112,12 +112,12 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
             n_out = npoints - 2 * n_in - 1
             r_out = np.amax([r0, rf])
             # Now first construct the ray between r_out and r_in in n_out points
-            rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
+            rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
             uu_out = 1 / rr_out
             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
             Fi_out = -updn * CC * ei(phi_out, m)
             # And then construct the ray from r_in to almost periastron
-            rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
+            rr_in = np.linspace(r_in, periastron, n_in, endpoint=False)
             uu_in = 1 / rr_in
             phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
             Fi_in = -updn * CC * ei(phi_in, m)
@@ -160,8 +160,8 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
     CC = np.sqrt(2 / (b1 - b3))
 
     if (inout == 1):  # outward rays
-        # rr = np.geomspace(r0, rstop, npoints)
-        rr = np.geomspace(r0, rstop, npoints)
+        # rr = np.linspace(r0, rstop, npoints)
+        rr = np.linspace(r0, rstop, npoints)
         uu = 1 / rr
         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
         Fi = updn * CC * ei(phi, m)
@@ -175,13 +175,13 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
             return 0
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
             # print("r0 and rstop on the same side of periastron")
-            rr = np.geomspace(r0, rf, npoints)
+            rr = np.linspace(r0, rf, npoints)
             uu = 1 / rr
             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
             Fi = -updn * CC * ei(phi, m)
         elif (rstop < -periastron) and (r0 == rf):
             if (npoints % 2 == 0):
-                rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
+                rr_in = np.linspace(r0, periastron, int(npoints / 2), endpoint=False)
                 uu_in = 1 / rr_in
                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
                 Fi_in = -updn * CC * ei(phi_in, m)
@@ -189,7 +189,7 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
                 rr = np.concatenate((rr_in, rr_in[::-1]))
                 Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
             else:
-                rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
+                rr_in = np.linspace(r0, periastron, int((npoints - 1) / 2))
                 uu_in = 1 / rr_in
                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
                 Fi_in = -updn * CC * ei(phi_in, m)
@@ -215,12 +215,12 @@ def recursive_if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints, count
             n_out = npoints - 2 * n_in - 1
             r_out = np.amax([r0, rf])
             # Now first construct the ray between r_out and r_in in n_out points
-            rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
+            rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
             uu_out = 1 / rr_out
             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
             Fi_out = -updn * CC * ei(phi_out, m)
             # And then construct the ray from r_in to almost periastron
-            rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
+            rr_in = np.linspace(r_in, periastron, n_in, endpoint=False)
             uu_in = 1 / rr_in
             phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
             Fi_in = -updn * CC * ei(phi_in, m)
@@ -301,8 +301,8 @@ def get_next_rr(r_acc, theta_acc, condition):
 #     CC = np.sqrt(2 / (b1 - b3))
 #
 #     if (inout == 1):  # outward rays
-#         # rr = np.geomspace(r0, rstop, npoints)
-#         # rr = np.geomspace(r0, rstop, npoints)
+#         # rr = np.linspace(r0, rstop, npoints)
+#         # rr = np.linspace(r0, rstop, npoints)
 #         rr = get_next_rr(r_acc, theta_acc, condition)
 #         uu = 1 / rr
 #         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
@@ -317,7 +317,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #             return 0
 #         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
 #             # print("r0 and rstop on the same side of periastron")
-#             # rr = np.geomspace(r0, rf, npoints)
+#             # rr = np.linspace(r0, rf, npoints)
 #             rr = get_next_rr(r_acc, theta_acc, condition)
 #             uu = 1 / rr
 #             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
@@ -325,7 +325,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #         elif (rstop < -periastron) and (r0 == rf):
 #             if (npoints % 2 == 0):
 #                 # print("bla bla blee")
-#                 rr_in = np.geomspace(r0, periastron, int(npoints / 2), endpoint=False)
+#                 rr_in = np.linspace(r0, periastron, int(npoints / 2), endpoint=False)
 #                 uu_in = 1 / rr_in
 #                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
 #                 Fi_in = -updn * CC * ei(phi_in, m)
@@ -333,7 +333,7 @@ def get_next_rr(r_acc, theta_acc, condition):
 #                 rr = np.concatenate((rr_in, rr_in[::-1]))
 #                 Fi = np.concatenate((Fi_in, -Fi_in[::-1]))
 #             else:
-#                 # rr_in = np.geomspace(r0, periastron, int((npoints - 1) / 2))
+#                 # rr_in = np.linspace(r0, periastron, int((npoints - 1) / 2))
 #                 rr_in = get_next_rr(r_acc, theta_acc, condition)
 #                 uu_in = 1 / rr_in
 #                 phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
@@ -361,14 +361,14 @@ def get_next_rr(r_acc, theta_acc, condition):
 #             # n_out = npoints - 2 * n_in - 1
 #             # r_out = np.amax([r0, rf])
 #             # Now first construct the ray between r_out and r_in in n_out points
-#             # rr_out = np.geomspace(r_out, r_in, n_out, endpoint=False)
+#             # rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
 #             # # print("r_acc: ", r_acc)
 #             rr_out = get_next_rr(r_acc, theta_acc, condition)
 #             uu_out = 1 / rr_out
 #             phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
 #             Fi_out = -updn * CC * ei(phi_out, m)
 #             # And then construct the ray from r_in to almost periastron
-#             # rr_in = np.geomspace(r_in, periastron, n_in, endpoint=False)
+#             # rr_in = np.linspace(r_in, periastron, n_in, endpoint=False)
 #
 #             rr_in = get_next_rr(r_acc, theta_acc, condition)
 #             uu_in = 1 / rr_in
@@ -427,7 +427,7 @@ def if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
     m = 0.5 - 0.125 * ppp_beta / lambda2
 
     # Set up the radial and inverse radial arrays
-    rr = np.geomspace(r0, rstop, npoints)
+    rr = np.linspace(r0, rstop, npoints)
     uu = 1 / rr
 
     u_s = 1 / r0
@@ -467,11 +467,11 @@ def if_D_eq_Dcrit_get_ray(r0, theta0, delta0, rstop_nturns, npoints):
         # What is the polar angle of this ray (i.e. the one going thru (1/r0,0) in
         # polar coordinates) at umin
         theta_umin = theta_0 + 2 * np.arctanh(np.sqrt(2 * (umin + 1 / 6)))
-        theta_vec = np.geomspace(0, theta_umin, npoints)
+        theta_vec = np.linspace(0, theta_umin, npoints)
         u_vec = vec_u_Dcrit(theta_vec, theta_0)
     elif inout == -1:
         num_turns = rstop_nturns
-        theta_vec = np.geomspace(0, num_turns * 2 * np.pi, npoints)
+        theta_vec = np.linspace(0, num_turns * 2 * np.pi, npoints)
         u_vec = vec_u_Dcrit(theta_vec, theta_0)
     else:
         # print('undefined direction in D_eq_Dcrit case. bailing.')
@@ -538,7 +538,7 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
 # plt.polar(th_vec6, r_vec6, 'b-')
 #
 # plt.polar(theta0, r0, 'go')  # Starting point in green
-# plt.fill_between(np.geomspace(0.0, 2 * np.pi, 100), 2 * np.ones(100), color='k')
+# plt.fill_between(np.linspace(0.0, 2 * np.pi, 100), 2 * np.ones(100), color='k')
 # plt.show()
 
 def get_rstop(M, r0, delta0):
@@ -590,6 +590,9 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
     delta0 = np.deg2rad(delta0)
     r0 = np.sqrt(x ** 2 + y ** 2)
     theta0 = np.arccos(x / r0)
+
+    print("r0: ", r0)
+    print("theta0: ", theta0)
 
     # # print("D_minus_Dcrit: ", D_minus_Dcrit)
 
@@ -646,7 +649,7 @@ def cur_delta(x_arr, y_arr):
 
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(-13.178571210588728, -25.472618175688247, 153.90768121390468)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(16.9453133719308, 19.39345238095238, 172.3971992251558)
 # r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
 
 

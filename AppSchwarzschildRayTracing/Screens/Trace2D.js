@@ -7,11 +7,19 @@ import AwesomeButton from "react-native-really-awesome-button-fixed";
 // import { LineChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
 import Plotly from 'react-native-plotly';
 import CollapsibleView from "@eliav2/react-native-collapsible-view";
+import {StatusBar} from "expo-status-bar";
 // import MyView from "../Components/MyView";
 
 
 
-function Trace2D() {
+function Trace2D(props) {
+
+  if (props.visible === false) {
+    return (
+    <View>
+    </View>
+  );
+  }
 
   let canvas
 
@@ -529,6 +537,7 @@ let trace2 = {
   let blackHoleY = windowHeight / 2
 
   const drawBlackHole = () => {
+    // console.log("drawing bh")
     let ctx = canvas.getContext("2d");
 
     // black hole
@@ -566,11 +575,10 @@ let trace2 = {
 
       can.height = windowHeight
       can.width = windowWidth
+
+      drawCoordinateAxes()
+      drawBlackHole()
     }
-
-
-    drawCoordinateAxes()
-    drawBlackHole()
   }
 
 
@@ -1008,6 +1016,7 @@ const [stateGraph, setStateGraph] = useState(
       {/*https://stackoverflow.com/questions/41948900/react-native-detect-tap-on-view*/}
       {/*onPress={canvasTap} is for just tapping*/}
       <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
+        {/*<Text>Hi there</Text>*/}
         <Canvas ref={handleCanvas} />
       </TouchableOpacity>
       <Button
