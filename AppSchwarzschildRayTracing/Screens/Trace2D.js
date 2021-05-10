@@ -11,7 +11,7 @@ import CollapsibleView from "@eliav2/react-native-collapsible-view";
 
 
 
-function Home() {
+function Trace2D() {
 
   let canvas
 
@@ -1171,4 +1171,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default Trace2D;

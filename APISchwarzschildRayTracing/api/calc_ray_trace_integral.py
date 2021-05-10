@@ -646,17 +646,17 @@ def cur_delta(x_arr, y_arr):
 
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 150)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(-13.178571210588728, -25.472618175688247, 153.90768121390468)
 # r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
 
 
-import matplotlib.pyplot as plt
-
-# plt.axes(projection = 'polar')
-# plt.polar(theta_arr, r_arr, 'b-')
+# import matplotlib.pyplot as plt
 #
-# plt.figure(figsize=(12, 12))
-
-plt.plot(x_arr, y_arr)
-
-plt.show()
+# # plt.axes(projection = 'polar')
+# # plt.polar(theta_arr, r_arr, 'b-')
+# #
+# # plt.figure(figsize=(12, 12))
+#
+# plt.plot(x_arr, y_arr)
+#
+# plt.show()

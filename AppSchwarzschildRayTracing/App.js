@@ -1,13 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Home from './Screens/Home';
+import {Button, StyleSheet, Text, View} from 'react-native';
+import Trace2D from './Screens/Trace2D';
+import Trace3D from "./Screens/Trace3D";
+import Landing from "./Screens/Landing";
 
 
 export default function App() {
   return (
     <View>
-      <Home/>
+
+      <Landing/>
+      {/*<Trace2D/>*/}
+      {/*<Trace3D/>*/}
       <StatusBar style="auto" />
     </View>
   );
@@ -20,4 +25,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  btnContainer: {
+    position: 'absolute',
+    top: 50,
+    left: 50,
+  }
 });
