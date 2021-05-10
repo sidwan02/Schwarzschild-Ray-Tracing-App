@@ -72,7 +72,8 @@ function Trace2D(props) {
     // });
 
     if (delta0 < 0) {
-      delta0 = - (180 - Math.abs(delta0))
+      // delta0 = - (180 - Math.abs(delta0)) // diffeq
+      delta0 = delta0 // integral
     }
 
 
@@ -141,12 +142,12 @@ function Trace2D(props) {
 
             } else if (x < 0 && y < 0) {
               // quad 3
-              let count = 0
+              // let count = 0
               Array.prototype.forEach.call(data, obj => {
-                if (count < 10) {
-              console.log("obj: ", obj)
-                }
-                count += 1
+              //   if (count < 10) {
+              // // console.log("obj: ", obj)
+              //   }
+              //   count += 1
 
                    x_trace.push(-obj["x"])
                    y_trace.push(-obj["y"])

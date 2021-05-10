@@ -574,7 +574,7 @@ def get_rstop(M, r0, delta0):
             rstop = 2
 
     # print("delta0: ", delta0)
-    if (np.pi / 2 < delta0 < np.pi) and (rstop != 2):
+    if (np.pi / 2 < np.abs(delta0) < np.pi) and (rstop != 2):
         # print("making rstop negative")
         rstop = -rstop
 
@@ -652,7 +652,7 @@ def cur_delta(x_arr, y_arr):
 
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(-11, -33, 172)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(8, 24, -150)
 # r_arr, theta_arr = schwarzschild_get_ray(34.785054261852174, 1.2490457723982544, np.deg2rad(172), 2, 500)
 # print("x_arr: ", x_arr[::-1])
 
