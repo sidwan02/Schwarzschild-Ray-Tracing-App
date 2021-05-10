@@ -99,9 +99,25 @@ function Trace2D(props) {
             if (response.data === null) {
               console.log("DATA WAS NULL")
             }
+            console.log("got data lol")
             // console.log("response: ", response.data)
+            let data
+
+            console.log("type:", typeof response.data)
+            if (typeof response.data === "object") {
+              data = response.data
+            } else {
+              // data = response.data.replace(/\bNaN\b/g, "null")
+              // console.log("data: ", data)
+              // console.log("see: ", response.data)
+              data = JSON.parse(response.data)
+            }
+
+            // console.log(data)
+
             if (x >= 0 && y >= 0) {
-               response.data.forEach(obj => {
+               // https://stackoverflow.com/questions/35969974/foreach-is-not-a-function-error-with-javascript-array
+               Array.prototype.forEach.call(data, obj => {
               // console.log("obj: ", obj)
                    x_trace.push(obj["x"])
                    y_trace.push(obj["y"])
@@ -115,7 +131,7 @@ function Trace2D(props) {
               else if (x < 0 && y >= 0) {
               // console.log("quad 2")
               // quad 2
-              response.data.forEach(obj => {
+              Array.prototype.forEach.call(data, obj => {
               // console.log("obj: ", obj)
                    x_trace.push(-obj["x"])
                    y_trace.push(obj["y"])
@@ -125,8 +141,13 @@ function Trace2D(props) {
 
             } else if (x < 0 && y < 0) {
               // quad 3
-              response.data.forEach(obj => {
-              // console.log("obj: ", obj)
+              let count = 0
+              Array.prototype.forEach.call(data, obj => {
+                if (count < 10) {
+              console.log("obj: ", obj)
+                }
+                count += 1
+
                    x_trace.push(-obj["x"])
                    y_trace.push(-obj["y"])
                    // z_trace.push(obj["z"])
@@ -134,7 +155,7 @@ function Trace2D(props) {
                });
             } else if (x >= 0 && y < 0) {
               // quad 4
-              response.data.forEach(obj => {
+              Array.prototype.forEach.call(data, obj => {
               // console.log("obj: ", obj)
                    x_trace.push(obj["x"])
                    y_trace.push(-obj["y"])
@@ -257,7 +278,14 @@ let trace2 = {
           // console.log(interval)
           // if (interval < 1000){
           // setTimeout(() => {
+        let x_end_cart = x_trace[cur_i + 1], y_end_cart = y_trace[cur_i + 1]
+        let buffer = 2
+        if (x_end_cart > 20 + buffer || x_end_cart < -20 - buffer || y_end_cart > 40 + buffer || y_end_cart < -40 - buffer) {
+          console.log("stopping trace")
+        } else {
             requestAnimationFrame(animateTrace); // queue request for next frame
+        }
+
           // }, 200);
 
           // }
@@ -571,6 +599,7 @@ let trace2 = {
 
   const handleCanvas = (can) => {
     if (can !== null) {
+      console.log("not null")
       canvas = can
 
       can.height = windowHeight

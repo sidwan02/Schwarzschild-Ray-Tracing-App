@@ -574,7 +574,7 @@ def get_rstop(M, r0, delta0):
             rstop = 2
 
     # print("delta0: ", delta0)
-    if np.pi / 2 < delta0 < np.pi:
+    if (np.pi / 2 < delta0 < np.pi) and (rstop != 2):
         # print("making rstop negative")
         rstop = -rstop
 
@@ -589,7 +589,8 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
 
     delta0 = np.deg2rad(delta0)
     r0 = np.sqrt(x ** 2 + y ** 2)
-    theta0 = np.arccos(x / r0)
+    theta0 = np.arccos(np.abs(x) / r0)
+    # theta0 = np.arcsin(y / r0)
 
     print("r0: ", r0)
     print("theta0: ", theta0)
@@ -602,6 +603,8 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
     rstop = get_rstop(M, r0, delta0)
 
     # print("rstop: ", rstop)
+
+    # delta0 = np.rad2deg(delta0)
 
     r_arr, theta_arr = schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints)
 
@@ -649,8 +652,9 @@ def cur_delta(x_arr, y_arr):
 
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(16.9453133719308, 19.39345238095238, 172.3971992251558)
-# r_arr, theta_arr = schwarzschild_get_ray(10, np.deg2rad(0), np.deg2rad(100), 20, 10000)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(-11, -33, 172)
+# r_arr, theta_arr = schwarzschild_get_ray(34.785054261852174, 1.2490457723982544, np.deg2rad(172), 2, 500)
+# print("x_arr: ", x_arr[::-1])
 
 
 # import matplotlib.pyplot as plt
