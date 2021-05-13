@@ -116,6 +116,7 @@ function Landing() {
     <View>
       <Trace2D visible={trace2DVisibility} />
       <Trace3D visible={trace3DVisibility}/>
+      {/*<Plotly3DTest/>*/}
 
       <View style={btn1Container}>
         <Button

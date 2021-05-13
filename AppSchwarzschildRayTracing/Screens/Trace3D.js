@@ -149,8 +149,8 @@ function Trace3D(props) {
           name: 'Ray Trace',
           x: x_trace,
           y: y_trace,
-          z: z_trace,
-          type: 'scatter',
+          // z: z_trace,
+          type: 'scatter3d',
           mode: 'lines'
         }
 
@@ -159,7 +159,7 @@ function Trace3D(props) {
           x: [0],
           y: [0],
           z: [0],
-          type: 'scatter',
+          type: 'scatter3d',
           mode: 'markers'
         }
 
@@ -170,7 +170,7 @@ function Trace3D(props) {
           x: [periastron.x],
           y: [periastron.y],
           z: [periastron.z],
-          type: 'scatter',
+          type: 'scatter3d',
           mode: 'markers'
         }
 
@@ -193,24 +193,6 @@ function Trace3D(props) {
             width: windowWidth,
             height: windowHeight - 55,
             title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ', ' + z_trace[0].toFixed(2) + ') <br>with initial velocity <' + alpha0.toFixed(2) + '°, ' + beta0.toFixed(2) + '°, ' + gamma0.toFixed(2) + '°>',
-            xaxis: {
-              title: "x-axis",
-              range: [bounds1.cartX, bounds2.cartX]
-            },
-            yaxis: {
-              title: "y-axis",
-              range: [bounds2.cartY, bounds1.cartY]
-            },
-            zaxis: {
-              title: "z-axis",
-              range: [bounds2.cartY, bounds1.cartY]
-            },
-            //   legend: {
-            //       yanchor:"top",
-            // y:0.99,
-            // xanchor:"left",
-            // x:0.01
-            //   }
           }
         })
 
@@ -285,18 +267,6 @@ function Trace3D(props) {
 
   }
 
-  // https://snack.expo.io/@rynobax/react-native-plotly-demo
-
-//   let dataGraph = {
-//   __id: 'up',
-//   x: [0],
-//   y: [0],
-//   type: 'scatter',
-//     mode: 'lines+markers'
-// }
-
- const [dataGraph, setDataGraph] = useState()
-
 let bounds1 = convertPixelToCartesian(0, 0)
   let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
@@ -304,7 +274,8 @@ let bounds1 = convertPixelToCartesian(0, 0)
   name: 'Black Hole',
   x: [0],
   y: [0],
-  type: 'scatter',
+    z: [0],
+  type: 'scatter3d',
     mode: 'markers'
 }
 
@@ -314,24 +285,8 @@ const [stateGraph, setStateGraph] = useState(
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
-    xaxis: {
-      title: "x-axis",
-    range: [bounds1.cartX, bounds2.cartX]
-  },
-      yaxis: {
-      title: "y-axis",
-    range: [bounds2.cartY, bounds1.cartY]
-  },
-      legend: {
-          yanchor:"top",
-    y:0.99,
-    xanchor:"left",
-    x:0.01
-      }
-
-
     }
-  }
+    }
   );
   // = ;
 
@@ -359,6 +314,7 @@ const [stateGraph, setStateGraph] = useState(
 
     }
   }
+
 
   return (
     <View>
@@ -422,14 +378,23 @@ const [stateGraph, setStateGraph] = useState(
       <View style={container_style}>
 
         <View style={styles.chartRow}>
+          {/*<Plotly*/}
+          {/*  data={stateGraph.data}*/}
+          {/*  layout={stateGraph.layout}*/}
+          {/*  // update={update}*/}
+          {/*  onLoad={() => console.log('loaded')}*/}
+          {/*  // debug*/}
+          {/*  // enableFullPlotly*/}
+          {/*/>*/}
+
           <Plotly
-            data={stateGraph.data}
-            layout={stateGraph.layout}
-            // update={update}
-            onLoad={() => console.log('loaded')}
-            // debug
-            // enableFullPlotly
-          />
+        data={stateGraph.data}
+        layout={stateGraph.layout}
+        enableFullPlotly
+
+            />
+              {/*    if enableFullPlotly is not enabled cannot draw 3d graphs dummass read github issues*/}
+
         </View>
       </View>
     </View>
