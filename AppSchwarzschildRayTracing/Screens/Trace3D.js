@@ -123,7 +123,8 @@ function Trace3D(props) {
           y: [0],
           z: [0],
           type: 'scatter3d',
-          mode: 'markers'
+          mode: 'markers',
+          marker: {size: 2},
         }
 
         // console.log("periastron within request: ", periastron)
@@ -134,7 +135,8 @@ function Trace3D(props) {
           y: [periastron.y],
           z: [periastron.z],
           type: 'scatter3d',
-          mode: 'markers'
+          mode: 'markers',
+          marker: {size: 2},
         }
 
         if (typeof alpha0 === 'string') {
@@ -253,7 +255,8 @@ let bounds1 = convertPixelToCartesian(0, 0)
   y: [0],
     z: [0],
   type: 'scatter3d',
-    mode: 'markers'
+    mode: 'markers',
+    marker: {size: 2},
 }
 
 const [stateGraph, setStateGraph] = useState(
@@ -265,16 +268,13 @@ const [stateGraph, setStateGraph] = useState(
       title: 'No Recent Trace to Display',
 
       xaxis: {
-    nticks: 9,
-    range: [-200, 100],
+    uirevision: 'time'
   },
    yaxis: {
-    nticks: 7,
-    range: [-100, 100],
+    uirevision: 'time'
   },
    zaxis: {
-   nticks: 10,
-   range: [-150, 100],
+   uirevision: 'time'
   }
 
 
@@ -359,21 +359,21 @@ const [stateGraph, setStateGraph] = useState(
           keyboardType = 'numeric'
           value={zManual}
           onChangeText={setZManual}/>
-          <Text>Start alpha0:</Text>
+          <Text>Start angle to x-axis:</Text>
           <TextInput
                         style={styles.manualTextInput}
             placeholder="alpha0"
           keyboardType = 'numeric'
           value={alpha0Manual}
           onChangeText={setAlpha0Manual}/>
-          <Text>Start beta0:</Text>
+          <Text>Start angle to y-axis:</Text>
           <TextInput
                         style={styles.manualTextInput}
             placeholder="beta0"
           keyboardType = 'numeric'
           value={beta0Manual}
           onChangeText={setBeta0Manual}/>
-          <Text>Start gamma0:</Text>
+          <Text>Start angle to z-axis:</Text>
           <TextInput
                         style={styles.manualTextInput}
             placeholder="gamma0"
