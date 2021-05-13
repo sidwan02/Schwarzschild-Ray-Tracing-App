@@ -83,7 +83,6 @@ function Trace3D(props) {
 
         // console.log(data)
 
-        if (x >= 0 && y >= 0) {
           // https://stackoverflow.com/questions/35969974/foreach-is-not-a-function-error-with-javascript-array
           Array.prototype.forEach.call(data, obj => {
             // console.log("obj: ", obj)
@@ -94,42 +93,6 @@ function Trace3D(props) {
 
             // console.log("x_trace: ", x_trace)
           });
-
-        } else if (x < 0 && y >= 0) {
-          // console.log("quad 2")
-          // quad 2
-          Array.prototype.forEach.call(data, obj => {
-            // console.log("obj: ", obj)
-            x_trace.push(-obj["x"])
-            y_trace.push(obj["y"])
-            z_trace.push(obj["z"])
-            // delta.push(obj["delta"])
-          });
-
-        } else if (x < 0 && y < 0) {
-          // quad 3
-          // let count = 0
-          Array.prototype.forEach.call(data, obj => {
-            //   if (count < 10) {
-            // // console.log("obj: ", obj)
-            //   }
-            //   count += 1
-
-            x_trace.push(-obj["x"])
-            y_trace.push(-obj["y"])
-            z_trace.push(obj["z"])
-            // delta.push(obj["delta"])
-          });
-        } else if (x >= 0 && y < 0) {
-          // quad 4
-          Array.prototype.forEach.call(data, obj => {
-            // console.log("obj: ", obj)
-            x_trace.push(obj["x"])
-            y_trace.push(-obj["y"])
-            z_trace.push(obj["z"])
-            // delta.push(obj["delta"])
-          });
-        }
 
         x_trace.forEach((x, i) => {
           if (periastron === null) {
@@ -149,7 +112,7 @@ function Trace3D(props) {
           name: 'Ray Trace',
           x: x_trace,
           y: y_trace,
-          // z: z_trace,
+          z: z_trace,
           type: 'scatter3d',
           mode: 'lines'
         }
@@ -193,6 +156,20 @@ function Trace3D(props) {
             width: windowWidth,
             height: windowHeight - 55,
             title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ', ' + z_trace[0].toFixed(2) + ') <br>with initial velocity <' + alpha0.toFixed(2) + '°, ' + beta0.toFixed(2) + '°, ' + gamma0.toFixed(2) + '°>',
+            xaxis: {
+      title: "x-axis",
+    range: [bounds1.cartX, bounds2.cartX]
+  },
+      yaxis: {
+      title: "y-axis",
+    range: [bounds2.cartY, bounds1.cartY]
+  },
+      legend: {
+          yanchor:"top",
+    y:0.99,
+    xanchor:"left",
+    x:0.01
+      }
           }
         })
 
@@ -280,13 +257,29 @@ let bounds1 = convertPixelToCartesian(0, 0)
 }
 
 const [stateGraph, setStateGraph] = useState(
-    {
+  {
     data: [trace1],
-    layout: { width: windowWidth,
+    layout: {
+      width: windowWidth,
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
+
+      xaxis: {
+    nticks: 9,
+    range: [-200, 100],
+  },
+   yaxis: {
+    nticks: 7,
+    range: [-100, 100],
+  },
+   zaxis: {
+   nticks: 10,
+   range: [-150, 100],
+  }
+
+
     }
-    }
+  }
   );
   // = ;
 
@@ -294,14 +287,17 @@ const [stateGraph, setStateGraph] = useState(
   const clickManualEntryBtn = () => {
     console.log('x: ', xManual)
     console.log('y: ', yManual)
-    console.log('delta0: ', delta0Manual)
+    // console.log('delta0: ', delta0Manual)
 
-    requestRayTrace(xManual, yManual, delta0Manual)
+    requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
   }
 
   const [xManual, setXManual] = useState(null)
   const [yManual, setYManual] = useState(null)
-  const [delta0Manual, setDelta0Manual] = useState(null)
+    const [zManual, setZManual] = useState(null)
+  const [alpha0Manual, setAlpha0Manual] = useState(null)
+  const [beta0Manual, setBeta0Manual] = useState(null)
+  const [gamma0Manual, setGamma0Manual] = useState(null)
 
   const handleCanvas = (can) => {
     if (can !== null) {
@@ -356,13 +352,34 @@ const [stateGraph, setStateGraph] = useState(
           keyboardType = 'numeric'
           value={yManual}
           onChangeText={setYManual}/>
-          <Text>Start angle:</Text>
+          <Text>Start z:</Text>
           <TextInput
                         style={styles.manualTextInput}
-            placeholder="delta0"
+            placeholder="z"
           keyboardType = 'numeric'
-          value={delta0Manual}
-          onChangeText={setDelta0Manual}/>
+          value={zManual}
+          onChangeText={setZManual}/>
+          <Text>Start alpha0:</Text>
+          <TextInput
+                        style={styles.manualTextInput}
+            placeholder="alpha0"
+          keyboardType = 'numeric'
+          value={alpha0Manual}
+          onChangeText={setAlpha0Manual}/>
+          <Text>Start beta0:</Text>
+          <TextInput
+                        style={styles.manualTextInput}
+            placeholder="beta0"
+          keyboardType = 'numeric'
+          value={beta0Manual}
+          onChangeText={setBeta0Manual}/>
+          <Text>Start gamma0:</Text>
+          <TextInput
+                        style={styles.manualTextInput}
+            placeholder="gamma0"
+          keyboardType = 'numeric'
+          value={gamma0Manual}
+          onChangeText={setGamma0Manual}/>
 
           <Button
         onPress={clickManualEntryBtn}
@@ -391,6 +408,7 @@ const [stateGraph, setStateGraph] = useState(
         data={stateGraph.data}
         layout={stateGraph.layout}
         enableFullPlotly
+        // debug
 
             />
               {/*    if enableFullPlotly is not enabled cannot draw 3d graphs dummass read github issues*/}
