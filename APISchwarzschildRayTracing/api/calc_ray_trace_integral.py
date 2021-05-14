@@ -148,34 +148,32 @@ def get_next_rr(r_acc, theta_acc, condition):
     else:
         delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
         # delta_theta = np.deg2rad(10)
-        print("delta_theta: ", delta_theta)
-        if delta_theta < 0.001:
-            delta_rr = 0.01
-        elif delta_theta < 0.002:
-            delta_rr = 0.009
-        elif delta_theta < 0.003:
-            delta_rr = 0.008
-        elif delta_theta < 0.004:
-            delta_rr = 0.007
-        elif delta_theta < 0.005:
-            delta_rr = 0.006
-        elif delta_theta < 0.006:
-            delta_rr = 0.005
-        elif delta_theta < 0.007:
-            delta_rr = 0.004
-        elif delta_theta < 0.008:
-            delta_rr = 0.003
-        elif delta_theta < 0.009:
-            delta_rr = 0.002
-        elif delta_theta < 0.01:
+        # print("delta_theta: ", delta_theta)
+
+        delta_theta_bounds = np.array([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]) / 1000
+        # delta_theta_bounds = np.array([1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91]) / 10000
+
+        # delta_theta_bounds = np.linspace(0.001, 0.01, 100)
+        # delta_theta_bounds = np.geomspace(0.001, 0.01, 10)
+        # print("delta_theta_bounds")
+
+        delta_rr = 0
+        i = 0
+        for bound in delta_theta_bounds:
+            if delta_theta < bound:
+                delta_rr = delta_theta_bounds[::-1][i]
+                break
+            i += 1
+
+        if delta_rr == 0:
+            # print("in here")
+            # angle was larger than 0.01
             delta_rr = 0.001
-        else:
-            delta_rr = 0.0009
-            # print("delta_theta went beyond 90???")
 
-        # delta_rr = 5e-2
-
+        # delta_rr = 0.005
         # print("delta_rr: ", delta_rr)
+
+
         if condition:
             rr = r_acc[-1] + delta_rr
         else:
@@ -343,8 +341,8 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
         # rr, theta = if_D_gt_Dcrit_get_ray_new(D, r0, theta0, delta0, [r0], [theta0], rstop, condition, npoints)
     elif (D < Dcrit):
         # print("lesser")
-        rr, theta = if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
-        # rr, theta = if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints)
+        # rr, theta = if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
+        rr, theta = if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints)
 
     return rr, theta
 
@@ -494,7 +492,7 @@ def cur_delta(x_arr, y_arr):
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(8, 24, -150)
-r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(93.2), 2, 441)
+r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(93.17), 2, 167)
 # r_arr, theta_arr = schwarzschild_get_ray(3.01, 0, np.deg2rad(160), 2, 50)
 # print("x_arr: ", x_arr[::-1])
 
