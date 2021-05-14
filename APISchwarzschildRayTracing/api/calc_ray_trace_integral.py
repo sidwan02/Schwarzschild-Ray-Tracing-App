@@ -142,33 +142,38 @@ def get_next_rr(r_acc, theta_acc, condition):
     if len(r_acc) == (1 or 2):
         # this is the first or second time this function is being executed
         if condition:
-            rr = r_acc[-1] + 5e-5
+            rr = r_acc[-1] + 5e-3
         else:
-            rr = r_acc[-1] - 5e-5
+            rr = r_acc[-1] - 5e-3
     else:
-        # delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
-        delta_theta = np.deg2rad(10)
-        # print("delta_theta: ", delta_theta)
-        if delta_theta < np.deg2rad(10):
-            delta_rr = 5e-1
-        elif delta_theta < np.deg2rad(20):
-            delta_rr = 1e-1
-        elif delta_theta < np.deg2rad(30):
-            delta_rr = 5e-2
-        elif delta_theta < np.deg2rad(40):
-            delta_rr = 1e-2
-        elif delta_theta < np.deg2rad(50):
-            delta_rr = 5e-3
-        elif delta_theta < np.deg2rad(60):
-            delta_rr = 1e-3
-        elif delta_theta < np.deg2rad(70):
-            delta_rr = 5e-4
-        elif delta_theta < np.deg2rad(80):
-            delta_rr = 1e-4
-        elif delta_theta < np.deg2rad(90):
-            delta_rr = 5e-5
+        delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
+        # delta_theta = np.deg2rad(10)
+        print("delta_theta: ", delta_theta)
+        if delta_theta < 0.001:
+            delta_rr = 0.01
+        elif delta_theta < 0.002:
+            delta_rr = 0.009
+        elif delta_theta < 0.003:
+            delta_rr = 0.008
+        elif delta_theta < 0.004:
+            delta_rr = 0.007
+        elif delta_theta < 0.005:
+            delta_rr = 0.006
+        elif delta_theta < 0.006:
+            delta_rr = 0.005
+        elif delta_theta < 0.007:
+            delta_rr = 0.004
+        elif delta_theta < 0.008:
+            delta_rr = 0.003
+        elif delta_theta < 0.009:
+            delta_rr = 0.002
+        elif delta_theta < 0.01:
+            delta_rr = 0.001
         else:
-            print("delta_theta went beyond 90???")
+            delta_rr = 0.0009
+            # print("delta_theta went beyond 90???")
+
+        # delta_rr = 5e-2
 
         # print("delta_rr: ", delta_rr)
         if condition:
@@ -231,6 +236,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     # rr = np.linspace(r0, rstop, npoints)
 
     def lr_recurring(r_acc, theta_acc, condition):
+        # print("r_acc: ", r_acc)
         recursionCompleted = False
 
         if condition:
@@ -244,6 +250,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             return r_acc, theta_acc
         else:
             rr = get_next_rr(r_acc, theta_acc, condition)
+            # print("rr: ", rr)
 
             uu = 1 / rr
 
@@ -257,8 +264,15 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             theta = (Fs - Fr) / np.sqrt(2 * lambda2)
 
             theta = inout * updn * theta + theta0
+            # print("theta: ", theta)
 
-            return lr_recurring(r_acc.append(rr), theta_acc.append(theta), condition)
+            r_acc.append(rr)
+            theta_acc.append(theta[0])
+
+            # print("r_acc: ", r_acc)
+            # print("theta_acc: ", theta_acc)
+
+            return lr_recurring(r_acc, theta_acc, condition)
 
     if inout == 1:
         condition = True
@@ -266,6 +280,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         condition = False
 
     rr, theta = lr_recurring([r0], [theta0], condition)
+    print(len(rr))
 
     return rr, theta
 
@@ -329,6 +344,7 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
     elif (D < Dcrit):
         # print("lesser")
         rr, theta = if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
+        # rr, theta = if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints)
 
     return rr, theta
 
@@ -478,14 +494,15 @@ def cur_delta(x_arr, y_arr):
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(8, 24, -150)
-r_arr, theta_arr = schwarzschild_get_ray(34.785054261852174, 1.2490457723982544, np.deg2rad(172), 2, 50)
+r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(93.2), 2, 441)
+# r_arr, theta_arr = schwarzschild_get_ray(3.01, 0, np.deg2rad(160), 2, 50)
 # print("x_arr: ", x_arr[::-1])
 
 
 import matplotlib.pyplot as plt
 
 plt.axes(projection = 'polar')
-plt.polar(theta_arr, r_arr, 'b-')
+plt.polar(theta_arr, r_arr, 'b-', marker='o')
 
 plt.figure(figsize=(12, 12))
 
