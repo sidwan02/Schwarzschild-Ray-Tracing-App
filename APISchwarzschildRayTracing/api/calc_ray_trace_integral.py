@@ -394,7 +394,9 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 else:
                     rr_out = get_next_rr(r_acc, theta_acc, condition)
                     uu_out = 1 / rr_out
-                    phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
+                    # print(uu_out)
+                    phi_out = np.arcsin(np.sqrt(np.abs(b2 - uu_out) / np.abs(b1 - uu_out) / m))
+
                     Fi_out = -updn * CC * ei(phi_out, m)
 
                 r_acc.append(rr_out)
@@ -436,7 +438,12 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 else:
                     rr_in = get_next_rr(r_acc, theta_acc, condition)
                     uu_in = 1 / rr_in
-                    phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+                    print("uu_in: ", uu_in)
+                    print("b2: ", b2)
+                    print("b1: ", b1)
+                    print("m: ", m)
+                    phi_in = np.arcsin(np.sqrt(np.abs(b2 - uu_in) / np.abs(b1 - uu_in) / m))
+                    print(phi_in)
                     Fi_in = -updn * CC * ei(phi_in, m)
 
                 r_acc.append(rr_in)
@@ -446,6 +453,11 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("theta_acc: ", theta_acc)
 
                 return gt_recurring_2(r_acc, theta_acc, condition, count + 1)
+
+            print(r_out)
+            print(r_in)
+            print(periastron)
+
 
             rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0)
 
@@ -849,7 +861,7 @@ def cur_delta(x_arr, y_arr):
 # print(r_arr[-1])
 # print(theta_arr[-1])
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.15)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 91)
 
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 
