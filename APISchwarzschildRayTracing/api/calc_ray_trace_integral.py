@@ -380,6 +380,16 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 if recursionCompleted:
                     r_acc.pop()
+
+                    # final
+                    final_uu = 1 / r_in
+                    final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
+                    final_Fi = -updn * CC * ei(final_phi, m)
+
+                    r_acc.append(r_in)
+                    theta_acc.append(final_Fi)
+
+
                     return r_acc, np.array(theta_acc), count
                 else:
                     rr_out = get_next_rr(r_acc, theta_acc, condition)
@@ -413,6 +423,15 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 if recursionCompleted:
                     r_acc.pop() # this is because r_acc always contains 1 more element than theta_acc
+
+                    # final
+                    final_uu = 1 / periastron
+                    final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
+                    final_Fi = -updn * CC * ei(final_phi, m)
+
+                    r_acc.append(periastron)
+                    theta_acc.append(final_Fi)
+
                     return r_acc, np.array(theta_acc), count
                 else:
                     rr_in = get_next_rr(r_acc, theta_acc, condition)
@@ -428,15 +447,18 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 return gt_recurring_2(r_acc, theta_acc, condition, count + 1)
 
+            rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0)
+
+            print(count)
+            rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0)
+
+            print(count)
             # Add everything together to make the final ray
             if (r0 > rf):
 
                 print("hobo")
 
-                rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0)
-                rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0)
 
-                print(count)
 
                 rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
                 Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
@@ -444,9 +466,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 print("gobo")
 
-                rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0)
-                rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0)
-                print(count)
+
 
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
@@ -829,7 +849,7 @@ def cur_delta(x_arr, y_arr):
 # print(r_arr[-1])
 # print(theta_arr[-1])
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.15)
 
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 
@@ -838,21 +858,21 @@ x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93)
 
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
-
-import matplotlib.pyplot as plt
-
-# plt.axes(projection='polar')
-# plt.polar(theta_arr, r_arr, 'b-', marker='o')
 #
-# plt.figure(figsize=(12, 12))
-
-fig = plt.figure()
-ax = fig.add_subplot(111)
-
-
-ax.set_aspect('equal', adjustable='box')
-
-
-plt.plot(x_arr, y_arr)
-
-plt.show()
+# import matplotlib.pyplot as plt
+#
+# # plt.axes(projection='polar')
+# # plt.polar(theta_arr, r_arr, 'b-', marker='o')
+# #
+# # plt.figure(figsize=(12, 12))
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+#
+#
+# ax.set_aspect('equal', adjustable='box')
+#
+#
+# plt.plot(x_arr, y_arr, marker='o')
+#
+# plt.show()
