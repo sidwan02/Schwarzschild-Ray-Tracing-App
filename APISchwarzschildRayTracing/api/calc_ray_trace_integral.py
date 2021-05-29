@@ -72,11 +72,13 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
             return 0
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
             # print("r0 and rstop on the same side of periastron")
+            print("bobo")
             rr = np.linspace(r0, rf, npoints)
             uu = 1 / rr
             phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
             Fi = -updn * CC * ei(phi, m)
         elif (rstop < -periastron) and (r0 == rf):
+            print("hoho haha")
             if (npoints % 2 == 0):
                 rr_in = np.linspace(r0, periastron, int(npoints / 2), endpoint=False)
                 uu_in = 1 / rr_in
@@ -94,6 +96,7 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
         elif (rstop < -periastron) and (r0 != rf):
+            print("ginky")
             # Otherwise, when r0 != rf, the radial excusrion of the ray is
             # from r0 in to periastron and then out to rf
             # r_excur = (r0-periastron) + (rf-periastron)
@@ -219,8 +222,17 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
-                if r_acc[-1] >= rf:
-                    recursionCompleted = True
+                if condition:
+                    # if r_acc[-1] >= rf:
+                    if r_acc[-1] >= rf:
+                        r_acc.pop()
+                        theta_acc.pop()
+                        recursionCompleted = True
+                else:
+                    if r_acc[-1] <= rf:
+                        r_acc.pop()
+                        theta_acc.pop()
+                        recursionCompleted = True
 
                 if recursionCompleted:
                     return r_acc, np.array(theta_acc), count
@@ -233,13 +245,34 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                     r_acc.append(rr)
                     theta_acc.append(Fi)
 
-                    # print("r_acc: ", r_acc)
-                    # print("theta_acc: ", theta_acc)
+                    # print("r_acc: ", r_acc[-1])
+                    # print("theta_acc: ", theta_acc[-1])
+
+                    # print(len(r_acc) == len(theta_acc))
 
                     return gt_recurring(r_acc, theta_acc, condition, count + 1)
 
-            rr, Fi, count = gt_recurring([r0], [theta0], True, 0)
+            if rstop > r0:
+                condition = True
+            else:
+                condition = False
+
+            rr, Fi, count = gt_recurring([r0], [theta0], condition, 0)
             print(count)
+            #
+            # rr = np.linspace(r0, rf, npoints)
+            #
+            # uu = 1 / rr
+            # phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
+            # Fi = -updn * CC * ei(phi, m)
+            # #
+            # # print("rr: ", rr)
+            # # print("uu: ", uu)
+            # # print("phi: ", phi)
+            # # print("Fi: ", Fi)
+
+            print(rr[-1])
+            print(Fi[-1])
 
         elif (rstop < -periastron) and (r0 == rf):
             print("rstop < -periastron")
@@ -279,8 +312,44 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1]))
         elif (rstop < -periastron) and (r0 != rf):
-
             print("(rstop < -periastron) and (r0 != rf)")
+
+            # # Otherwise, when r0 != rf, the radial excusrion of the ray is
+            # # from r0 in to periastron and then out to rf
+            # # r_excur = (r0-periastron) + (rf-periastron)
+            # r_excur = r0 + rf - 2 * periastron
+            # # Out of the total path, the part between min(rf,r0) and periastron
+            # # is symmetric
+            # r_in = np.amin([r0, rf])
+            # # So if we want npoints during the entire excursion, the number of
+            # # points between r_in and periastron should be
+            # # n_in = npoints*(2*(r_in-periastron)/r_excur)
+            # # However this excursion of r_in->periastron->r_in is symmetric. So
+            # # we really need only half as many points to cover this range.
+            # n_in = int(npoints * (r_in - periastron) / r_excur)
+            # # We reserve one point for periastron location, and reserve
+            # # the remaining points are outside r_in and inside r_out = max(r0,rf)
+            # n_out = npoints - 2 * n_in - 1
+            # r_out = np.amax([r0, rf])
+            # # Now first construct the ray between r_out and r_in in n_out points
+            # rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
+            # uu_out = 1 / rr_out
+            # phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
+            # Fi_out = -updn * CC * ei(phi_out, m)
+            # # And then construct the ray from r_in to almost periastron
+            # rr_in = np.linspace(r_in, periastron, n_in, endpoint=False)
+            # uu_in = 1 / rr_in
+            # phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
+            # Fi_in = -updn * CC * ei(phi_in, m)
+            # # Add everything together to make the final ray
+            # if (r0 > rf):
+            #     rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
+            #     Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+            # else:
+            #     rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
+            #     Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+
+
 
             # Otherwise, when r0 != rf, the radial excusrion of the ray is
             # from r0 in to periastron and then out to rf
@@ -306,10 +375,11 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
-                if r_acc[-1] >= r_in:
+                if r_acc[-1] <= r_in:
                     recursionCompleted = True
 
                 if recursionCompleted:
+                    r_acc.pop()
                     return r_acc, np.array(theta_acc), count
                 else:
                     rr_out = get_next_rr(r_acc, theta_acc, condition)
@@ -323,10 +393,10 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 # print("theta_acc: ", theta_acc)
 
-                return gt_recurring(r_acc, theta_acc, condition, count + 1)
+                return gt_recurring_1(r_acc, theta_acc, condition, count + 1)
 
-            rr_out, Fi_out, count = gt_recurring_1([r_out], [theta0], True, 0)
-            print(count)
+
+
 
 
             # rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
@@ -338,10 +408,11 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
-                if r_acc[-1] >= periastron:
+                if r_acc[-1] <= periastron:
                     recursionCompleted = True
 
                 if recursionCompleted:
+                    r_acc.pop() # this is because r_acc always contains 1 more element than theta_acc
                     return r_acc, np.array(theta_acc), count
                 else:
                     rr_in = get_next_rr(r_acc, theta_acc, condition)
@@ -357,16 +428,29 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 return gt_recurring_2(r_acc, theta_acc, condition, count + 1)
 
-            rr_in, Fi_in, count = gt_recurring_2([r_in], [theta0], True, 0)
-            print(count)
-
             # Add everything together to make the final ray
             if (r0 > rf):
+
+                print("hobo")
+
+                rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0)
+                rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0)
+
+                print(count)
+
                 rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
                 Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
             else:
+
+                print("gobo")
+
+                rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0)
+                rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0)
+                print(count)
+
                 rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
                 Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+
         else:
             # print('this should not happen! bailing.')
             return 0
@@ -378,7 +462,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
 
 def get_next_rr(r_acc, theta_acc, condition):
-    if len(r_acc) == (1 or 2):
+    if len(r_acc) <= 3: # not (1 or 2) because r_acc contains 1 more el than theta
         # this is the first or second time this function is being executed
         if condition:
             rr = r_acc[-1] + 5e-3
@@ -575,8 +659,8 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
     elif (D > Dcrit):
         # print("greater")
         # for r = 10, delta = 100 D > Dcrit
-        rr, theta = if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
-        # rr, theta = if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints)
+        # rr, theta = if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints)
+        rr, theta = if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints)
         # if rstop > r0:
         #     condition = True
         # else:
@@ -683,8 +767,10 @@ def schwarzschild_get_ray_cartesian(x, y, delta0):
 
     # determining rstop
     rstop = get_rstop(M, r0, delta0)
+    # rstop = 20
 
-    # print("rstop: ", rstop)
+
+    print("rstop: ", rstop)
 
     # delta0 = np.rad2deg(delta0)
 
@@ -739,22 +825,34 @@ def cur_delta(x_arr, y_arr):
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(90), 10, 183)
 
 # same side
-# r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(91), 10, 183)
+# r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(100), 10, 183)
+# print(r_arr[-1])
+# print(theta_arr[-1])
+
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93)
+
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 
 # rstop < -periastron
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(80), 10, 183)
 
 # (rstop < -periastron) and (r0 != rf)
-r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
+# r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 
 import matplotlib.pyplot as plt
 
-plt.axes(projection='polar')
-plt.polar(theta_arr, r_arr, 'b-', marker='o')
+# plt.axes(projection='polar')
+# plt.polar(theta_arr, r_arr, 'b-', marker='o')
+#
+# plt.figure(figsize=(12, 12))
 
-plt.figure(figsize=(12, 12))
+fig = plt.figure()
+ax = fig.add_subplot(111)
 
-# plt.plot(x_arr, y_arr)
+
+ax.set_aspect('equal', adjustable='box')
+
+
+plt.plot(x_arr, y_arr)
 
 plt.show()
