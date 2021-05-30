@@ -456,7 +456,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
-                if r_acc[-1] <= periastron:
+                if r_acc[-1] >= r_in:
                     recursionCompleted = True
 
                 if recursionCompleted:
@@ -474,10 +474,10 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 else:
                     rr_in, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
                     uu_in = 1 / rr_in
-                    print("uu_in: ", uu_in)
-                    print("b2: ", b2)
-                    print("b1: ", b1)
-                    print("m: ", m)
+                    # print("uu_in: ", uu_in)
+                    # print("b2: ", b2)
+                    # print("b1: ", b1)
+                    # print("m: ", m)
                     phi_in = np.arcsin(np.sqrt(np.abs(b2 - uu_in) / np.abs(b1 - uu_in) / m))
                     print(phi_in)
                     Fi_in = -updn * CC * ei(phi_in, m)
@@ -490,16 +490,16 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 return gt_recurring_2(r_acc, theta_acc, condition, count + 1, maximum_r_change)
 
-            print(r_out)
-            print(r_in)
-            print(periastron)
+            # print(r_out)
+            # print(r_in)
+            # print(periastron)
 
 
-            # rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0, maximum_r_change=0.1)
             rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.1)
+            # rr_out, Fi_out, count = (np.array([]), np.array([]), 0)
 
             print(count)
-            rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0, maximum_r_change=0.1)
+            rr_in, Fi_in, count = gt_recurring_2([periastron], [], True, 0, maximum_r_change=0.001)
 
             print(count)
             # Add everything together to make the final ray
@@ -509,18 +509,18 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
 
 
-                rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
+                rr = np.concatenate((rr_out[::-1], rr_in[::-1], [periastron], rr_in))
                 # Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
-                Fi = np.concatenate((Fi_out[::-1], Fi_in, [0], -Fi_in[::-1]))
+                Fi = np.concatenate((Fi_out[::-1], Fi_in[::-1], [0], -Fi_in))
             else:
 
                 print("gobo")
 
 
 
-                rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out))
+                rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
                 # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out))
+                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
 
         else:
             # print('this should not happen! bailing.')
@@ -575,12 +575,11 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 #     return rr
 
 def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
-    if len(r_acc) <= 3: # not (1 or 2) because r_acc contains 1 more el than theta
-        # this is the first or second time this function is being executed
+    if len(r_acc) <= 5:
         if condition:
-            rr = r_acc[-1] + 5e-3
+            rr = r_acc[-1] + 1e-3
         else:
-            rr = r_acc[-1] - 5e-3
+            rr = r_acc[-1] - 1e-3
     else:
         # if consistently theta change is decreasing, then increase maximum_r_change
 
@@ -601,6 +600,7 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
 
         last_few = delta[-3:]
+
         #
         # last_few_rev = last_few[::-1]
         # last_few_sorted = sorted(last_few)
@@ -616,11 +616,10 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
         if all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
             maximum_r_change *= 1.1
+        else:
+            maximum_r_change *= 0.99
 
-        print(maximum_r_change)
-
-
-
+        # print(maximum_r_change)
 
         #
         # if all(map(lambda x, y: x == y, last_few_rev, last_few_sorted)):
@@ -631,7 +630,7 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         #     # values are in ascending order in the last few
 
 
-        # print("new: ", maximum_r_change)
+        print("new: ", maximum_r_change)
 
         angle_change = abs(theta_acc[-1] - theta_acc[-2])
 
@@ -979,7 +978,7 @@ def cur_delta(x_arr, y_arr):
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 x = 3.1 * np.cos(np.deg2rad(45))
 y = 3.1 * np.sin(np.deg2rad(45))
-x_arr, y_arr = schwarzschild_get_ray_cartesian(x, y, 91)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 92)
 
 # rstop < -periastron
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(80), 10, 183)
