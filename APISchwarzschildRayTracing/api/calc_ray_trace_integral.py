@@ -495,11 +495,12 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             # print(periastron)
 
 
-            rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.1)
+            rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.01)
             # rr_out, Fi_out, count = (np.array([]), np.array([]), 0)
 
             print(count)
             rr_in, Fi_in, count = gt_recurring_2([periastron], [], True, 0, maximum_r_change=0.001)
+            # rr_in, Fi_in, count = (np.array([]), np.array([]), 0)
 
             print(count)
             # Add everything together to make the final ray
@@ -521,6 +522,9 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
                 # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
                 Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
+
+                # rr = rr_out
+                # Fi = -Fi_out
 
         else:
             # print('this should not happen! bailing.')
