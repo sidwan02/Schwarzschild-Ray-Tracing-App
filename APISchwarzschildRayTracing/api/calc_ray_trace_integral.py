@@ -142,6 +142,7 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
 
 
 def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
+    print("delta0: ", delta0)
     # print("greater than")
     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
     # updn = 1 for rays above the radial direction, -1 for those below
@@ -170,7 +171,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         # phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
         # Fi = updn * CC * ei(phi, m)
 
-        def gt_recurring(r_acc, theta_acc, condition, count):
+        def gt_recurring(r_acc, theta_acc, condition, count, maximum_r_change):
             # print("r_acc: ", r_acc)
             recursionCompleted = False
 
@@ -182,10 +183,12 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                     recursionCompleted = True
 
             if recursionCompleted:
+                r_acc.pop()
+
                 return r_acc, np.array(theta_acc), count
             else:
 
-                rr = get_next_rr(r_acc, theta_acc, condition)
+                rr, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
                 uu = 1 / rr
                 phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
                 Fi = updn * CC * ei(phi, m)
@@ -198,14 +201,15 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 # print("theta_acc: ", theta_acc)
 
-                return gt_recurring(r_acc, theta_acc, condition, count + 1)
+                return gt_recurring(r_acc, theta_acc, condition, count + 1, maximum_r_change)
 
         if inout == 1:
             condition = True
         else:
             condition = False
 
-        rr, Fi, count = gt_recurring([r0], [theta0], condition, 0)
+        # rr, Fi, count = gt_recurring([r0], [theta0], condition, 0, 0.01)
+        rr, Fi, count = gt_recurring([r0], [], condition, 0, maximum_r_change=0.01)
         print(count)
 
     if (inout == -1):  # inward rays
@@ -218,7 +222,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         elif (rstop > periastron):  # r0 and rstop on the same side of periastron
             print("same side")
 
-            def gt_recurring(r_acc, theta_acc, condition, count):
+            def gt_recurring(r_acc, theta_acc, condition, count, maximum_r_change):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
@@ -237,7 +241,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 if recursionCompleted:
                     return r_acc, np.array(theta_acc), count
                 else:
-                    rr = get_next_rr(r_acc, theta_acc, condition)
+                    rr, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
                     uu = 1 / rr
                     phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
                     Fi = -updn * CC * ei(phi, m)
@@ -250,14 +254,14 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                     # print(len(r_acc) == len(theta_acc))
 
-                    return gt_recurring(r_acc, theta_acc, condition, count + 1)
+                    return gt_recurring(r_acc, theta_acc, condition, count + 1, maximum_r_change)
 
             if rstop > r0:
                 condition = True
             else:
                 condition = False
 
-            rr, Fi, count = gt_recurring([r0], [theta0], condition, 0)
+            rr, Fi, count = gt_recurring([r0], [theta0], condition, 0, maximum_r_change=0.01)
             print(count)
             #
             # rr = np.linspace(r0, rf, npoints)
@@ -277,7 +281,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         elif (rstop < -periastron) and (r0 == rf):
             print("rstop < -periastron")
 
-            def gt_recurring(r_acc, theta_acc, condition, count):
+            def gt_recurring(r_acc, theta_acc, condition, count, maximum_r_change):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
@@ -287,7 +291,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 if recursionCompleted:
                     return r_acc, np.array(theta_acc), count
                 else:
-                    rr_in = get_next_rr(r_acc, theta_acc, condition)
+                    rr_in, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
                     uu_in = 1 / rr_in
                     phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
                     Fi_in = -updn * CC * ei(phi_in, m)
@@ -298,9 +302,9 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 # print("r_acc: ", r_acc)
                 # print("theta_acc: ", theta_acc)
 
-                return gt_recurring(r_acc, theta_acc, condition, count + 1)
+                return gt_recurring(r_acc, theta_acc, condition, count + 1, maximum_r_change)
 
-            rr_in, Fi_in, count = gt_recurring([r0], [theta0], True, 0)
+            rr_in, Fi_in, count = gt_recurring([r0], [theta0], True, 0, maximum_r_change=0.01)
             print(count)
 
             if (count % 2 == 0):
@@ -517,14 +521,12 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 print("gobo")
 
+                rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
+                # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
 
-
-                # rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
-                # # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-                # Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
-
-                rr = np.concatenate((rr_in[::-1], [periastron], rr_in))
-                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in))
+                # rr = np.concatenate((rr_in[::-1], [periastron], rr_in))
+                # Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in))
 
                 # rr = rr_out
                 # Fi = -Fi_out
@@ -719,6 +721,9 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         else:
             if r_acc[-1] <= rstop:
                 recursionCompleted = True
+
+        if r_acc[-1] < 2:
+            recursionCompleted = True
 
         if recursionCompleted:
             r_acc.pop()
@@ -983,13 +988,14 @@ def cur_delta(x_arr, y_arr):
 # print(r_arr[-1])
 # print(theta_arr[-1])
 
-# x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, -172.3370949374974)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, -172.3370949374974)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, -94)
 
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 x = 3.1 * np.cos(np.deg2rad(45))
 y = 3.1 * np.sin(np.deg2rad(45))
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.16)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 96)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 30)
 
 
 # rstop < -periastron
