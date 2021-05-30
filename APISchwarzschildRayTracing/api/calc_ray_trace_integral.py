@@ -371,23 +371,60 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             # Now first construct the ray between r_out and r_in in n_out points
 
 
+            # def gt_recurring_1(r_acc, theta_acc, condition, count, maximum_r_change):
+            #     # print("r_acc: ", r_acc)
+            #     recursionCompleted = False
+            #
+            #     if r_acc[-1] <= r_in:
+            #         recursionCompleted = True
+            #
+            #     if recursionCompleted:
+            #         r_acc.pop()
+            #
+            #         # final
+            #         final_uu = 1 / r_in
+            #         final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
+            #         final_Fi = -updn * CC * ei(final_phi, m)
+            #
+            #         r_acc.append(r_in)
+            #         theta_acc.append(final_Fi)
+            #
+            #
+            #         return r_acc, np.array(theta_acc), count
+            #     else:
+            #         rr_out, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
+            #         uu_out = 1 / rr_out
+            #         # print(uu_out)
+            #         phi_out = np.arcsin(np.sqrt(np.abs(b2 - uu_out) / np.abs(b1 - uu_out) / m))
+            #
+            #         Fi_out = -updn * CC * ei(phi_out, m)
+            #
+            #     r_acc.append(rr_out)
+            #     theta_acc.append(Fi_out)
+            #
+            #     # print("r_acc: ", r_acc)
+            #     # print("theta_acc: ", theta_acc)
+            #
+            #     return gt_recurring_1(r_acc, theta_acc, condition, count + 1, maximum_r_change)
+
+
             def gt_recurring_1(r_acc, theta_acc, condition, count, maximum_r_change):
                 # print("r_acc: ", r_acc)
                 recursionCompleted = False
 
-                if r_acc[-1] <= r_in:
+                if r_acc[-1] >= r_out:
                     recursionCompleted = True
 
                 if recursionCompleted:
                     r_acc.pop()
 
-                    # final
-                    final_uu = 1 / r_in
-                    final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
-                    final_Fi = -updn * CC * ei(final_phi, m)
-
-                    r_acc.append(r_in)
-                    theta_acc.append(final_Fi)
+                    # # final
+                    # final_uu = 1 / r_out
+                    # final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
+                    # final_Fi = -updn * CC * ei(final_phi, m)
+                    #
+                    # r_acc.append(r_out)
+                    # theta_acc.append(final_Fi)
 
 
                     return r_acc, np.array(theta_acc), count
@@ -410,7 +447,6 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
 
 
-
             # rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
             # And then construct the ray from r_in to almost periastron
             # rr_in = np.linspace(r_in, periastron, n_in, endpoint=False)
@@ -426,13 +462,13 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 if recursionCompleted:
                     r_acc.pop() # this is because r_acc always contains 1 more element than theta_acc
 
-                    # final
-                    final_uu = 1 / periastron
-                    final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
-                    final_Fi = -updn * CC * ei(final_phi, m)
-
-                    r_acc.append(periastron)
-                    theta_acc.append(final_Fi)
+                    # # final
+                    # final_uu = 1 / periastron
+                    # final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
+                    # final_Fi = -updn * CC * ei(final_phi, m)
+                    #
+                    # r_acc.append(periastron)
+                    # theta_acc.append(final_Fi)
 
                     return r_acc, np.array(theta_acc), count
                 else:
@@ -459,7 +495,8 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             print(periastron)
 
 
-            rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0, maximum_r_change=0.1)
+            # rr_out, Fi_out, count = gt_recurring_1([r_out], [], False, 0, maximum_r_change=0.1)
+            rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.1)
 
             print(count)
             rr_in, Fi_in, count = gt_recurring_2([r_in], [], False, 0, maximum_r_change=0.1)
@@ -473,15 +510,17 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
 
                 rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
-                Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+                # Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
+                Fi = np.concatenate((Fi_out[::-1], Fi_in, [0], -Fi_in[::-1]))
             else:
 
                 print("gobo")
 
 
 
-                rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
-                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out))
+                # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out))
 
         else:
             # print('this should not happen! bailing.')
@@ -544,24 +583,43 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
             rr = r_acc[-1] - 5e-3
     else:
         # if consistently theta change is decreasing, then increase maximum_r_change
-        delta_theta_arr = np.array(theta_acc[1:]) - np.array(theta_acc[:-1])
-        last_few = delta_theta_arr[-3:]
+
+        x_arr = r_acc[:-1] * np.cos(theta_acc)
+        y_arr = r_acc[:-1] * np.sin(theta_acc)
+
+        delta_x = np.array([x1 - x2 for x1, x2 in zip(x_arr[:-1], x_arr[1:])])
+        delta_y = np.array([y1 - y2 for y1, y2 in zip(y_arr[:-1], y_arr[1:])])
+
+        delta_m = delta_y / delta_x
+
+        # intersection between two lines
+        delta = np.abs(np.array([np.arctan((m2 - m1) / (1 + m1 * m2))
+                          for m1, m2 in zip(delta_m[:-1], delta_m[1:])]))
+
+
+        # rememebr, the lower the delta, the more sharp the angle, an angle of pi/2 means straight line.
+
+
+        last_few = delta[-3:]
         #
         # last_few_rev = last_few[::-1]
         # last_few_sorted = sorted(last_few)
 
-        # print(last_few)
+        print("last_few: ", last_few)
+        print("r: ", r_acc[-2])
 
         if all(last_few[i] <= last_few[i+1] for i in range(len(last_few)-1)):
             # if the array is in ascending order, that means theta changes are becoming larger
             maximum_r_change *= 0.99
-        else:
-            maximum_r_change *= 1.5
+        # else:
+        #     maximum_r_change *= 1.5
+
+        if all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
+            maximum_r_change *= 1.1
 
         print(maximum_r_change)
 
-        # if all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
-        #     maximum_r_change *= 1.5
+
 
 
         #
