@@ -493,6 +493,48 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     return rr, Fi
 
 
+# def get_next_rr(r_acc, theta_acc, condition):
+#     if len(r_acc) <= 3: # not (1 or 2) because r_acc contains 1 more el than theta
+#         # this is the first or second time this function is being executed
+#         if condition:
+#             rr = r_acc[-1] + 5e-3
+#         else:
+#             rr = r_acc[-1] - 5e-3
+#     else:
+#         delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
+#         # delta_theta = np.deg2rad(10)
+#         # print("delta_theta: ", delta_theta)
+#
+#         delta_theta_bounds = np.array([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]) / 1000
+#         # delta_theta_bounds = np.array([1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91]) / 10000
+#
+#         # delta_theta_bounds = np.linspace(0.001, 0.01, 100)
+#         # delta_theta_bounds = np.geomspace(0.001, 0.01, 10)
+#         # print("delta_theta_bounds")
+#
+#         delta_rr = 0
+#         i = 0
+#         for bound in delta_theta_bounds:
+#             if delta_theta < bound:
+#                 delta_rr = delta_theta_bounds[::-1][i]
+#                 break
+#             i += 1
+#
+#         if delta_rr == 0:
+#             # print("in here")
+#             # angle was larger than 0.01
+#             delta_rr = 0.001
+#
+#         # delta_rr = 0.005
+#         # print("delta_rr: ", delta_rr)
+#
+#         if condition:
+#             rr = r_acc[-1] + delta_rr
+#         else:
+#             rr = r_acc[-1] - delta_rr
+#
+#     return rr
+
 def get_next_rr(r_acc, theta_acc, condition):
     if len(r_acc) <= 3: # not (1 or 2) because r_acc contains 1 more el than theta
         # this is the first or second time this function is being executed
@@ -502,31 +544,19 @@ def get_next_rr(r_acc, theta_acc, condition):
             rr = r_acc[-1] - 5e-3
     else:
         delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
-        # delta_theta = np.deg2rad(10)
-        # print("delta_theta: ", delta_theta)
 
         delta_theta_bounds = np.array([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]) / 1000
-        # delta_theta_bounds = np.array([1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91]) / 10000
 
-        # delta_theta_bounds = np.linspace(0.001, 0.01, 100)
-        # delta_theta_bounds = np.geomspace(0.001, 0.01, 10)
-        # print("delta_theta_bounds")
 
-        delta_rr = 0
-        i = 0
-        for bound in delta_theta_bounds:
-            if delta_theta < bound:
-                delta_rr = delta_theta_bounds[::-1][i]
-                break
-            i += 1
+        angle_change = abs(theta_acc[-1] - theta_acc[-2])
 
-        if delta_rr == 0:
-            # print("in here")
-            # angle was larger than 0.01
-            delta_rr = 0.001
+        maximum_r_change = 0.1
 
-        # delta_rr = 0.005
-        # print("delta_rr: ", delta_rr)
+        orders_of_mag = angle_change ** 3 / maximum_r_change
+
+        # delta_rr = max(jump_dist / orders_of_mag, maximum_r_change)
+        delta_rr = min(maximum_r_change / orders_of_mag, maximum_r_change)
+        print(delta_rr)
 
         if condition:
             rr = r_acc[-1] + delta_rr
@@ -861,9 +891,12 @@ def cur_delta(x_arr, y_arr):
 # print(r_arr[-1])
 # print(theta_arr[-1])
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 91)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, -172.3370949374974)
 
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
+x = 3.1 * np.cos(np.deg2rad(45))
+y = 3.1 * np.sin(np.deg2rad(45))
+x_arr, y_arr = schwarzschild_get_ray_cartesian(x, y, 90)
 
 # rstop < -periastron
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(80), 10, 183)
@@ -871,20 +904,20 @@ x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 91)
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 #
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+# plt.axes(projection='polar')
+# plt.polar(theta_arr, r_arr, 'b-', marker='o')
 #
-# # plt.axes(projection='polar')
-# # plt.polar(theta_arr, r_arr, 'b-', marker='o')
-# #
-# # plt.figure(figsize=(12, 12))
-#
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-#
-#
-# ax.set_aspect('equal', adjustable='box')
+# plt.figure(figsize=(12, 12))
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
 #
 #
-# plt.plot(x_arr, y_arr, marker='o')
-#
-# plt.show()
+ax.set_aspect('equal', adjustable='box')
+
+
+plt.plot(x_arr, y_arr, marker='o')
+
+plt.show()
