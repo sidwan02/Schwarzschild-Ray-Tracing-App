@@ -519,9 +519,12 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
 
 
-                rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
-                # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
+                # rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
+                # # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                # Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
+
+                rr = np.concatenate((rr_in[::-1], [periastron], rr_in))
+                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in))
 
                 # rr = rr_out
                 # Fi = -Fi_out
@@ -706,7 +709,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     # Set up the radial and inverse radial arrays
     # rr = np.linspace(r0, rstop, npoints)
 
-    def lr_recurring(r_acc, theta_acc, condition):
+    def lr_recurring(r_acc, theta_acc, condition, maximum_r_change):
         # print("r_acc: ", r_acc)
         recursionCompleted = False
 
@@ -718,9 +721,11 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 recursionCompleted = True
 
         if recursionCompleted:
+            r_acc.pop()
+
             return r_acc, theta_acc
         else:
-            rr = get_next_rr(r_acc, theta_acc, condition)
+            rr, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
             # print("rr: ", rr)
 
             uu = 1 / rr
@@ -743,14 +748,15 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             # print("r_acc: ", r_acc)
             # print("theta_acc: ", theta_acc)
 
-            return lr_recurring(r_acc, theta_acc, condition)
+            return lr_recurring(r_acc, theta_acc, condition, maximum_r_change)
 
     if rstop > r0:
         condition = True
     else:
         condition = False
 
-    rr, theta = lr_recurring([r0], [theta0], condition)
+    # rr, theta = lr_recurring([r0], [theta0], condition, 0.01)
+    rr, theta = lr_recurring([r0], [], condition, 0.01)
     print(len(rr))
 
     return rr, theta
@@ -982,7 +988,9 @@ def cur_delta(x_arr, y_arr):
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 x = 3.1 * np.cos(np.deg2rad(45))
 y = 3.1 * np.sin(np.deg2rad(45))
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 92)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.16)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 96)
+
 
 # rstop < -periastron
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(80), 10, 183)
