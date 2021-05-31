@@ -693,6 +693,8 @@ def if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
 
 def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     print("within lesser")
+    print("r0: ", r0)
+    print("rstop: ", rstop)
     # inout = 1 for outward rays at (r0,theta0), and -1 for inward rays
     # updn = 1 for rays above the radial direction, -1 for those below
     inout, updn = np.sign(np.cos(delta0)), np.sign(np.sin(delta0))
@@ -715,15 +717,18 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         # print("r_acc: ", r_acc)
         recursionCompleted = False
 
-        if condition:
-            if r_acc[-1] >= rstop:
-                recursionCompleted = True
-        else:
-            if r_acc[-1] <= rstop:
-                recursionCompleted = True
+        # if condition:
+        #     if r_acc[-1] >= rstop:
+        #         recursionCompleted = True
+        # else:
+        #     if r_acc[-1] <= rstop:
+        #         recursionCompleted = True
 
-        if r_acc[-1] < 2:
+        if r_acc[-1] >= rstop:
             recursionCompleted = True
+
+        # if r_acc[-1] < 2:
+        #     recursionCompleted = True
 
         if recursionCompleted:
             r_acc.pop()
@@ -755,13 +760,25 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
             return lr_recurring(r_acc, theta_acc, condition, maximum_r_change)
 
-    if rstop > r0:
-        condition = True
-    else:
-        condition = False
+    # if rstop > r0:
+    #     condition = True
+    # else:
+    #     condition = False
 
     # rr, theta = lr_recurring([r0], [theta0], condition, 0.01)
-    rr, theta = lr_recurring([r0], [], condition, 0.01)
+
+    if rstop > r0:
+        rr, theta = lr_recurring([r0], [], True, 0.01)
+    else:
+        # now going outward but since it was originally going into blackhole must reverse our outward
+        # going values; also need to set rstop to r0
+        print("falling into bh")
+        rstop = r0
+
+        rr, theta = lr_recurring([2], [], True, 0.01)
+        rr = rr[::-1]
+        theta = theta[::-1]
+
     print(len(rr))
 
     return rr, theta
