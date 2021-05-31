@@ -318,43 +318,6 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         elif (rstop < -periastron) and (r0 != rf):
             print("(rstop < -periastron) and (r0 != rf)")
 
-            # # Otherwise, when r0 != rf, the radial excusrion of the ray is
-            # # from r0 in to periastron and then out to rf
-            # # r_excur = (r0-periastron) + (rf-periastron)
-            # r_excur = r0 + rf - 2 * periastron
-            # # Out of the total path, the part between min(rf,r0) and periastron
-            # # is symmetric
-            # r_in = np.amin([r0, rf])
-            # # So if we want npoints during the entire excursion, the number of
-            # # points between r_in and periastron should be
-            # # n_in = npoints*(2*(r_in-periastron)/r_excur)
-            # # However this excursion of r_in->periastron->r_in is symmetric. So
-            # # we really need only half as many points to cover this range.
-            # n_in = int(npoints * (r_in - periastron) / r_excur)
-            # # We reserve one point for periastron location, and reserve
-            # # the remaining points are outside r_in and inside r_out = max(r0,rf)
-            # n_out = npoints - 2 * n_in - 1
-            # r_out = np.amax([r0, rf])
-            # # Now first construct the ray between r_out and r_in in n_out points
-            # rr_out = np.linspace(r_out, r_in, n_out, endpoint=False)
-            # uu_out = 1 / rr_out
-            # phi_out = np.arcsin(np.sqrt((b2 - uu_out) / (b1 - uu_out) / m))
-            # Fi_out = -updn * CC * ei(phi_out, m)
-            # # And then construct the ray from r_in to almost periastron
-            # rr_in = np.linspace(r_in, periastron, n_in, endpoint=False)
-            # uu_in = 1 / rr_in
-            # phi_in = np.arcsin(np.sqrt((b2 - uu_in) / (b1 - uu_in) / m))
-            # Fi_in = -updn * CC * ei(phi_in, m)
-            # # Add everything together to make the final ray
-            # if (r0 > rf):
-            #     rr = np.concatenate((rr_out, rr_in, [periastron], rr_in[::-1]))
-            #     Fi = np.concatenate((Fi_out, Fi_in, [0], -Fi_in[::-1]))
-            # else:
-            #     rr = np.concatenate((rr_in, [periastron], rr_in[::-1], rr_out[::-1]))
-            #     Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-
-
-
             # Otherwise, when r0 != rf, the radial excusrion of the ray is
             # from r0 in to periastron and then out to rf
             # r_excur = (r0-periastron) + (rf-periastron)
@@ -373,44 +336,6 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             n_out = npoints - 2 * n_in - 1
             r_out = np.amax([r0, rf])
             # Now first construct the ray between r_out and r_in in n_out points
-
-
-            # def gt_recurring_1(r_acc, theta_acc, condition, count, maximum_r_change):
-            #     # print("r_acc: ", r_acc)
-            #     recursionCompleted = False
-            #
-            #     if r_acc[-1] <= r_in:
-            #         recursionCompleted = True
-            #
-            #     if recursionCompleted:
-            #         r_acc.pop()
-            #
-            #         # final
-            #         final_uu = 1 / r_in
-            #         final_phi = np.arcsin(np.sqrt((b2 - final_uu) / (b1 - final_uu) / m))
-            #         final_Fi = -updn * CC * ei(final_phi, m)
-            #
-            #         r_acc.append(r_in)
-            #         theta_acc.append(final_Fi)
-            #
-            #
-            #         return r_acc, np.array(theta_acc), count
-            #     else:
-            #         rr_out, maximum_r_change = get_next_rr(r_acc, theta_acc, condition, maximum_r_change)
-            #         uu_out = 1 / rr_out
-            #         # print(uu_out)
-            #         phi_out = np.arcsin(np.sqrt(np.abs(b2 - uu_out) / np.abs(b1 - uu_out) / m))
-            #
-            #         Fi_out = -updn * CC * ei(phi_out, m)
-            #
-            #     r_acc.append(rr_out)
-            #     theta_acc.append(Fi_out)
-            #
-            #     # print("r_acc: ", r_acc)
-            #     # print("theta_acc: ", theta_acc)
-            #
-            #     return gt_recurring_1(r_acc, theta_acc, condition, count + 1, maximum_r_change)
-
 
             def gt_recurring_1(r_acc, theta_acc, condition, count, maximum_r_change):
                 # print("r_acc: ", r_acc)
@@ -541,48 +466,6 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     return rr, Fi
 
 
-# def get_next_rr(r_acc, theta_acc, condition):
-#     if len(r_acc) <= 3: # not (1 or 2) because r_acc contains 1 more el than theta
-#         # this is the first or second time this function is being executed
-#         if condition:
-#             rr = r_acc[-1] + 5e-3
-#         else:
-#             rr = r_acc[-1] - 5e-3
-#     else:
-#         delta_theta = np.abs(theta_acc[-1] - theta_acc[-2])
-#         # delta_theta = np.deg2rad(10)
-#         # print("delta_theta: ", delta_theta)
-#
-#         delta_theta_bounds = np.array([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]) / 1000
-#         # delta_theta_bounds = np.array([1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91]) / 10000
-#
-#         # delta_theta_bounds = np.linspace(0.001, 0.01, 100)
-#         # delta_theta_bounds = np.geomspace(0.001, 0.01, 10)
-#         # print("delta_theta_bounds")
-#
-#         delta_rr = 0
-#         i = 0
-#         for bound in delta_theta_bounds:
-#             if delta_theta < bound:
-#                 delta_rr = delta_theta_bounds[::-1][i]
-#                 break
-#             i += 1
-#
-#         if delta_rr == 0:
-#             # print("in here")
-#             # angle was larger than 0.01
-#             delta_rr = 0.001
-#
-#         # delta_rr = 0.005
-#         # print("delta_rr: ", delta_rr)
-#
-#         if condition:
-#             rr = r_acc[-1] + delta_rr
-#         else:
-#             rr = r_acc[-1] - delta_rr
-#
-#     return rr
-
 def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
     if len(r_acc) <= 5:
         if condition:
@@ -609,6 +492,7 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
 
         last_few = delta[-3:]
+        last_few_5 = delta[-5:]
 
         #
         # last_few_rev = last_few[::-1]
@@ -619,14 +503,16 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
         if all(last_few[i] <= last_few[i+1] for i in range(len(last_few)-1)):
             # if the array is in ascending order, that means theta changes are becoming larger
-            maximum_r_change *= 0.99
+            maximum_r_change *= 0.96
         # else:
         #     maximum_r_change *= 1.5
 
-        if all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
+        if all(last_few_5[i] >= last_few_5[i + 1] for i in range(len(last_few_5) - 1)):
+            maximum_r_change *= 1.2
+        elif all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
             maximum_r_change *= 1.1
-        else:
-            maximum_r_change *= 0.99
+        # else:
+        #     maximum_r_change *= 0.99
 
         # print(maximum_r_change)
 
@@ -656,6 +542,35 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
     return rr, maximum_r_change
 
+# def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
+#     if len(r_acc) <= 2:
+#         if condition:
+#             rr = r_acc[-1] + 1e-3
+#         else:
+#             rr = r_acc[-1] - 1e-3
+#     else:
+#         # if consistently theta change is decreasing, then increase maximum_r_change
+#
+#         x1 = r_acc[-2] * np.cos(theta_acc[-2])
+#         y1 = r_acc[-2] * np.sin(theta_acc[-2])
+#
+#         x2 = r_acc[-1] * np.cos(theta_acc[-1])
+#         y2 = r_acc[-1] * np.sin(theta_acc[-1])
+#
+#         target_dist = 0.01
+#         dist = np.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+#
+#         magnitude_change = dist / target_dist
+#         # if dist > target_dist, then mag > 1
+#
+#         delta_rr = target_dist / magnitude_change
+#
+#         if condition:
+#             rr = r_acc[-1] + delta_rr
+#         else:
+#             rr = r_acc[-1] - delta_rr
+#
+#     return rr, maximum_r_change
 
 def if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
     # print("within lesser")
@@ -768,11 +683,12 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     # rr, theta = lr_recurring([r0], [theta0], condition, 0.01)
 
     if rstop > r0:
+        print("going away from bh")
         rr, theta = lr_recurring([r0], [], True, 0.01)
     else:
+        print("falling into bh")
         # now going outward but since it was originally going into blackhole must reverse our outward
         # going values; also need to set rstop to r0
-        print("falling into bh")
         rstop = r0
 
         rr, theta = lr_recurring([2], [], True, 0.01)
@@ -981,20 +897,6 @@ def cur_delta(x_arr, y_arr):
 # def get_r_step():
 
 
-# def getDistributedPoints(base, start, end, n):
-#     exponents = np.linspace(0, n, n)
-#     all_values = np.power(base, exponents)
-#
-#     last_val = all_values[n - 1]
-#     denom = last_val / end
-#
-#     all_values = all_values / denom
-#
-#     return all_values
-#
-# # print(getDistributedPoints(2, 2, 10, 100))
-
-
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
 
 # hi
@@ -1005,13 +907,13 @@ def cur_delta(x_arr, y_arr):
 # print(r_arr[-1])
 # print(theta_arr[-1])
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, -172.3370949374974)
-# x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, -94)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, -172.3370949374974)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, -93.2)
 
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
 x = 3.1 * np.cos(np.deg2rad(45))
 y = 3.1 * np.sin(np.deg2rad(45))
-# x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.16)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.16)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 30)
 
 
