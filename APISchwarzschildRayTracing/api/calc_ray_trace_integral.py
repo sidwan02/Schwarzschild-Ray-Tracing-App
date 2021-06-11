@@ -941,8 +941,8 @@ delta0 = 172.34
 # ax.set_aspect('equal', adjustable='box')
 
 
-plt.plot(x_arr, y_arr, marker='o')
-
-plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
-
-plt.show()
+# plt.plot(x_arr, y_arr, marker='o')
+#
+# plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
+#
+# plt.show()
