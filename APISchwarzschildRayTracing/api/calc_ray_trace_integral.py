@@ -424,7 +424,10 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             # print(periastron)
 
 
-            rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.01)
+            # rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.01)
+            # # rr_out, Fi_out, count = (np.array([]), np.array([]), 0)
+
+            rr_out, Fi_out, count = gt_recurring_1([periastron], [], True, 0, maximum_r_change=0.01)
             # rr_out, Fi_out, count = (np.array([]), np.array([]), 0)
 
             print(count)
@@ -432,6 +435,10 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             # rr_in, Fi_in, count = (np.array([]), np.array([]), 0)
 
             print(count)
+
+            # rr, Fi, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.01)
+            # print(count)
+
             # Add everything together to make the final ray
             if (r0 > rf):
 
@@ -446,15 +453,18 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
                 print("gobo")
 
-                rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
+                # rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
+                # # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                # Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
+                #
+                # rr = np.concatenate((rr_in[::-1], [periastron], rr_in, rr_out))
+                # # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
+                # Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
+
+                rr = np.concatenate((rr_in[::-1], [periastron], rr_out))
                 # Fi = np.concatenate((Fi_in, [0], -Fi_in[::-1], -Fi_out[::-1]))
-                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in, -Fi_out))
+                Fi = np.concatenate((Fi_in[::-1], [0], -Fi_out))
 
-                # rr = np.concatenate((rr_in[::-1], [periastron], rr_in))
-                # Fi = np.concatenate((Fi_in[::-1], [0], -Fi_in))
-
-                # rr = rr_out
-                # Fi = -Fi_out
 
         else:
             # print('this should not happen! bailing.')
@@ -908,15 +918,20 @@ def cur_delta(x_arr, y_arr):
 # print(theta_arr[-1])
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(12.575892530168806, 28.240477062406995, 172.3370949374974)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(11, 27, -150)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
 
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(92), 10, 183)
-x = 3.1 * np.cos(np.deg2rad(45))
-y = 3.1 * np.sin(np.deg2rad(45))
-delta0 = 172.34
+# x = 3.1 * np.cos(np.deg2rad(45))
+# y = 3.1 * np.sin(np.deg2rad(45))
+# delta0 = 172.34
+#
+x = 10
+y = 10
+delta0 = 0
+
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.16)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 30)
 
@@ -926,7 +941,7 @@ delta0 = 172.34
 
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
-#
+# #
 # import matplotlib.pyplot as plt
 #
 # # plt.axes(projection='polar')
@@ -939,9 +954,10 @@ delta0 = 172.34
 # #
 # #
 # ax.set_aspect('equal', adjustable='box')
-
-
-# plt.plot(x_arr, y_arr, marker='o')
+#
+#
+# # plt.plot(x_arr, y_arr, marker='o')
+# plt.plot(x_arr, y_arr)
 #
 # plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
 #
