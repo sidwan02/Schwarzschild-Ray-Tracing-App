@@ -263,6 +263,9 @@ let trace2 = {
       let max_i = x_trace.length - 1
       let cur_i = 0
 
+            let acc_dist = 0.01
+            let prev_r = null
+
             let colorStop = Math.random()
 
     let color = rainbowStop(colorStop)
@@ -271,17 +274,47 @@ let trace2 = {
         // console.log("animating")
             let interval = Date.now() - start
 
+        let x_end_cart = x_trace[cur_i + 1], y_end_cart = y_trace[cur_i + 1]
+
           if (cur_i < max_i) {
-            drawTraceSegment(cur_i, color); // move element down
+            let cur_r = Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2)
+            if (prev_r == null) {
+              drawTraceSegment(cur_i, color); // move element down
+            } else {
+              if (Math.abs(cur_r - prev_r) + acc_dist < 0.002) {
+                acc_dist += Math.abs(cur_r - prev_r)
+              } else {
+                drawTraceSegment(cur_i, color); // move element down
+                acc_dist = 0
+              }
+            }
+
+          prev_r = cur_r
+
+
           }
           cur_i++;
 
           // console.log(interval)
           // if (interval < 1000){
           // setTimeout(() => {
-        let x_end_cart = x_trace[cur_i + 1], y_end_cart = y_trace[cur_i + 1]
-        let buffer = 2
+
+
+        let buffer = 2//2
         if (x_end_cart > 20 + buffer || x_end_cart < -20 - buffer || y_end_cart > 40 + buffer || y_end_cart < -40 - buffer) {
+          let i = 0
+          // console.log("boba")
+          let ctx = canvas.getContext("2d");
+          // console.log("äloha")
+          while (i < 20) {
+            // console.log("clearing up")
+            ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+            ctx.fillRect(0, 0, windowWidth, windowHeight);
+
+            drawCoordinateAxes()
+            drawBlackHole()
+            i = i + 1;
+          }
           console.log("stopping trace")
         } else {
             requestAnimationFrame(animateTrace); // queue request for next frame
