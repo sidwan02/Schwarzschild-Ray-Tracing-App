@@ -28,6 +28,11 @@ function Trace2D(props) {
   let z_trace = []
   let delta = []
 
+  let pop = "hi"
+
+  let final_x_list = []
+  let final_y_list = []
+
   let periastron = null
 
   let title
@@ -75,7 +80,6 @@ function Trace2D(props) {
       // delta0 = - (180 - Math.abs(delta0)) // diffeq
       delta0 = delta0 // integral
     }
-
 
       const toSend = {
           x0: Math.abs(x),
@@ -258,10 +262,11 @@ let trace2 = {
     // console.log(y_trace)
 
 
-
      let start = Date.now();
       let max_i = x_trace.length - 1
       let cur_i = 0
+
+            console.log("bfbababa: ", final_x_list)
 
             prev_r = 0
             let target_length = 0
@@ -280,7 +285,35 @@ let trace2 = {
               }
             })
 
+            target_length = 0.5
+
+            let prev_x = 0
+            let prev_y = 0
+
+            x_trace.forEach((x_val, i) => {
+              let y_val = y_trace[i]
+              if (i === 0) {
+                prev_r = Math.sqrt(x_val ** 2 + y_val ** 2)
+                console.log("final_x_list:", final_x_list)
+                final_x_list.push(x_val)
+                final_y_list.push(y_val)
+              } else {
+                let cur_r = Math.sqrt(x_val ** 2 + y_val ** 2)
+                if (Math.abs(prev_r - cur_r) >= target_length) {
+                  final_x_list.push(prev_x)
+                  final_y_list.push(prev_y)
+                  prev_r = cur_r
+                }
+              }
+            })
+
             console.log("target_length: ", target_length)
+
+            console.log("x_trace: ", x_trace)
+            console.log("y_trace: ", y_trace)
+
+            console.log("final_x_list: ", final_x_list)
+            console.log("final_y_list: ", final_y_list)
 
             let acc_dist = 0.01
             let prev_r = null
@@ -350,22 +383,26 @@ let trace2 = {
         // console.log("animating")
             let interval = Date.now() - start
 
-        let x_end_cart = x_trace[cur_i + 1], y_end_cart = y_trace[cur_i + 1]
+        // let x_end_cart = x_trace[cur_i + 1], y_end_cart = y_trace[cur_i + 1]
+
+              let x_end_cart = final_x_list[cur_i + 1], y_end_cart = final_y_list[cur_i + 1]
 
           if (cur_i < max_i) {
-            let cur_r = Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2)
-            if (prev_r == null) {
-              drawTraceSegment(cur_i, color); // move element down
-            } else {
-              if (Math.abs(cur_r - prev_r) + acc_dist < 2) {
-                acc_dist += Math.abs(cur_r - prev_r)
-              } else {
-                drawTraceSegment(cur_i, color); // move element down
-                acc_dist = 0
-              }
-            }
+            // let cur_r = Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2)
+            // if (prev_r == null) {
+            //   drawTraceSegment(cur_i, color); // move element down
+            // } else {
+              // if (Math.abs(cur_r - prev_r) + acc_dist < 2) {
+              //   acc_dist += Math.abs(cur_r - prev_r)
+              // } else {
+              //   drawTraceSegment(cur_i, color); // move element down
+                // acc_dist = 0
+              // }
+            // }
 
-          prev_r = cur_r
+            drawTraceSegment(cur_i, color)
+
+          // prev_r = cur_r
 
 
           }
@@ -873,8 +910,13 @@ let trace2 = {
     let ctx = canvas.getContext("2d");
 
     // for (let i = 0; i < x_trace.length - 1; i++) {
-    let pixelObjStart = convertCartesianToPixel(x_trace[i], y_trace[i])
-    let pixelObjEnd = convertCartesianToPixel(x_trace[i + 1], y_trace[i + 1])
+    //============
+    // let pixelObjStart = convertCartesianToPixel(x_trace[i], y_trace[i])
+    // let pixelObjEnd = convertCartesianToPixel(x_trace[i + 1], y_trace[i + 1])
+    //============
+
+    let pixelObjStart = convertCartesianToPixel(final_x_list[i], final_y_list[i])
+    let pixelObjEnd = convertCartesianToPixel(final_x_list[i + 1], final_y_list[i + 1])
 
     // const gradient = ctx.createLinearGradient(pixelObjStart.pixelX, pixelObjStart.pixelY, pixelObjStart.pixelX + 50, pixelObjStart.pixelY + 50);
     // gradient.addColorStop(0, 'black');
