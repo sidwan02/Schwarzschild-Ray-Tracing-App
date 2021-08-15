@@ -918,7 +918,7 @@ def cur_delta(x_arr, y_arr):
 # print(theta_arr[-1])
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(11, 27, -150)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(2.61, -24.94, -140.30)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
@@ -943,22 +943,22 @@ delta0 = 0
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
 # import matplotlib.pyplot as plt
-#
-# # plt.axes(projection='polar')
-# # plt.polar(theta_arr, r_arr, 'b-', marker='o')
 # #
-# # plt.figure(figsize=(12, 12))
-#
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
+# # # plt.axes(projection='polar')
+# # # plt.polar(theta_arr, r_arr, 'b-', marker='o')
+# # #
+# # # plt.figure(figsize=(12, 12))
+# #
+# # fig = plt.figure()
+# # ax = fig.add_subplot(111)
+# # #
+# # #
+# # ax.set_aspect('equal', adjustable='box')
 # #
 # #
-# ax.set_aspect('equal', adjustable='box')
-#
-#
-# # plt.plot(x_arr, y_arr, marker='o')
-# plt.plot(x_arr, y_arr)
+# plt.plot(x_arr, y_arr, marker='o')
+# # plt.plot(x_arr, y_arr)
 #
 # plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
-#
+# #
 # plt.show()

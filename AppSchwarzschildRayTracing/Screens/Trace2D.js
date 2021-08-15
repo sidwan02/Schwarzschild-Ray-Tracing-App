@@ -301,7 +301,8 @@ let trace2 = {
 
 
         let buffer = 2//2
-        if (x_end_cart > 20 + buffer || x_end_cart < -20 - buffer || y_end_cart > 40 + buffer || y_end_cart < -40 - buffer) {
+        if (x_end_cart > 20 + buffer || x_end_cart < -20 - buffer || y_end_cart > 40 + buffer || y_end_cart < -40 - buffer
+          || cur_i === max_i) {
           let i = 0
           // console.log("boba")
           let ctx = canvas.getContext("2d");
@@ -319,6 +320,7 @@ let trace2 = {
         } else {
             requestAnimationFrame(animateTrace); // queue request for next frame
         }
+
 
           // }, 200);
 
