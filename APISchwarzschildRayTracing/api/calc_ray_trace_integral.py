@@ -209,7 +209,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             condition = False
 
         # rr, Fi, count = gt_recurring([r0], [theta0], condition, 0, 0.01)
-        rr, Fi, count = gt_recurring([r0], [], condition, 0, maximum_r_change=0.01)
+        rr, Fi, count = gt_recurring([r0], [], condition, 0, maximum_r_change=1e-5)
         print(count)
 
     if (inout == -1):  # inward rays
@@ -479,9 +479,11 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
     if len(r_acc) <= 5:
         if condition:
-            rr = r_acc[-1] + 1e-3
+            # rr = r_acc[-1] + 1e-3
+            rr = r_acc[-1] + 1e-5
         else:
-            rr = r_acc[-1] - 1e-3
+            # rr = r_acc[-1] - 1e-3
+            rr = r_acc[-1] - 1e-5
     else:
         # if consistently theta change is decreasing, then increase maximum_r_change
 
@@ -508,8 +510,8 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         # last_few_rev = last_few[::-1]
         # last_few_sorted = sorted(last_few)
 
-        print("last_few: ", last_few)
-        print("r: ", r_acc[-2])
+        # print("last_few: ", last_few)
+        # print("r: ", r_acc[-2])
 
         if all(last_few[i] <= last_few[i+1] for i in range(len(last_few)-1)):
             # if the array is in ascending order, that means theta changes are becoming larger
@@ -535,15 +537,16 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         #     # values are in ascending order in the last few
 
 
-        print("new: ", maximum_r_change)
+        # print("new: ", maximum_r_change)
 
         angle_change = abs(theta_acc[-1] - theta_acc[-2])
 
         orders_of_mag = angle_change ** 3 / maximum_r_change
 
         # delta_rr = max(jump_dist / orders_of_mag, maximum_r_change)
+        # delta_rr = min(maximum_r_change / orders_of_mag, maximum_r_change)
         delta_rr = min(maximum_r_change / orders_of_mag, maximum_r_change)
-        # print(delta_rr)
+        print("delta_rr", delta_rr)
 
         if condition:
             rr = r_acc[-1] + delta_rr
@@ -918,7 +921,7 @@ def cur_delta(x_arr, y_arr):
 # print(theta_arr[-1])
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(-13.27, 19.83, 107.83)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3.001, 0, 90)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
