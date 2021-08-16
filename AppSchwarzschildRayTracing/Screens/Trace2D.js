@@ -268,23 +268,28 @@ let trace2 = {
 
             console.log("bfbababa: ", final_x_list)
 
-            prev_r = 0
+            prev_x = 0
+            prev_y = 0
+
             let target_length = 0
 
             x_trace.forEach((x_val, i) => {
               let y_val = y_trace[i]
               if (i === 0) {
-                prev_r = Math.sqrt(x_val ** 2 + y_val ** 2)
+                prev_x = x_val
+                prev_y = y_val
+                // prev_r = Math.sqrt((x_val - prev_x) ** 2 + (y_val - prev_y) ** 2)
               } else {
-                let cur_r = Math.sqrt(x_val ** 2 + y_val ** 2)
-                let cand_dist = Math.abs(cur_r - prev_r)
-                if (cand_dist >= target_length) {
-                  target_length = cand_dist
+                let cur_r = Math.sqrt((x_val - prev_x) ** 2 + (y_val - prev_y) ** 2)
+                if (cur_r >= target_length) {
+                  target_length = cur_r
                 }
-              prev_r = cur_r
+              prev_x = x_val
+                prev_y = y_val
               }
             })
 
+            target_length = Math.min(target_length, 0.4)
             // target_length = 1
 
             // essentially if we go above the threshold we pick the point immediately before so this threshold is guaranteed to be the upper bound
@@ -327,14 +332,14 @@ let trace2 = {
 
             console.log("target_length: ", target_length)
 
-            console.log("x_trace: ", x_trace)
-            console.log("y_trace: ", y_trace)
+            // console.log("x_trace: ", x_trace)
+            // console.log("y_trace: ", y_trace)
+            //
+            // console.log("final_x_list: ", final_x_list)
+            // console.log("final_y_list: ", final_y_list)
 
-            console.log("final_x_list: ", final_x_list)
-            console.log("final_y_list: ", final_y_list)
-
-            let acc_dist = 0.01
-            let prev_r = null
+            // let acc_dist = 0.01
+            // let prev_r = null
 
             let colorStop = Math.random()
 
