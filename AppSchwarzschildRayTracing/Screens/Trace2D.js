@@ -285,27 +285,37 @@ let trace2 = {
               }
             })
 
-            target_length = 0.5
+            // target_length = 1
 
+            // essentially if we go above the threshold we pick the point immediately before so this threshold is guaranteed to be the upper bound
+            // the prev and from are different because the from changes only when you add a new point whereas the prev simply refers to the prev point with reference to x_val and y_val.
             let prev_x = 0
             let prev_y = 0
+
+            let from_x = 0
+            let from_y = 0
 
             x_trace.forEach((x_val, i) => {
               let y_val = y_trace[i]
               if (i === 0) {
-                prev_r = Math.sqrt(x_val ** 2 + y_val ** 2)
-                console.log("final_x_list:", final_x_list)
+                // prev_r = Math.sqrt(x_val ** 2 + y_val ** 2)
+                from_x = x_val
+                from_y = y_val
+                // console.log("final_x_list:", final_x_list)
                 final_x_list.push(x_val)
                 final_y_list.push(y_val)
                 prev_x = x_val
                   prev_y = y_val
               } else {
-                let cur_r = Math.sqrt(x_val ** 2 + y_val ** 2)
-                if (Math.abs(prev_r - cur_r) >= target_length) {
+                // let cur_r = Math.sqrt(x_val ** 2 + y_val ** 2)
+                // if (Math.abs(prev_r - cur_r) >= target_length) {
+                if (Math.sqrt((x_val - from_x)**2 + (y_val - from_y)**2) >= target_length) {
                   final_x_list.push(prev_x)
                   final_y_list.push(prev_y)
-                  prev_r = cur_r
-                  console.log("cur_r:", cur_r)
+                  // prev_r = cur_r
+                  from_x = x_val
+                  from_y = y_val
+                  // console.log("cur_r:", cur_r)
                   prev_x = x_val
                   prev_y = y_val
                 } else {
@@ -317,8 +327,8 @@ let trace2 = {
 
             console.log("target_length: ", target_length)
 
-            // console.log("x_trace: ", x_trace)
-            // console.log("y_trace: ", y_trace)
+            console.log("x_trace: ", x_trace)
+            console.log("y_trace: ", y_trace)
 
             console.log("final_x_list: ", final_x_list)
             console.log("final_y_list: ", final_y_list)
