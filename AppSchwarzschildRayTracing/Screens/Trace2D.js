@@ -297,20 +297,28 @@ let trace2 = {
                 console.log("final_x_list:", final_x_list)
                 final_x_list.push(x_val)
                 final_y_list.push(y_val)
+                prev_x = x_val
+                  prev_y = y_val
               } else {
                 let cur_r = Math.sqrt(x_val ** 2 + y_val ** 2)
                 if (Math.abs(prev_r - cur_r) >= target_length) {
                   final_x_list.push(prev_x)
                   final_y_list.push(prev_y)
                   prev_r = cur_r
+                  console.log("cur_r:", cur_r)
+                  prev_x = x_val
+                  prev_y = y_val
+                } else {
+                  prev_x = x_val
+                  prev_y = y_val
                 }
               }
             })
 
             console.log("target_length: ", target_length)
 
-            console.log("x_trace: ", x_trace)
-            console.log("y_trace: ", y_trace)
+            // console.log("x_trace: ", x_trace)
+            // console.log("y_trace: ", y_trace)
 
             console.log("final_x_list: ", final_x_list)
             console.log("final_y_list: ", final_y_list)
