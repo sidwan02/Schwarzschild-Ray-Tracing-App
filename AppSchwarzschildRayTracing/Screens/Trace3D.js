@@ -322,17 +322,19 @@ const [stateGraph, setStateGraph] = useState(
     }
 
     else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
-      let term = Math.sqrt(1 - (alpha0Manual * Math.PI / 180)**2 - (beta0Manual * Math.PI / 180)**2)
+      // console.log("thang:", Math.cos(alpha0Manual * Math.PI / 180)**2)
+      // console.log("thong:", Math.cos(beta0Manual * Math.PI / 180)**2)
+      let term = Math.sqrt(1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(beta0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
-      setGamma0Manual((term * 180 / Math.PI) + "")
+      setGamma0Manual(Math.acos(term) * 180 / Math.PI + "")
     } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual !== null){
-      let term = Math.sqrt(1 - (alpha0Manual * Math.PI / 180)**2 - (gamma0Manual * Math.PI / 180)**2)
+      let term = Math.sqrt(1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
-      setBeta0Manual((term * 180 / Math.PI) + "")
+      setBeta0Manual(Math.acos(term) * 180 / Math.PI + "")
     } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual !== null){
-      let term = Math.sqrt(1 - (beta0Manual * Math.PI / 180)**2 - (gamma0Manual * Math.PI / 180)**2)
+      let term = Math.sqrt(1 - Math.cos(beta0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
-      setAlpha0Manual((term * 180 / Math.PI) + "")
+      setAlpha0Manual(Math.acos(term) * 180 / Math.PI + "")
     }
 
     else if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
@@ -354,7 +356,8 @@ const [stateGraph, setStateGraph] = useState(
     }
 
     if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
-      if (Math.sqrt(1 - beta0Manual**2 - gamma0Manual**2) === alpha0Manual){
+      if (Math.abs((1 - Math.cos(beta0Manual / 180 * Math.PI)**2 - Math.cos(gamma0Manual / 180 * Math.PI)**2)
+        - Math.cos(alpha0Manual / 180 * Math.PI)) < 1e-5){
         setInputErrorText("")
 
         console.log('x: ', xManual)
@@ -366,6 +369,10 @@ const [stateGraph, setStateGraph] = useState(
 
         requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
       } else {
+
+        console.log("first: ", (1 - Math.cos(beta0Manual / 180 * Math.PI)**2 - Math.cos(gamma0Manual / 180 * Math.PI)**2).toFixed(5))
+        console.log("second: ", Math.cos(alpha0Manual / 180 * Math.PI).toFixed(5))
+
         setInputErrorText("alpha0, beta0 and gamma0 combination are invalid.")
       }
     }

@@ -48,7 +48,9 @@ function Guide(props) {
 
         <Text style={styles.h2}>Manual Input</Text>
 
-        <Text>Make sure that input values satisfy this constraint in accordance with direction cosines: alpha0^2 + beta0^2 + gamma0^2 = 1</Text>
+        <Text>Note that alpha0, beta0 and gamma0 must be degree angles</Text>
+
+        <Text>Make sure that input values satisfy this constraint in accordance with direction cosines: cos(l)^2 + cos(m)^2 + cos(n)^2 = 1 where l, m and n correspond to the converted forms of alpha0, beta0 and gamma0 into radians.</Text>
 
       </View>
     </View>
