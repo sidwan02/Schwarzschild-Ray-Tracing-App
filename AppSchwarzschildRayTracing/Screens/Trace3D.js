@@ -337,24 +337,19 @@ const [stateGraph, setStateGraph] = useState(
     if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
       if (Math.sqrt(1 - beta0Manual**2 - gamma0Manual**2) === alpha0Manual){
         setInputErrorText("")
+
+        console.log('x: ', xManual)
+        console.log('y: ', yManual)
+        console.log('z: ', zManual)
+        console.log('alpha0: ', alpha0Manual)
+        console.log('beta0: ', beta0Manual)
+        console.log('gamma0: ', gamma0Manual)
+
+        requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
       } else {
         setInputErrorText("alpha0, beta0 and gamma0 combination are invalid.")
       }
     }
-
-    let toSendX = xManual
-    let toSendY = yManual
-    let toSendZ = zManual
-
-    let toSendAlpha0 = alpha0Manual
-    let toSendBeta0 = beta0Manual
-    let toSendGamma0 = gamma0Manual
-
-    console.log('x: ', toSendX)
-    console.log('y: ', toSendY)
-    // console.log('delta0: ', toSendDelta0)
-
-    requestRayTrace(toSendX, toSendY, toSendZ, toSendAlpha0, toSendBeta0, toSendGamma0)
   }
 
   const [xManual, setXManual] = useState(null)

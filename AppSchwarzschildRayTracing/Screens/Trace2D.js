@@ -10,7 +10,8 @@ import CollapsibleView from "@eliav2/react-native-collapsible-view";
 import {StatusBar} from "expo-status-bar";
 // import MyView from "../Components/MyView";
 
-
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
 function Trace2D(props) {
 
@@ -27,6 +28,9 @@ function Trace2D(props) {
   let y_trace = []
   let z_trace = []
   let delta = []
+
+    const [inputErrorText, setInputErrorText] = useState("")
+
 
   let pop = "hi"
 
@@ -730,9 +734,6 @@ let trace2 = {
     let release_x
   let releaseY
 
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
-
   let blackHoleX = windowWidth / 2
   let blackHoleY = windowHeight / 2
 
@@ -1205,25 +1206,21 @@ const [stateGraph, setStateGraph] = useState(
   }
 
   const clickManualEntryBtn = () => {
-    if (toSendX === null){
-      setXManual("10")
-    }
-    if (toSendY === null){
-      setYManual("10")
-    }
-    if (toSendDelta0 === null){
-      setDelta0Manual("90")
-    }
+    if (xManual === null){
+      setInputErrorText("x must be filled in.")
+    } else if (yManual === null){
+      setInputErrorText("y must be filled in.")
+    } else if (delta0Manual === null){
+      setInputErrorText("delta0 must be filled in.")
+    } else {
+       console.log('x: ', toSendX)
+      console.log('y: ', toSendY)
+      console.log('delta0: ', toSendDelta0)
 
-    let toSendX = xManual
-    let toSendY = yManual
-    let toSendDelta0 = delta0Manual
+      setInputErrorText("")
 
-    console.log('x: ', toSendX)
-    console.log('y: ', toSendY)
-    console.log('delta0: ', toSendDelta0)
-
-    requestRayTrace(toSendX, toSendY, toSendDelta0)
+      requestRayTrace(xManual, yManual, delta0Manual)
+    }
   }
 
   const [xManual, setXManual] = useState(null)
@@ -1286,7 +1283,9 @@ const [stateGraph, setStateGraph] = useState(
         </View>
     </CollapsibleView>
 
-
+    <View style={styles.inputErrorTextDiv}>
+        <Text style={styles.errorText}>{inputErrorText}</Text>
+      </View>
 
 
 
@@ -1388,6 +1387,21 @@ const styles = StyleSheet.create({
     // display: 'flex',
     // alignItems: 'center',
     // justifyContent: 'center'
+  },
+  inputErrorTextDiv: {
+    position: 'absolute',
+    top: '5%',
+    right: '5%',
+    width: 2 * windowWidth / 5 ,
+    backgroundColor: 'rgb(255,255,255)',
+    padding: 10,
+    borderRadius: 5,
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center'
+  },
+  errorText: {
+    color: "red"
   },
   container: {
     position: 'absolute',
