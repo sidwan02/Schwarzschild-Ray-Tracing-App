@@ -519,12 +519,16 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         # else:
         #     maximum_r_change *= 1.5
 
-        if all(last_few_5[i] >= last_few_5[i + 1] for i in range(len(last_few_5) - 1)):
+        # if all(last_few_5[i] >= last_few_5[i + 1] for i in range(len(last_few_5) - 1)):
+        #     maximum_r_change *= 1.2
+        # elif all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
+        #     maximum_r_change *= 1.1
+
+        if all(last_few_5[i] / last_few_5[i + 1] >= 1/2 for i in range(len(last_few_5) - 1)):
             maximum_r_change *= 1.2
-        elif all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
+        elif all(last_few[i] / last_few[i+1] >= 1/2 for i in range(len(last_few)-1)):
             maximum_r_change *= 1.1
-        # else:
-        #     maximum_r_change *= 0.99
+
 
         # print(maximum_r_change)
 
@@ -697,6 +701,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
     if rstop > r0:
         print("going away from bh")
+        # rr, theta = lr_recurring([r0], [], True, 0.01)
         rr, theta = lr_recurring([r0], [], True, 0.01)
     else:
         print("falling into bh")
@@ -921,7 +926,7 @@ def cur_delta(x_arr, y_arr):
 # print(theta_arr[-1])
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3.001, 0, 90)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(40, 0, 20)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
