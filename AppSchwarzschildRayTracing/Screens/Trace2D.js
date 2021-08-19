@@ -1206,6 +1206,16 @@ const [stateGraph, setStateGraph] = useState(
   }
 
   const clickManualEntryBtn = () => {
+     if (xManual === ''){
+      setXManual(null)
+    }
+    if (yManual === ''){
+      setYManual(null)
+    }
+    if (delta0Manual === ''){
+      setDelta0Manual(null)
+    }
+
     if (xManual === null){
       setInputErrorText("x must be filled in.")
     } else if (yManual === null){
@@ -1213,9 +1223,9 @@ const [stateGraph, setStateGraph] = useState(
     } else if (delta0Manual === null){
       setInputErrorText("delta0 must be filled in.")
     } else {
-       console.log('x: ', toSendX)
-      console.log('y: ', toSendY)
-      console.log('delta0: ', toSendDelta0)
+       console.log('x: ', xManual)
+      console.log('y: ', yManual)
+      console.log('delta0: ', delta0Manual)
 
       setInputErrorText("")
 

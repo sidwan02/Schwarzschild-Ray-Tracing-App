@@ -289,20 +289,39 @@ const [stateGraph, setStateGraph] = useState(
 
 
   const clickManualEntryBtn = () => {
+    if (xManual === ''){
+      setXManual(null)
+    }
+    if (yManual === ''){
+      setYManual(null)
+    }
+    if (zManual === ''){
+      setZManual(null)
+    }
+
+    if (alpha0Manual === ''){
+      setAlpha0Manual(null)
+    }
+    if (beta0Manual === ''){
+      setBeta0Manual(null)
+    }
+    if (gamma0Manual === ''){
+      setGamma0Manual(null)
+    }
+
+
     if (xManual === null){
       // setXManual("10")
       setInputErrorText("x must be filled in.")
-    }
-    if (yManual === null){
+    } else if (yManual === null){
       // setYManual("10")
       setInputErrorText("y must be filled in.")
-    }
-    if (zManual === null){
+    } else if (zManual === null){
       // setZManual("10")
       setInputErrorText("z must be filled in.")
     }
 
-    if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
+    else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
       let term = Math.sqrt(1 - (alpha0Manual * Math.PI / 180)**2 - (beta0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
       setGamma0Manual((term * 180 / Math.PI) + "")
@@ -316,7 +335,7 @@ const [stateGraph, setStateGraph] = useState(
       setAlpha0Manual((term * 180 / Math.PI) + "")
     }
 
-    if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
+    else if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
       // setAlpha0Manual(90)
       // setBeta0Manual(Math.sqrt(1 - alpha0Manual**2 - beta0Manual**2))
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
@@ -330,7 +349,7 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
     }
 
-    if (alpha0Manual === null && beta0Manual === null && gamma0Manual === null){
+    else if (alpha0Manual === null && beta0Manual === null && gamma0Manual === null){
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
     }
 
