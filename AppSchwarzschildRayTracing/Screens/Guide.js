@@ -36,7 +36,7 @@ function Guide(props) {
 
         <Text>Expand the Manual Entry Drop down. The cartesian plan is divided such that the black hole is situated at the origin.</Text>
 
-        <Text>The width of the screen spans +/- 40, and the height of the screen spans +/- 40.</Text>
+        <Text>The width of the screen spans +/- 20, and the height of the screen spans +/- 40.</Text>
 
         <Text style={styles.h2}>Analysis Mode</Text>
 

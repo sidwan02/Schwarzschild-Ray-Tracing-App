@@ -1205,11 +1205,26 @@ const [stateGraph, setStateGraph] = useState(
   }
 
   const clickManualEntryBtn = () => {
-    console.log('x: ', xManual)
-    console.log('y: ', yManual)
-    console.log('delta0: ', delta0Manual)
 
-    requestRayTrace(xManual, yManual, delta0Manual)
+    let toSendX = xManual
+    let toSendY = yManual
+    let toSendDelta0 = delta0Manual
+
+    if (toSendX === null){
+      toSendX = 10
+    }
+    if (toSendY === null){
+      toSendY = 10
+    }
+    if (toSendDelta0 === null){
+      toSendDelta0 = 90
+    }
+
+    console.log('x: ', toSendX)
+    console.log('y: ', toSendY)
+    console.log('delta0: ', toSendDelta0)
+
+    requestRayTrace(toSendX, toSendY, toSendDelta0)
   }
 
   const [xManual, setXManual] = useState(null)
@@ -1244,21 +1259,21 @@ const [stateGraph, setStateGraph] = useState(
           <Text>Start x:</Text>
           <TextInput
             style={styles.manualTextInput}
-            placeholder="x"
+            placeholder="10"
             keyboardType = 'numeric'
           value={xManual}
           onChangeText={setXManual}/>
           <Text>Start y:</Text>
           <TextInput
                         style={styles.manualTextInput}
-            placeholder="y"
+            placeholder="10"
           keyboardType = 'numeric'
           value={yManual}
           onChangeText={setYManual}/>
           <Text>Start angle:</Text>
           <TextInput
                         style={styles.manualTextInput}
-            placeholder="delta0"
+            placeholder="90"
           keyboardType = 'numeric'
           value={delta0Manual}
           onChangeText={setDelta0Manual}/>
