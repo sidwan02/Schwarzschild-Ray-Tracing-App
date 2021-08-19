@@ -11,7 +11,7 @@ import CollapsibleView from "@eliav2/react-native-collapsible-view";
 import Trace2D from "./Trace2D";
 import Trace3D from "./Trace3D";
 
-function Credits(props) {
+function Guide(props) {
 
   if (props.visible === false) {
     return (
@@ -24,23 +24,33 @@ function Credits(props) {
   //   regarding the ordering of stuff within the html:
   // https://stackoverflow.com/questions/34139687/react-native-touchableopacity-wrapping-floating-button-get-nothing
     <View>
-
       <View style={styles.titleContainer}>
-      {/*  <Button*/}
-      {/*  title="Schwarzchild Ray Tracing"*/}
-      {/*  color="black"*/}
-      {/*  // accessibilityLabel="Learn more about this purple button"*/}
-      {/*/>*/}
-        <Text style={styles.bold}>Authors:</Text>
-          <Text>Siddharth Diwan</Text>
-        <Text>Sc.B. Computer Science, B.A. Astronomy</Text>
-        <Text style={styles.italics}>Brown University</Text>
-        <Text></Text>
-        <Text>Professor Dipankar Maitra</Text>
-        <Text>Associate Professor of Physics/Astronomy </Text>
-        <Text style={styles.italics}>Wheaton College Massachusetts</Text>
-      </View>
 
+        <Text style={styles.h1}>2D Trace</Text>
+        <Text style={styles.h2}>Drag Input</Text>
+
+        <Text>Rest your finger on the screen. This point will be the source of your desired ray.</Text>
+        <Text>Drag your finger to any other point on the screen. This will determine the initial angle of the trajectory with respect to the ray source.</Text>
+
+        <Text style={styles.h2}>Manual Input</Text>
+
+        <Text>Expand the Manual Entry Drop down. The cartesian plan is divided such that the black hole is situated at the origin.</Text>
+
+        <Text>The width of the screen spans +/- 40, and the height of the screen spans +/- 40.</Text>
+
+        <Text style={styles.h2}>Analysis Mode</Text>
+
+        <Text>Click on the Trace Analysis button, which will give a detailed plot of the ray and it's trajectory.</Text>
+
+        <Text></Text>
+
+        <Text style={styles.h1}>3D Trace</Text>
+
+        <Text style={styles.h2}>Manual Input</Text>
+
+        <Text>Make sure that input values satisfy this constraint in accordance with direction cosines: alpha0^2 + beta0^2 + gamma0^2 = 1</Text>
+
+      </View>
     </View>
   )
 }
@@ -48,6 +58,14 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  h1: {
+    fontSize: 30
+  },
+
+  h2: {
+    fontSize: 22
+
+  },
   bold: {
       // flex: 1,
       fontWeight: 'bold'
@@ -72,4 +90,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Credits;
+export default Guide;

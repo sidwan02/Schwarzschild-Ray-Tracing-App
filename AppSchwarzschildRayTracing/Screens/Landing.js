@@ -11,6 +11,7 @@ import CollapsibleView from "@eliav2/react-native-collapsible-view";
 import Trace2D from "./Trace2D";
 import Trace3D from "./Trace3D";
 import Credits from "./Credits";
+import Guide from "./Guide";
 
 function Landing() {
   const [titleContainer, setTitleContainer] = useState(
@@ -48,6 +49,16 @@ function Landing() {
   }
   );
 
+  const [guideBtnContainer, setGuideBtnContainer] = useState(
+    {
+      // flex: 1,
+    position: 'absolute',
+    width: 100,
+    top: windowHeight - 100,
+    left: (windowWidth / 2) - (100 / 2),
+  }
+  );
+
   const [btn1Container, setBtn1Container] = useState(
     {
       // flex: 1,
@@ -75,7 +86,9 @@ function Landing() {
     left: 10,
   }
   );
-const [creditsVisibility, setCreditsVisibility] = useState(false)
+
+  const [guideVisibility, setGuideVisibility] = useState(false)
+  const [creditsVisibility, setCreditsVisibility] = useState(false)
   const [trace2DVisibility, setTrace2DVisibility] = useState(false)
   const [trace3DVisibility, setTrace3DVisibility] = useState(false)
 
@@ -99,6 +112,14 @@ const [creditsVisibility, setCreditsVisibility] = useState(false)
     position: 'absolute',
     width: 100,
     top: windowHeight - 50,
+    left: (windowWidth / 2) - (100 / 2),
+  })
+
+    setGuideBtnContainer({
+      // flex: 1,
+    position: 'absolute',
+    width: 100,
+    top: windowHeight - 100,
     left: (windowWidth / 2) - (100 / 2),
   })
 
@@ -134,6 +155,12 @@ const [creditsVisibility, setCreditsVisibility] = useState(false)
     height: '0%',
   })
 
+    setGuideBtnContainer({
+      position: 'absolute',
+    width: '0%',
+    height: '0%',
+  })
+
     setTitleContainer({
       position: 'absolute',
     width: '0%',
@@ -144,6 +171,18 @@ const [creditsVisibility, setCreditsVisibility] = useState(false)
   const creditsBtnClick = () => {
     console.log("credits btn clicked")
     setCreditsVisibility(true)
+    hideAllButtons()
+    setBtnBackContainer({
+      position: 'absolute',
+    width: 100,
+    top: windowHeight - 50,
+    left: 10,
+    })
+  }
+
+  const guideBtnClick = () => {
+    console.log("guide btn clicked")
+    setGuideVisibility(true)
     hideAllButtons()
     setBtnBackContainer({
       position: 'absolute',
@@ -183,6 +222,7 @@ const [creditsVisibility, setCreditsVisibility] = useState(false)
     setTrace2DVisibility(false)
     setTrace3DVisibility(false)
     setCreditsVisibility(false)
+    setGuideVisibility(false)
     setBtnBackContainer({
       position: 'absolute',
     width: 0,
@@ -205,6 +245,7 @@ const [creditsVisibility, setCreditsVisibility] = useState(false)
         <Text style={titleTextContainer}>Schwarzschild Ray Tracing</Text>
       </View>
 
+      <Guide visible={guideVisibility} />
       <Credits visible={creditsVisibility} />
       <Trace2D visible={trace2DVisibility} />
       <Trace3D visible={trace3DVisibility}/>
@@ -224,6 +265,15 @@ const [creditsVisibility, setCreditsVisibility] = useState(false)
           onPress={trace3DBtnClick}
         title="3D Trace"
         color="green"
+        // accessibilityLabel="Learn more about this purple button"
+      />
+      </View>
+
+      <View style={guideBtnContainer}>
+        <Button
+          onPress={guideBtnClick}
+        title="Guide"
+        color="black"
         // accessibilityLabel="Learn more about this purple button"
       />
       </View>
