@@ -10,6 +10,9 @@ import CollapsibleView from "@eliav2/react-native-collapsible-view";
 import {StatusBar} from "expo-status-bar";
 // import MyView from "../Components/MyView";
 
+const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+
 function Trace3D(props) {
 
   if (props.visible === false) {
@@ -21,8 +24,7 @@ function Trace3D(props) {
 
   let canvas
 
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
+
 
   let blackHoleX = windowWidth / 2
   let blackHoleY = windowHeight / 2
@@ -33,6 +35,8 @@ function Trace3D(props) {
   let z_trace = []
 
   let periastron = null
+
+  const [inputErrorText, setInputErrorText] = useState("")
 
   const requestRayTrace = (x0, y0, z0, alpha0, beta0, gamma0) => {
 
@@ -285,11 +289,72 @@ const [stateGraph, setStateGraph] = useState(
 
 
   const clickManualEntryBtn = () => {
-    console.log('x: ', xManual)
-    console.log('y: ', yManual)
-    // console.log('delta0: ', delta0Manual)
+    if (xManual === null){
+      // setXManual("10")
+      setInputErrorText("x must be filled in.")
+    }
+    if (yManual === null){
+      // setYManual("10")
+      setInputErrorText("y must be filled in.")
+    }
+    if (zManual === null){
+      // setZManual("10")
+      setInputErrorText("z must be filled in.")
+    }
 
-    requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+    if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
+      let term = Math.sqrt(1 - (alpha0Manual * Math.PI / 180)**2 - (beta0Manual * Math.PI / 180)**2)
+      // console.log("term: ", term)
+      setGamma0Manual((term * 180 / Math.PI) + "")
+    } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual !== null){
+      let term = Math.sqrt(1 - (alpha0Manual * Math.PI / 180)**2 - (gamma0Manual * Math.PI / 180)**2)
+      // console.log("term: ", term)
+      setBeta0Manual((term * 180 / Math.PI) + "")
+    } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual !== null){
+      let term = Math.sqrt(1 - (beta0Manual * Math.PI / 180)**2 - (gamma0Manual * Math.PI / 180)**2)
+      // console.log("term: ", term)
+      setAlpha0Manual((term * 180 / Math.PI) + "")
+    }
+
+    if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
+      // setAlpha0Manual(90)
+      // setBeta0Manual(Math.sqrt(1 - alpha0Manual**2 - beta0Manual**2))
+      setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
+    } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual === null){
+      // setAlpha0Manual(90)
+      // setGamma0Manual(Math.sqrt(1 - alpha0Manual**2 - gamma0Manual**2))
+      setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
+    } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual === null){
+      // setBeta0Manual(90)
+      // setGamma0Manual(Math.sqrt(1 - beta0Manual**2 - gamma0Manual**2))
+      setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
+    }
+
+    if (alpha0Manual === null && beta0Manual === null && gamma0Manual === null){
+      setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
+    }
+
+    if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
+      if (Math.sqrt(1 - beta0Manual**2 - gamma0Manual**2) === alpha0Manual){
+        setInputErrorText("")
+      } else {
+        setInputErrorText("alpha0, beta0 and gamma0 combination are invalid.")
+      }
+    }
+
+    let toSendX = xManual
+    let toSendY = yManual
+    let toSendZ = zManual
+
+    let toSendAlpha0 = alpha0Manual
+    let toSendBeta0 = beta0Manual
+    let toSendGamma0 = gamma0Manual
+
+    console.log('x: ', toSendX)
+    console.log('y: ', toSendY)
+    // console.log('delta0: ', toSendDelta0)
+
+    requestRayTrace(toSendX, toSendY, toSendZ, toSendAlpha0, toSendBeta0, toSendGamma0)
   }
 
   const [xManual, setXManual] = useState(null)
@@ -310,7 +375,6 @@ const [stateGraph, setStateGraph] = useState(
 
     }
   }
-
 
   return (
     <View>
@@ -390,7 +454,9 @@ const [stateGraph, setStateGraph] = useState(
         </View>
     </CollapsibleView>
 
-
+      <View style={styles.inputErrorTextDiv}>
+        <Text style={styles.errorText}>{inputErrorText}</Text>
+      </View>
 
       <View style={container_style}>
 
@@ -442,6 +508,21 @@ const styles = StyleSheet.create({
     // display: 'flex',
     // alignItems: 'center',
     // justifyContent: 'center'
+  },
+  inputErrorTextDiv: {
+    position: 'absolute',
+    top: '5%',
+    right: '5%',
+    width: 2 * windowWidth / 5 ,
+    backgroundColor: 'rgb(255,255,255)',
+    padding: 10,
+    borderRadius: 5,
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center'
+  },
+  errorText: {
+    color: "red"
   },
   container: {
     position: 'absolute',

@@ -1205,20 +1205,19 @@ const [stateGraph, setStateGraph] = useState(
   }
 
   const clickManualEntryBtn = () => {
+    if (toSendX === null){
+      setXManual("10")
+    }
+    if (toSendY === null){
+      setYManual("10")
+    }
+    if (toSendDelta0 === null){
+      setDelta0Manual("90")
+    }
 
     let toSendX = xManual
     let toSendY = yManual
     let toSendDelta0 = delta0Manual
-
-    if (toSendX === null){
-      toSendX = 10
-    }
-    if (toSendY === null){
-      toSendY = 10
-    }
-    if (toSendDelta0 === null){
-      toSendDelta0 = 90
-    }
 
     console.log('x: ', toSendX)
     console.log('y: ', toSendY)
@@ -1259,21 +1258,21 @@ const [stateGraph, setStateGraph] = useState(
           <Text>Start x:</Text>
           <TextInput
             style={styles.manualTextInput}
-            placeholder="10"
+            placeholder='x'
             keyboardType = 'numeric'
           value={xManual}
           onChangeText={setXManual}/>
           <Text>Start y:</Text>
           <TextInput
                         style={styles.manualTextInput}
-            placeholder="10"
+            placeholder="y"
           keyboardType = 'numeric'
           value={yManual}
           onChangeText={setYManual}/>
           <Text>Start angle:</Text>
           <TextInput
-                        style={styles.manualTextInput}
-            placeholder="90"
+            style={styles.manualTextInput}
+            placeholder="delta0"
           keyboardType = 'numeric'
           value={delta0Manual}
           onChangeText={setDelta0Manual}/>
