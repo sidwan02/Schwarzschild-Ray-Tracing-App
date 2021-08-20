@@ -1222,9 +1222,17 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("y must be filled in.")
     } else if (delta0Manual === null){
       setInputErrorText("delta0 must be filled in.")
-    } else if (Math.sqrt(xManual**2 + yManual**2) < 3) {
+    }
+
+    else if (Math.sqrt(xManual**2 + yManual**2) < 3) {
       setInputErrorText("Light source must be outside the event horizon (r0 >= 3)")
-    } else {
+    }
+
+    else if (delta0Manual > 180 || delta0Manual < -180) {
+      setInputErrorText("delta0 range: [-180, 180]")
+    }
+
+    else {
        console.log('x: ', xManual)
       console.log('y: ', yManual)
       console.log('delta0: ', delta0Manual)

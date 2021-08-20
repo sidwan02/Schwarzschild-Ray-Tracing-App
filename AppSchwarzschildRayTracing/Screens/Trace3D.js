@@ -321,28 +321,6 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("z must be filled in.")
     }
 
-    else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
-      // console.log("thang:", Math.cos(alpha0Manual * Math.PI / 180)**2)
-      // console.log("thong:", Math.cos(beta0Manual * Math.PI / 180)**2)
-      let term = Math.sqrt(1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(beta0Manual * Math.PI / 180)**2)
-      // console.log("term: ", term)
-      setGamma0Manual(Math.acos(term) * 180 / Math.PI + "")
-
-      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
-    } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual !== null){
-      let term = Math.sqrt(1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
-      // console.log("term: ", term)
-      setBeta0Manual(Math.acos(term) * 180 / Math.PI + "")
-
-      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
-    } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual !== null){
-      let term = Math.sqrt(1 - Math.cos(beta0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
-      // console.log("term: ", term)
-      setAlpha0Manual(Math.acos(term) * 180 / Math.PI + "")
-
-      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
-    }
-
     else if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
       // setAlpha0Manual(90)
       // setBeta0Manual(Math.sqrt(1 - alpha0Manual**2 - beta0Manual**2))
@@ -359,6 +337,59 @@ const [stateGraph, setStateGraph] = useState(
 
     else if (alpha0Manual === null && beta0Manual === null && gamma0Manual === null){
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
+    }
+
+    else if (Math.sqrt(xManual**2 + yManual**2 + zManual**2) < 3) {
+      setInputErrorText("Light source must be outside the event horizon (r0 >= 3)")
+    }
+
+    else if (alpha0Manual > 180 || alpha0Manual < -180) {
+      setInputErrorText("alpha0 range: [-180, 180]")
+    } else if (beta0Manual > 180 || beta0Manual < -180) {
+      setInputErrorText("beta0 range: [-180, 180]")
+    } else if (gamma0Manual > 180 || gamma0Manual < -180) {
+      setInputErrorText("gamma0 range: [-180, 180]")
+    }
+
+    else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
+      // console.log("thang:", Math.cos(alpha0Manual * Math.PI / 180)**2)
+      // console.log("thong:", Math.cos(beta0Manual * Math.PI / 180)**2)
+      let term = 1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(beta0Manual * Math.PI / 180)**2
+      console.log("gobi: ", Number(term.toFixed(5)))
+      term = Number(term.toFixed(5))
+      if (term < 0){
+        setInputErrorText("The given alpha0 and beta0 cannot lead to any valid gamma0.")
+      } else {
+              setGamma0Manual(Math.acos(Math.sqrt(term)) * 180 / Math.PI + "")
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+
+      }
+      // console.log("term: ", term)
+
+    } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual !== null){
+      let term = (1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
+      term = Number(term.toFixed(5))
+      if (term < 0){
+        setInputErrorText("The given alpha0 and gamma0 cannot lead to any valid beta0.")
+      } else {
+              setBeta0Manual(Math.acos(Math.sqrt(term)) * 180 / Math.PI + "")
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+
+      }
+      // console.log("term: ", term)
+
+    } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual !== null){
+      let term = (1 - Math.cos(beta0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
+      term = Number(term.toFixed(5))
+      if (term < 0){
+        setInputErrorText("The given beta0 and gamma0 cannot lead to any valid alpha0.")
+      } else {
+              setAlpha0Manual(Math.acos(Math.sqrt(term)) * 180 / Math.PI + "")
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+
+      }
+      // console.log("term: ", term)
+
     }
 
     else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
