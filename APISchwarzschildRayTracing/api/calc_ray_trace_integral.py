@@ -709,14 +709,14 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     if rstop > r0:
         print("going away from bh")
         # rr, theta = lr_recurring([r0], [], True, 0.01)
-        rr, theta = lr_recurring([r0], [], True, 1e-5)
+        rr, theta = lr_recurring([r0], [], True, 1e-3)
     else:
         print("falling into bh")
         # now going outward but since it was originally going into blackhole must reverse our outward
         # going values; also need to set rstop to r0
         rstop = r0
 
-        rr, theta = lr_recurring([2], [], True, 1e-5)
+        rr, theta = lr_recurring([2], [], True, 1e-3)
         rr = rr[::-1]
         theta = theta[::-1]
 
@@ -933,7 +933,7 @@ def cur_delta(x_arr, y_arr):
 # print(theta_arr[-1])
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 91)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 90)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
