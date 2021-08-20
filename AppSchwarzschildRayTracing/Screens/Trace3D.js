@@ -40,6 +40,7 @@ function Trace3D(props) {
 
   const requestRayTrace = (x0, y0, z0, alpha0, beta0, gamma0) => {
 
+    setInputErrorText("")
 
     // console.log("x0: ", x)
     // console.log("y0: ", y)
@@ -355,13 +356,14 @@ const [stateGraph, setStateGraph] = useState(
       // console.log("thang:", Math.cos(alpha0Manual * Math.PI / 180)**2)
       // console.log("thong:", Math.cos(beta0Manual * Math.PI / 180)**2)
       let term = 1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(beta0Manual * Math.PI / 180)**2
-      console.log("gobi: ", Number(term.toFixed(5)))
+      // console.log("gobi: ", Number(term.toFixed(5)))
       term = Number(term.toFixed(5))
       if (term < 0){
         setInputErrorText("The given alpha0 and beta0 cannot lead to any valid gamma0.")
       } else {
               setGamma0Manual(Math.acos(Math.sqrt(term)) * 180 / Math.PI + "")
-      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+        // since updation of usestate does not occur in time, just pass val for gamma
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, Math.acos(Math.sqrt(term)) * 180 / Math.PI)
 
       }
       // console.log("term: ", term)
@@ -373,7 +375,7 @@ const [stateGraph, setStateGraph] = useState(
         setInputErrorText("The given alpha0 and gamma0 cannot lead to any valid beta0.")
       } else {
               setBeta0Manual(Math.acos(Math.sqrt(term)) * 180 / Math.PI + "")
-      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, Math.acos(Math.sqrt(term)) * 180 / Math.PI, gamma0Manual)
 
       }
       // console.log("term: ", term)
@@ -385,7 +387,7 @@ const [stateGraph, setStateGraph] = useState(
         setInputErrorText("The given beta0 and gamma0 cannot lead to any valid alpha0.")
       } else {
               setAlpha0Manual(Math.acos(Math.sqrt(term)) * 180 / Math.PI + "")
-      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
+      requestRayTrace(xManual, yManual, zManual, Math.acos(Math.sqrt(term)) * 180 / Math.PI, beta0Manual, gamma0Manual)
 
       }
       // console.log("term: ", term)
