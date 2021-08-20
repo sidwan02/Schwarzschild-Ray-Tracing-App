@@ -327,14 +327,20 @@ const [stateGraph, setStateGraph] = useState(
       let term = Math.sqrt(1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(beta0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
       setGamma0Manual(Math.acos(term) * 180 / Math.PI + "")
+
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
     } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual !== null){
       let term = Math.sqrt(1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
       setBeta0Manual(Math.acos(term) * 180 / Math.PI + "")
+
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
     } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual !== null){
       let term = Math.sqrt(1 - Math.cos(beta0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
       // console.log("term: ", term)
       setAlpha0Manual(Math.acos(term) * 180 / Math.PI + "")
+
+      requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
     }
 
     else if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
@@ -355,7 +361,7 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
     }
 
-    if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
+    else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
       if (Math.abs((1 - Math.cos(beta0Manual / 180 * Math.PI)**2 - Math.cos(gamma0Manual / 180 * Math.PI)**2)
         - Math.cos(alpha0Manual / 180 * Math.PI)) < 1e-5){
         setInputErrorText("")

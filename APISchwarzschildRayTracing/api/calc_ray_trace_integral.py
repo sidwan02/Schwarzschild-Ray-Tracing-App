@@ -519,15 +519,19 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         # else:
         #     maximum_r_change *= 1.5
 
-        # if all(last_few_5[i] >= last_few_5[i + 1] for i in range(len(last_few_5) - 1)):
-        #     maximum_r_change *= 1.2
-        # elif all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
-        #     maximum_r_change *= 1.1
-
-        if all(last_few_5[i] / last_few_5[i + 1] >= 1/2 for i in range(len(last_few_5) - 1)):
+        if all(last_few_5[i] >= last_few_5[i + 1] for i in range(len(last_few_5) - 1)):
             maximum_r_change *= 1.2
-        elif all(last_few[i] / last_few[i+1] >= 1/2 for i in range(len(last_few)-1)):
+        elif all(last_few_5[i] / last_few_5[i + 1] >= 1 / 2 for i in range(len(last_few_5) - 1)):
+            maximum_r_change *= 1.01
+        elif all(last_few[i] >= last_few[i+1] for i in range(len(last_few)-1)):
             maximum_r_change *= 1.1
+        elif all(last_few[i] / last_few[i+1] >= 1/2 for i in range(len(last_few)-1)):
+            maximum_r_change *= 1.02
+
+        # if all(last_few_5[i] / last_few_5[i + 1] >= 1/2 for i in range(len(last_few_5) - 1)):
+        #     maximum_r_change *= 1.2
+        # elif all(last_few[i] / last_few[i+1] >= 1/2 for i in range(len(last_few)-1)):
+        #     maximum_r_change *= 1.1
 
 
         # print(maximum_r_change)
@@ -550,6 +554,9 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         # delta_rr = max(jump_dist / orders_of_mag, maximum_r_change)
         # delta_rr = min(maximum_r_change / orders_of_mag, maximum_r_change)
         delta_rr = min(maximum_r_change / orders_of_mag, maximum_r_change)
+
+        delta_rr = min(delta_rr, 1)
+
         print("delta_rr", delta_rr)
 
         if condition:
@@ -702,14 +709,14 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     if rstop > r0:
         print("going away from bh")
         # rr, theta = lr_recurring([r0], [], True, 0.01)
-        rr, theta = lr_recurring([r0], [], True, 0.01)
+        rr, theta = lr_recurring([r0], [], True, 1e-5)
     else:
         print("falling into bh")
         # now going outward but since it was originally going into blackhole must reverse our outward
         # going values; also need to set rstop to r0
         rstop = r0
 
-        rr, theta = lr_recurring([2], [], True, 0.01)
+        rr, theta = lr_recurring([2], [], True, 1e-5)
         rr = rr[::-1]
         theta = theta[::-1]
 
@@ -926,7 +933,7 @@ def cur_delta(x_arr, y_arr):
 # print(theta_arr[-1])
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(40, 0, 20)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 91)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
