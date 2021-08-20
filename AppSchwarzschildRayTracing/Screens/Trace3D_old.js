@@ -202,15 +202,13 @@ function Trace3D(props) {
 
 
   const [container_style, set_container_style] = useState(
-    {
-    position: 'absolute',
+    {position: 'absolute',
     paddingTop: 50,
-    width: windowWidth,
-    height: (windowHeight - 5),
+    width: '0%',
+    height: '0%',
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
-    }
+    justifyContent: 'center'}
   );
 
   const [titleButton, setTitleButton] = useState('Trace Analysis');
@@ -445,19 +443,17 @@ const [stateGraph, setStateGraph] = useState(
 
       {/*<TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>*/}
         {/*<Text>Hi there</Text>*/}
-        {/*<Canvas ref={handleCanvas} />*/}
+        <Canvas ref={handleCanvas} />
       {/*</TouchableOpacity>*/}
 
-      {/*<Button*/}
-      {/*  onPress={clickAnalysisBuildBtn}*/}
-      {/*  title={titleButton}*/}
-      {/*  color={colorButton}*/}
-      {/*  // accessibilityLabel="Learn more about this purple button"*/}
-      {/*/>*/}
+      <Button
+        onPress={clickAnalysisBuildBtn}
+        title={titleButton}
+        color={colorButton}
+        // accessibilityLabel="Learn more about this purple button"
+      />
 
-      <View style={container_style}>
-
-        <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
+      <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
       {/*  <Button*/}
       {/*  onPress={expandManualEntryDiv}*/}
       {/*  title={'v'}*/}
@@ -519,9 +515,10 @@ const [stateGraph, setStateGraph] = useState(
     </CollapsibleView>
 
       <View style={styles.inputErrorTextDiv}>
-      {/*<View>*/}
         <Text style={styles.errorText}>{inputErrorText}</Text>
       </View>
+
+      <View style={container_style}>
 
         <View style={styles.chartRow}>
           {/*<Plotly*/}
@@ -553,9 +550,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   chartRow: {
-    paddingTop: 50,
     flex: 1,
-    width: windowWidth - 30
+    width: '100%'
   },
   manualTextInput: {
     borderWidth: 1,
@@ -564,8 +560,7 @@ const styles = StyleSheet.create({
   },
   manualEntryDiv: {
     position: 'absolute',
-    zIndex: 1,
-    top: 50,
+    top: '5%',
     left: '5%',
     backgroundColor: 'rgb(255,255,255)',
     padding: 10,
@@ -576,8 +571,7 @@ const styles = StyleSheet.create({
   },
   inputErrorTextDiv: {
     position: 'absolute',
-    top: 50,
-    zIndex: 1,
+    top: '5%',
     right: '5%',
     width: 2 * windowWidth / 5 ,
     backgroundColor: 'rgb(255,255,255)',
