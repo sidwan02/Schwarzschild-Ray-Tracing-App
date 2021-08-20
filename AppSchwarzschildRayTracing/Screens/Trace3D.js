@@ -292,53 +292,72 @@ const [stateGraph, setStateGraph] = useState(
 
 
   const clickManualEntryBtn = () => {
-    if (xManual === ''){
-      setXManual(null)
-    }
-    if (yManual === ''){
-      setYManual(null)
-    }
-    if (zManual === ''){
-      setZManual(null)
-    }
 
-    if (alpha0Manual === ''){
-      setAlpha0Manual(null)
-    }
+    console.log("================")
+
+    console.log('alpha0: ', alpha0Manual)
+    console.log('beta0: ', beta0Manual)
+    console.log('gamma0: ', gamma0Manual)
+
     if (beta0Manual === ''){
-      setBeta0Manual(null)
-    }
-    if (gamma0Manual === ''){
-      setGamma0Manual(null)
+      console.log("hahahehehehaohohoho")
     }
 
+    // if (xManual === ''){
+    //   setXManual(null)
+    // }
+    // if (yManual === ''){
+    //   setYManual(null)
+    // }
+    // if (zManual === ''){
+    //   setZManual(null)
+    // }
 
-    if (xManual === null){
+    // if (alpha0Manual === ''){
+    //   setAlpha0Manual(null)
+    // }
+    // if (beta0Manual === ''){
+    //   setBeta0Manual(null)
+    // }
+    // if (gamma0Manual === ''){
+    //   setGamma0Manual(null)
+    // }
+
+
+    if (xManual === null || xManual === ''){
       // setXManual("10")
       setInputErrorText("x must be filled in.")
-    } else if (yManual === null){
+    } else if (yManual === null || yManual === ''){
       // setYManual("10")
       setInputErrorText("y must be filled in.")
-    } else if (zManual === null){
+    } else if (zManual === null || zManual === ''){
       // setZManual("10")
       setInputErrorText("z must be filled in.")
     }
 
-    else if (alpha0Manual === null && beta0Manual === null && gamma0Manual !== null){
+    else if ((alpha0Manual === null || alpha0Manual === '')
+      && (beta0Manual === null || beta0Manual === '')
+      && (gamma0Manual !== null || gamma0Manual !== '')){
       // setAlpha0Manual(90)
       // setBeta0Manual(Math.sqrt(1 - alpha0Manual**2 - beta0Manual**2))
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
-    } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual === null){
+    } else if ((alpha0Manual === null || alpha0Manual === '')
+      && (beta0Manual !== null || beta0Manual !== '')
+      && (gamma0Manual === null || gamma0Manual === '')){
       // setAlpha0Manual(90)
       // setGamma0Manual(Math.sqrt(1 - alpha0Manual**2 - gamma0Manual**2))
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
-    } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual === null){
+    } else if ((alpha0Manual !== null || alpha0Manual !== '')
+      && (beta0Manual === null || beta0Manual === '')
+      && (gamma0Manual === null || gamma0Manual === '')){
       // setBeta0Manual(90)
       // setGamma0Manual(Math.sqrt(1 - beta0Manual**2 - gamma0Manual**2))
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
     }
 
-    else if (alpha0Manual === null && beta0Manual === null && gamma0Manual === null){
+    else if ((alpha0Manual === null || alpha0Manual === '')
+      && (beta0Manual === null || beta0Manual === '')
+      && (gamma0Manual === null || gamma0Manual === '')){
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
     }
 
@@ -354,7 +373,9 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("gamma0 range: [-180, 180]")
     }
 
-    else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual === null){
+    else if ((alpha0Manual !== null || alpha0Manual !== '')
+      && (beta0Manual !== null || beta0Manual !== '')
+      && (gamma0Manual === null || gamma0Manual === '')){
       // console.log("thang:", Math.cos(alpha0Manual * Math.PI / 180)**2)
       // console.log("thong:", Math.cos(beta0Manual * Math.PI / 180)**2)
       let term = 1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(beta0Manual * Math.PI / 180)**2
@@ -370,7 +391,9 @@ const [stateGraph, setStateGraph] = useState(
       }
       // console.log("term: ", term)
 
-    } else if (alpha0Manual !== null && beta0Manual === null && gamma0Manual !== null){
+    } else if ((alpha0Manual !== null || alpha0Manual !== '')
+      && (beta0Manual === null || beta0Manual === '')
+      && (gamma0Manual !== null || gamma0Manual !== '')){
       let term = (1 - Math.cos(alpha0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
       term = Number(term.toFixed(5))
       if (term < 0){
@@ -382,7 +405,9 @@ const [stateGraph, setStateGraph] = useState(
       }
       // console.log("term: ", term)
 
-    } else if (alpha0Manual === null && beta0Manual !== null && gamma0Manual !== null){
+    } else if ((alpha0Manual === null || alpha0Manual === '')
+      && (beta0Manual !== null || beta0Manual !== '')
+      && (gamma0Manual !== null || gamma0Manual !== '')){
       let term = (1 - Math.cos(beta0Manual * Math.PI / 180)**2 - Math.cos(gamma0Manual * Math.PI / 180)**2)
       term = Number(term.toFixed(5))
       if (term < 0){
@@ -396,7 +421,9 @@ const [stateGraph, setStateGraph] = useState(
 
     }
 
-    else if (alpha0Manual !== null && beta0Manual !== null && gamma0Manual !== null){
+    else if ((alpha0Manual !== null || alpha0Manual !== '')
+      && (beta0Manual !== null || beta0Manual !== '')
+      && (gamma0Manual !== null || gamma0Manual !== '')){
       if (Math.abs((1 - Math.cos(beta0Manual / 180 * Math.PI)**2 - Math.cos(gamma0Manual / 180 * Math.PI)**2)
         - Math.cos(alpha0Manual / 180 * Math.PI)) < 1e-5){
         setInputErrorText("")
