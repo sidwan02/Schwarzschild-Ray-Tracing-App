@@ -215,13 +215,20 @@ function Trace2D(props) {
                 mode: 'lines'
 }
 
-// let trace2 = {
-//   name: 'Black Hole',
-//   x: [0],
-//   y: [0],
-//   type: 'scatter',
-//     mode: 'markers'
-// }
+let trace2 = {
+  name: 'Black Hole',
+  x: create_func_arr(Math.cos, theta_arr),
+    y: create_func_arr(Math.sin, theta_arr),
+  type: 'line',
+    mode: 'markers',
+    line: {
+      color: 'black'
+    },
+
+    // markers: false,
+    fill: 'toself',
+    fillcolor: 'black',
+}
 
               // console.log("periastron within request: ", periastron)
 
@@ -239,8 +246,8 @@ function Trace2D(props) {
               // console.log(typeof delta0)
 
              setStateGraph({
-    // data: [trace1, trace2, trace3],
-    data: [trace1, trace3],
+    data: [trace1, trace2, trace3],
+    // data: [trace1, trace3],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
@@ -259,19 +266,7 @@ function Trace2D(props) {
     x:0.01
       }
     },
-       shapes:        {
-      type: 'circle',
-      xref: 'x',
-      yref: 'y',
-      fillcolor: 'black',
-      x0: -1,
-      y0: -1,
-      x1: 1,
-      y1: 1,
-      line: {
-        color: 'black'
-      }
-    }
+
   })
 
             // console.log("x_trace: ", x_trace)
@@ -1209,12 +1204,46 @@ function Trace2D(props) {
 let bounds1 = convertPixelToCartesian(0, 0)
   let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
+  let density = 1000
+
+  let theta_arr = []
+
+        // let arr_size be 100
+        let incrementor = 2 * Math.PI / (density - 1)
+
+        let i = 0
+
+        while (i < density) {
+     theta_arr.push(incrementor * i)
+          i += 1
+        }
+
+        // console.log("theta_arr: ", theta_arr)
+
+  const create_func_arr = (func, arr) => {
+          let func_arr = []
+
+          for (let n in arr){
+            func_arr.push(func(n))
+          }
+
+          return func_arr
+        }
+
+
   let trace1 = {
   name: 'Black Hole',
-  x: [0],
-  y: [0],
-  type: 'scatter',
-    mode: 'markers'
+  x: create_func_arr(Math.cos, theta_arr),
+    y: create_func_arr(Math.sin, theta_arr),
+  type: 'line',
+    mode: 'markers',
+    line: {
+      color: 'black'
+    },
+
+    // markers: false,
+    fill: 'toself',
+    fillcolor: 'black',
 }
 
 const [stateGraph, setStateGraph] = useState(
