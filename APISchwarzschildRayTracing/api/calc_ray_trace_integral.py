@@ -763,11 +763,12 @@ def if_D_eq_Dcrit_get_ray(r0, theta0, delta0, rstop_nturns, npoints):
         theta_vec = np.linspace(0, theta_umin, npoints)
         # print("theta_vec: ", theta_vec)
         u_vec = vec_u_Dcrit(theta_vec, theta_0)
-        # print("u_vec: ", u_vec)
+        print("u_vec: ", u_vec)
     elif inout == -1:
         num_turns = rstop_nturns
         theta_vec = np.linspace(0, num_turns * 2 * np.pi, npoints)
         u_vec = vec_u_Dcrit(theta_vec, theta_0)
+        print("u_vec: ", u_vec)
     else:
         print('undefined direction in D_eq_Dcrit case. bailing.')
         return 0
@@ -787,6 +788,9 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
     if (np.abs(D_minus_Dcrit) < abstol):
         print("equal")
         rr, theta = if_D_eq_Dcrit_get_ray(r0, theta0, delta0, rstop, npoints)
+
+    #     for some reason the direction is mirrored across the x axis.
+        theta = - theta
     elif (D > Dcrit):
         # print("greater")
         # for r = 10, delta = 100 D > Dcrit
@@ -847,8 +851,7 @@ def get_rstop(M, r0, delta0):
     if np.absolute(D_minus_Dcrit) < abstol:
         print("hahahahahahahah")
         # number of turns
-        # rstop = 2
-        rstop = 1
+        rstop = 2
     else:
 
         escape_to_inf = False
@@ -951,7 +954,7 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 70, 3)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 160)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 0, 45)
 
 # r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
 # x = 3.1 * np.cos(np.deg2rad(45))
@@ -972,24 +975,24 @@ delta0 = 0
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+
+# plt.axes(projection='polar')
+# plt.polar(theta_arr, r_arr, 'b-', marker='o')
+#
+# plt.figure(figsize=(12, 12))
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# #
+# #
+# ax.set_aspect('equal', adjustable='box')
 #
 #
-# # plt.axes(projection='polar')
-# # plt.polar(theta_arr, r_arr, 'b-', marker='o')
-# #
-# # plt.figure(figsize=(12, 12))
-# #
-# # fig = plt.figure()
-# # ax = fig.add_subplot(111)
-# # #
-# # #
-# # ax.set_aspect('equal', adjustable='box')
-# #
-# #
-# plt.plot(x_arr, y_arr, marker='o')
-# # plt.plot(x_arr, y_arr)
+plt.plot(x_arr, y_arr, marker='o')
+# plt.plot(x_arr, y_arr)
+
+plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
 #
-# plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
-# #
-# plt.show()
+plt.show()
