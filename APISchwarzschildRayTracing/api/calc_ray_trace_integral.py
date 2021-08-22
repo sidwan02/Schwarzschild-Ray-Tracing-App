@@ -643,6 +643,9 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
     # Set up the radial and inverse radial arrays
     # rr = np.linspace(r0, rstop, npoints)
 
+    rstop_original = rstop
+    print("rstop_original: ", rstop_original)
+
     def lr_recurring(r_acc, theta_acc, condition, maximum_r_change):
         # print("r_acc: ", r_acc)
         recursionCompleted = False
@@ -711,9 +714,14 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         print("falling into bh")
         # now going outward but since it was originally going into blackhole must reverse our outward
         # going values; also need to set rstop to r0
+
+        # rstop_dummy = rstop
+
         rstop = r0
 
-        rr, theta = lr_recurring([2], [], True, 1e-3)
+        print("AA rstop_original: ", rstop_original)
+
+        rr, theta = lr_recurring([rstop_original], [], True, 1e-3)
         rr = rr[::-1]
         theta = theta[::-1]
 
@@ -839,7 +847,8 @@ def get_rstop(M, r0, delta0):
     if np.absolute(D_minus_Dcrit) < abstol:
         print("hahahahahahahah")
         # number of turns
-        rstop = 2
+        # rstop = 2
+        rstop = 1
     else:
 
         escape_to_inf = False
@@ -860,10 +869,11 @@ def get_rstop(M, r0, delta0):
         else:
             print("so I've come here...")
             # rstop < r0
-            rstop = 2
+            # rstop = 2
+            rstop = 1
 
     # print("delta0: ", delta0)
-    if (np.pi / 2 < np.abs(delta0) < np.pi) and (rstop != 2):
+    if (np.pi / 2 < np.abs(delta0) < np.pi) and (rstop != 1):
         # print("making rstop negative")
         rstop = -rstop
 
@@ -941,9 +951,9 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 70, 3)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
-# x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 10, 180)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(10, 0, 160)
 
-r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
+# r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
 # x = 3.1 * np.cos(np.deg2rad(45))
 # y = 3.1 * np.sin(np.deg2rad(45))
 # delta0 = 172.34
@@ -965,21 +975,21 @@ delta0 = 0
 # import matplotlib.pyplot as plt
 #
 #
-# plt.axes(projection='polar')
-# plt.polar(theta_arr, r_arr, 'b-', marker='o')
-#
-# plt.figure(figsize=(12, 12))
-#
-# fig = plt.figure()
+# # plt.axes(projection='polar')
+# # plt.polar(theta_arr, r_arr, 'b-', marker='o')
+# #
+# # plt.figure(figsize=(12, 12))
+# #
+# # fig = plt.figure()
 # # ax = fig.add_subplot(111)
 # # #
 # # #
 # # ax.set_aspect('equal', adjustable='box')
 # #
 # #
-# # plt.plot(x_arr, y_arr, marker='o')
-# # # plt.plot(x_arr, y_arr)
-# #
-# # plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
+# plt.plot(x_arr, y_arr, marker='o')
+# # plt.plot(x_arr, y_arr)
+#
+# plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
 # #
 # plt.show()
