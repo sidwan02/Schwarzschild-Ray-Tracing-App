@@ -122,15 +122,77 @@ function Trace3D(props) {
           mode: 'lines'
         }
 
+        // let trace2 = {
+        //   name: 'Black Hole',
+        //   x: [0],
+        //   y: [0],
+        //   z: [0],
+        //   size: [1],
+        //   color: 'black',
+        //   type: 'scatter3d',
+        //   mode: 'markers',
+        //   marker: {size: 2},
+        // }
+
+        let theta_arr = []
+
+        // let arr_size be 100
+        let incrementor = 2 * Math.PI / 99
+
+        for (let i in range(0, 99)){
+          theta_arr.push(incrementor * i)
+        }
+
+        console.log("theta_arr: ", theta_arr)
+
+        let phi_arr = []
+
+        // let arr_size be 100
+        incrementor = Math.PI / 99
+
+        for (let i in range(0, 99)){
+          phi_arr.push(incrementor * i)
+        }
+
+        console.log("phi_arr: ", phi_arr)
+
+        // https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
+        const cartesian =
+    (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
+
+        const create_func_arr = (func, arr) => {
+          let func_arr = []
+
+          for (let n in arr){
+            func_arr.push(func(n))
+          }
+
+          return func_arr
+        }
+
+
+
         let trace2 = {
           name: 'Black Hole',
-          x: [0],
-          y: [0],
-          z: [0],
-          type: 'scatter3d',
-          mode: 'markers',
-          marker: {size: 2},
+          x: cartesian(create_func_arr(Math.cos, theta_arr), create_func_arr(Math.sin, phi_arr)),
+          y: cartesian(create_func_arr(Math.sin, theta_arr), create_func_arr(Math.sin, phi_arr)),
+          z: cartesian(Array(100).fill(1), create_func_arr(Math.cos, phi_arr)),
+          // size: [1],
+          color: 'black',
+          type: 'surface',
+          // mode: 'markers',
+          // marker: {size: 2},
         }
+
+        // let trace2 = {
+        //   name: 'Black Hole',
+        //   x: [0],
+        //   y: [0],
+        //   z: [0],
+        //   type: 'scatter3d',
+        //   mode: 'markers',
+        //   marker: {size: 2},
+        // }
 
         // console.log("periastron within request: ", periastron)
 

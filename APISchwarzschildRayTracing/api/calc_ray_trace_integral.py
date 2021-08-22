@@ -975,24 +975,24 @@ delta0 = 0
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
-import matplotlib.pyplot as plt
-
-
-# plt.axes(projection='polar')
-# plt.polar(theta_arr, r_arr, 'b-', marker='o')
+# import matplotlib.pyplot as plt
 #
-# plt.figure(figsize=(12, 12))
 #
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
+# # plt.axes(projection='polar')
+# # plt.polar(theta7_arr, r_arr, 'b-', marker='o')
+# #
+# # plt.figure(figsize=(12, 12))
+# #
+# # fig = plt.figure()
+# # ax = fig.add_subplot(111)
+# # #
+# # #
+# # ax.set_aspect('equal', adjustable='box')
 # #
 # #
-# ax.set_aspect('equal', adjustable='box')
+# plt.plot(x_arr, y_arr, marker='o')
+# # plt.plot(x_arr, y_arr)
 #
-#
-plt.plot(x_arr, y_arr, marker='o')
-# plt.plot(x_arr, y_arr)
-
-plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
-#
-plt.show()
+# plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
+# #
+# plt.show()

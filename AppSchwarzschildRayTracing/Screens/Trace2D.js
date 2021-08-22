@@ -215,13 +215,13 @@ function Trace2D(props) {
                 mode: 'lines'
 }
 
-let trace2 = {
-  name: 'Black Hole',
-  x: [0],
-  y: [0],
-  type: 'scatter',
-    mode: 'markers'
-}
+// let trace2 = {
+//   name: 'Black Hole',
+//   x: [0],
+//   y: [0],
+//   type: 'scatter',
+//     mode: 'markers'
+// }
 
               // console.log("periastron within request: ", periastron)
 
@@ -239,7 +239,8 @@ let trace2 = {
               // console.log(typeof delta0)
 
              setStateGraph({
-    data: [trace1, trace2, trace3],
+    // data: [trace1, trace2, trace3],
+    data: [trace1, trace3],
     layout: { width: windowWidth,
       height: windowHeight - 55,
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
@@ -256,6 +257,19 @@ let trace2 = {
     y:0.99,
     xanchor:"left",
     x:0.01
+      }
+    },
+       shapes:        {
+      type: 'circle',
+      xref: 'x',
+      yref: 'y',
+      fillcolor: 'black',
+      x0: -1,
+      y0: -1,
+      x1: 1,
+      y1: 1,
+      line: {
+        color: 'black'
       }
     }
   })
