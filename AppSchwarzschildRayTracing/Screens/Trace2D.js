@@ -454,6 +454,7 @@ let trace2 = {
 
             drawCoordinateAxes()
             drawBlackHole()
+            drawLegend()
             i = i + 1;
           }
           console.log("stopping trace")
@@ -752,6 +753,32 @@ let trace2 = {
     ctx.closePath();
   }
 
+  const drawLegend = () => {
+    // console.log("drawing bh")
+    let ctx = canvas.getContext("2d");
+
+    ctx.beginPath()
+
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo(6 / 8 * windowWidth, windowHeight - 100);
+    ctx.lineTo(7 / 8 * windowWidth, windowHeight - 100);
+    ctx.stroke();
+
+    ctx.moveTo(6 / 8 * windowWidth, windowHeight - 105);
+    ctx.lineTo(6 / 8 * windowWidth, windowHeight - 95);
+    ctx.stroke();
+
+    ctx.moveTo(7 / 8 * windowWidth, windowHeight - 105);
+    ctx.lineTo(7 / 8 * windowWidth, windowHeight - 95);
+    ctx.stroke();
+
+    ctx.fillText("5 Schwarzschild Radii", 11 / 16 * windowWidth, windowHeight - 80);
+
+    ctx.closePath();
+
+
+  }
+
   const drawCoordinateAxes = () => {
     let ctx = canvas.getContext("2d");
 
@@ -780,6 +807,7 @@ let trace2 = {
 
       drawCoordinateAxes()
       drawBlackHole()
+      drawLegend()
     }
   }
 
@@ -997,6 +1025,7 @@ let trace2 = {
 
     drawCoordinateAxes()
     drawBlackHole()
+    drawLegend()
   }
 
   const numListRangeInclusive = (start, stop, divisions) => {

@@ -38,6 +38,8 @@ function Guide(props) {
 
         <Text>The width of the screen spans +/- 20, and the height of the screen spans +/- 40.</Text>
 
+        <Text>Note that delta0 is defined to be anti-clockwise angle formed by the position vector of the ray source and the initial direction of the ray. </Text>
+
         <Text style={styles.h2}>Analysis Mode</Text>
 
         <Text>Click on the Trace Analysis button, which will give a detailed plot of the ray and it's trajectory.</Text>
