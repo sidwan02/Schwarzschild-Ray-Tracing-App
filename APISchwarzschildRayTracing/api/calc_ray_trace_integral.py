@@ -963,7 +963,7 @@ delta0 = 0
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
 # import matplotlib.pyplot as plt
-
+#
 #
 # plt.axes(projection='polar')
 # plt.polar(theta_arr, r_arr, 'b-', marker='o')

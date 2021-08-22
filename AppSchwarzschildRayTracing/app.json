@@ -1,9 +1,9 @@
 {
-  "name": "SchwarzschildRayTracing",
-  "displayName": "SchwarzschildRayTracing",
+  "name": "schwarzschild-ray-tracing",
+  "displayName": "schwarzschild-ray-tracing",
   "expo": {
-    "name": "SchwarzschildRayTracing",
-    "slug": "SchwarzschildRayTracing",
+    "name": "schwarzschild-ray-tracing",
+    "slug": "schwarzschild-ray-tracing",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
