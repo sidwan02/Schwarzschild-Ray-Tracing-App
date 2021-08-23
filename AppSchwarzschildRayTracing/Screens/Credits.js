@@ -35,8 +35,9 @@ function Credits(props) {
           <Text>Siddharth Diwan</Text>
         <Text>Sc.B. Computer Science, B.A. Astronomy</Text>
         <Text style={styles.italics}>Brown University</Text>
+        <Text>&lt;siddharth_diwan@brown.edu&gt;</Text>
         <Text></Text>
-        <Text>Professor Dipankar Maitra</Text>
+        <Text>Dipankar Maitra</Text>
         <Text>Associate Professor of Physics/Astronomy </Text>
         <Text style={styles.italics}>Wheaton College Massachusetts</Text>
       </View>

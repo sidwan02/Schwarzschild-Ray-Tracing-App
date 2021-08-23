@@ -25,7 +25,6 @@ function Guide(props) {
   // https://stackoverflow.com/questions/34139687/react-native-touchableopacity-wrapping-floating-button-get-nothing
     <View>
       <View style={styles.titleContainer}>
-
         <Text style={styles.h1}>2D Trace</Text>
         <Text style={styles.h2}>Drag Input</Text>
 
@@ -52,7 +51,9 @@ function Guide(props) {
 
         <Text>Note that alpha0, beta0 and gamma0 must be degree angles</Text>
 
-        <Text>Make sure that input values satisfy this constraint in accordance with direction cosines: cos(l)^2 + cos(m)^2 + cos(n)^2 = 1 where l, m and n correspond to the converted forms of alpha0, beta0 and gamma0 into radians.</Text>
+        <Text>Make sure that input values satisfy the following constraint in accordance with direction cosines: cos(l)^2 + cos(m)^2 + cos(n)^2 = 1 where l, m and n correspond to the converted forms of alpha0, beta0 and gamma0 into radians.</Text>
+
+        <Text>Note that you can input any two of alpha0, beta0 and gamma0. The third will be automatically populated if possible.</Text>
 
       </View>
     </View>
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
       // flex: 1,
     position: 'absolute',
     width: 350,
-    top: windowHeight / 10,
+    top: windowHeight / 20,
       // height: 200,
     left: (windowWidth / 2) - (350 / 2),
       // textAlign: 'center',

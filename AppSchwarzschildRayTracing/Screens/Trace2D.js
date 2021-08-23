@@ -253,11 +253,12 @@ let trace2 = {
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
     xaxis: {
       title: "x-axis",
-    range: [bounds1.cartX, bounds2.cartX]
+    range: [-bounds2.cartX, bounds2.cartX]
   },
       yaxis: {
       title: "y-axis",
-    range: [bounds2.cartY, bounds1.cartY]
+    range: [-bounds2.cartY, bounds2.cartY],
+        scaleanchor:"x", scaleratio:1
   },
       legend: {
           yanchor:"top",
@@ -781,7 +782,7 @@ let trace2 = {
     ctx.lineTo(7 / 8 * windowWidth, windowHeight - 95);
     ctx.stroke();
 
-    ctx.fillText("5 Schwarzschild Radii", 11 / 16 * windowWidth, windowHeight - 80);
+    ctx.fillText("5 Schwarzschild Radii [SR]", 11 / 16 * windowWidth - 5, windowHeight - 80);
 
     ctx.closePath();
 
@@ -797,10 +798,28 @@ let trace2 = {
     ctx.lineTo(windowWidth, blackHoleY);
     ctx.stroke();
 
-    ctx.strokeStyle = '#000000';
     ctx.moveTo(blackHoleX, 0);
     ctx.lineTo(blackHoleX, windowHeight);
     ctx.stroke();
+
+    let i = 0
+
+    while (i <= 8) {
+      ctx.moveTo(i / 8 * windowWidth, windowHeight / 2 + 5);
+      ctx.lineTo(i / 8 * windowWidth, windowHeight / 2 - 5);
+      ctx.stroke();
+      i += 1
+    }
+    i = 0
+    while (i <= 16) {
+      ctx.moveTo(windowWidth / 2 + 5, i / 16 * windowHeight);
+      ctx.lineTo(windowWidth / 2 - 5, i / 16 * windowHeight);
+      ctx.stroke();
+      i += 1
+    }
+
+    ctx.fillText("y-axis [SR units]", 8 / 16 * windowWidth + 5, windowHeight - 10);
+    ctx.fillText("x-axis [SR units]", 13 / 16 * windowWidth, windowHeight / 2 + 20);
 
     ctx.closePath();
   }
@@ -1486,7 +1505,7 @@ const styles = StyleSheet.create({
     top: '5%',
     right: '5%',
     width: 2 * windowWidth / 5 ,
-    backgroundColor: 'rgb(255,255,255)',
+    backgroundColor: 'rgba(255,255,255, 0)',
     padding: 10,
     borderRadius: 5,
     // display: 'flex',

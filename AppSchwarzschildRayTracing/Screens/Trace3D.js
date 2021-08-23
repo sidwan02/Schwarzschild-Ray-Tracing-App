@@ -757,7 +757,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     right: '5%',
     width: 2 * windowWidth / 5 ,
-    backgroundColor: 'rgb(255,255,255)',
+    backgroundColor: 'rgba(255,255,255, 0)',
     padding: 10,
     borderRadius: 5,
     // display: 'flex',
