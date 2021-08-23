@@ -101,9 +101,12 @@ function Trace3D(props) {
 
     setInputErrorText("")
 
-    // console.log("x0: ", x)
-    // console.log("y0: ", y)
-    // console.log("delta0: ", delta0)
+    console.log("x0: ", x0)
+    console.log("y0: ", y0)
+    console.log("z0: ", z0)
+    console.log("alpha0: ", alpha0)
+    console.log("beta0: ", beta0)
+    console.log("gamma0: ", gamma0)
 
     const toSend = {
       x0: Math.abs(x0),
@@ -501,9 +504,9 @@ const [stateGraph, setStateGraph] = useState(
 
     console.log("================")
 
-    console.log('alpha0: ', alpha0Manual)
-    console.log('beta0: ', beta0Manual)
-    console.log('gamma0: ', gamma0Manual)
+    // console.log('alpha0: ', alpha0Manual)
+    // console.log('beta0: ', beta0Manual)
+    // console.log('gamma0: ', gamma0Manual)
 
     if (beta0Manual === ''){
       console.log("hahahehehehaohohoho")
@@ -634,12 +637,12 @@ const [stateGraph, setStateGraph] = useState(
         - Math.cos(alpha0Manual / 180 * Math.PI)) < 1e-5){
         setInputErrorText("")
 
-        console.log('x: ', xManual)
-        console.log('y: ', yManual)
-        console.log('z: ', zManual)
-        console.log('alpha0: ', alpha0Manual)
-        console.log('beta0: ', beta0Manual)
-        console.log('gamma0: ', gamma0Manual)
+        // console.log('x: ', xManual)
+        // console.log('y: ', yManual)
+        // console.log('z: ', zManual)
+        // console.log('alpha0: ', alpha0Manual)
+        // console.log('beta0: ', beta0Manual)
+        // console.log('gamma0: ', gamma0Manual)
 
         requestRayTrace(xManual, yManual, zManual, alpha0Manual, beta0Manual, gamma0Manual)
       } else {
