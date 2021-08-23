@@ -29,6 +29,65 @@ function Trace3D(props) {
   let blackHoleX = windowWidth / 2
   let blackHoleY = windowHeight / 2
 
+  let density = 200
+
+          let theta_arr = []
+
+        // let arr_size be 100
+        let incrementor = 2 * Math.PI / (density - 1)
+
+        let i = 0
+
+        while (i < density) {
+     theta_arr.push(incrementor * i)
+          i += 1
+        }
+
+        console.log("theta_arr: ", theta_arr)
+
+        let phi_arr = []
+
+        // let arr_size be 100
+        // incrementor = Math.PI / 2 / (density - 1)
+        incrementor = 1
+
+        i = 0
+
+        while (i < density) {
+     phi_arr.push(incrementor * i)
+          i += 1
+        }
+
+        console.log("phi_arr: ", phi_arr)
+
+        // https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
+    //     const cartesian =
+    // (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
+    //
+    //     const create_func_arr = (func, arr) => {
+    //       let func_arr = []
+    //
+    //       for (let n in arr){
+    //         func_arr.push(func(n))
+    //       }
+    //
+    //       return func_arr
+    //     }
+
+  let a = []
+        let b = []
+        let c = []
+
+          for (let i=0; i<theta_arr.length; i++){
+            for (let j=0; j<phi_arr.length; j++){
+                a.push(Math.cos(theta_arr[i]) * Math.sin(phi_arr[j]));
+                b.push(Math.sin(theta_arr[i]) * Math.sin(phi_arr[j]));
+                c.push(Math.cos(phi_arr[j]));
+            }
+        }
+
+
+
 
   let x_trace = []
   let y_trace = []
@@ -134,52 +193,14 @@ function Trace3D(props) {
         //   marker: {size: 2},
         // }
 
-        let theta_arr = []
-
-        // let arr_size be 100
-        let incrementor = 2 * Math.PI / 99
-
-        for (let i in range(0, 99)){
-          theta_arr.push(incrementor * i)
-        }
-
-        console.log("theta_arr: ", theta_arr)
-
-        let phi_arr = []
-
-        // let arr_size be 100
-        incrementor = Math.PI / 99
-
-        for (let i in range(0, 99)){
-          phi_arr.push(incrementor * i)
-        }
-
-        console.log("phi_arr: ", phi_arr)
-
-        // https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
-        const cartesian =
-    (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
-
-        const create_func_arr = (func, arr) => {
-          let func_arr = []
-
-          for (let n in arr){
-            func_arr.push(func(n))
-          }
-
-          return func_arr
-        }
-
-
-
         let trace2 = {
           name: 'Black Hole',
-          x: cartesian(create_func_arr(Math.cos, theta_arr), create_func_arr(Math.sin, phi_arr)),
-          y: cartesian(create_func_arr(Math.sin, theta_arr), create_func_arr(Math.sin, phi_arr)),
-          z: cartesian(Array(100).fill(1), create_func_arr(Math.cos, phi_arr)),
+          x: a,
+          y: b,
+          z: c,
           // size: [1],
           color: 'black',
-          type: 'surface',
+          type: 'mesh3d',
           // mode: 'markers',
           // marker: {size: 2},
         }
@@ -318,15 +339,42 @@ function Trace3D(props) {
 let bounds1 = convertPixelToCartesian(0, 0)
   let bounds2 = convertPixelToCartesian(windowWidth, windowHeight)
 
+//   let trace1 = {
+//   name: 'Black Hole',
+//   x: [0],
+//   y: [0],
+//     z: [0],
+//   type: 'scatter3d',
+//     mode: 'markers',
+//     marker: {size: 2},
+// }
+
+  // let trace1 = {
+  //         name: 'Black Hole',
+  //         x: [0, 0, 1, 1, 0, 0, 1, 1],
+  //         y: [0, 1, 1, 0, 0, 1, 1, 0],
+  //         z: [0, 0, 0, 0, 1, 1, 1, 1],
+  //         // i: [7, 0, 0, 0, 4, 4, 6, 6, 4, 0, 3, 2],
+  //         // j: [3, 4, 1, 2, 5, 6, 5, 2, 0, 1, 6, 3],
+  //         // k: [0, 7, 2, 3, 6, 7, 1, 1, 5, 5, 7, 6],
+  //         // size: [1],
+  //         color: 'black',
+  //         type: 'mesh3d',
+  //         // mode: 'markers',
+  //         // marker: {size: 2},
+  //       }
+  //
   let trace1 = {
-  name: 'Black Hole',
-  x: [0],
-  y: [0],
-    z: [0],
-  type: 'scatter3d',
-    mode: 'markers',
-    marker: {size: 2},
-}
+          name: 'Black Hole',
+          x: a,
+          y: b,
+          z: c,
+          // size: [1],
+          color: 'black',
+          type: 'mesh3d',
+          // mode: 'markers',
+          // marker: {size: 2},
+        }
 
 const [stateGraph, setStateGraph] = useState(
   {
