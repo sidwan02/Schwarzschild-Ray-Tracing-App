@@ -193,6 +193,8 @@ function Trace2D(props) {
             // this is the thing I commented out because I'm gonna hopefully make the API uniformly spaced
             // calculateWaypoints()
 
+            let flag_no_periastron = false
+
             x_trace.forEach((x, i) => {
               if (periastron === null) {
                 periastron = {x: x, y: y_trace[i]}
@@ -201,7 +203,9 @@ function Trace2D(props) {
                 let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2))
                 let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
 
-                if (candPeriastronDist < curPeriastronDist) {
+                if (candPeriastronDist === curPeriastronDist) {
+                  flag_no_periastron = true
+                } else if (candPeriastronDist < curPeriastronDist) {
                   periastron = {x: x, y: y_trace[i]}
                 }
               }
@@ -245,6 +249,32 @@ let trace2 = {
               }
               // console.log(typeof delta0)
 
+            if (flag_no_periastron){
+              setStateGraph({
+    data: [trace1, trace2],
+    // data: [trace1, trace3],
+    layout: { width: windowWidth,
+      height: windowHeight - 55,
+      title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
+    xaxis: {
+      title: "x-axis",
+    range: [-bounds2.cartX, bounds2.cartX]
+  },
+      yaxis: {
+      title: "y-axis",
+    range: [-bounds2.cartY, bounds2.cartY],
+        scaleanchor:"x", scaleratio:1
+  },
+      legend: {
+          yanchor:"top",
+    y:0.99,
+    xanchor:"left",
+    x:0.01
+      }
+    },
+
+  })
+            } else {
              setStateGraph({
     data: [trace1, trace2, trace3],
     // data: [trace1, trace3],
@@ -269,6 +299,9 @@ let trace2 = {
     },
 
   })
+            }
+
+
 
             // console.log("x_trace: ", x_trace)
 

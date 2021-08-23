@@ -158,6 +158,8 @@ function Trace3D(props) {
             // console.log("x_trace: ", x_trace)
           });
 
+        let flag_no_periastron = false
+
         x_trace.forEach((x, i) => {
           if (periastron === null) {
             periastron = {x: x, y: y_trace[i], z: z_trace[i]}
@@ -166,7 +168,9 @@ function Trace3D(props) {
             let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2) + Math.pow(periastron.z, 2))
             let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2) + Math.pow(z_trace[i], 2))
 
-            if (candPeriastronDist < curPeriastronDist) {
+            if (candPeriastronDist == curPeriastronDist) {
+              flag_no_periastron = true
+            } else if (candPeriastronDist < curPeriastronDist) {
               periastron = {x: x, y: y_trace[i], z: z_trace[i]}
             }
           }
@@ -240,7 +244,58 @@ function Trace3D(props) {
         }
         // console.log(typeof delta0)
 
-        setStateGraph({
+        if (flag_no_periastron){
+          setStateGraph({
+          data: [trace1, trace2],
+          layout: {
+            width: windowWidth,
+            height: windowHeight - 55,
+            title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ', ' + z_trace[0].toFixed(2) + ') <br>with initial velocity <' + alpha0.toFixed(2) + '°, ' + beta0.toFixed(2) + '°, ' + gamma0.toFixed(2) + '°>',
+            legend: {
+              yanchor: "top",
+              y: 0.99,
+              xanchor: "left",
+              x: 0.01
+            },
+          //   scene: {
+          //   aspectmode: 'string',
+          //   aspectratio: {x: 1, y: 1, z: 1},
+          //     xaxis: {
+          //     title: "x-axis",
+          //     // range: [bounds1.cartX, bounds2.cartX]
+          //   },
+          //   yaxis: {
+          //     title: "y-axis",
+          //     // range: [bounds2.cartY, bounds1.cartY]
+          //   },
+          // }
+
+            scene: {
+          xaxis: {
+    uirevision: 'time',
+            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+  },
+   yaxis: {
+    uirevision: 'time',
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+  },
+   zaxis: {
+   uirevision: 'time',
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+  },
+        aspectmode: 'string',
+           aspectratio: {x:1, y:1, z:1},
+        camera: {
+            eye: {
+              x:2, y:2, z:2
+            }
+        }
+      }
+
+                  }
+              })
+        } else {
+         setStateGraph({
           data: [trace1, trace2, trace3],
           layout: {
             width: windowWidth,
@@ -289,6 +344,7 @@ function Trace3D(props) {
 
                   }
               })
+        }
 
 
         // console.log("x_trace: ", x_trace)
