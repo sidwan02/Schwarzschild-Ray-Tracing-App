@@ -472,15 +472,15 @@ const [stateGraph, setStateGraph] = useState(
       scene: {
           xaxis: {
     uirevision: 'time',
-            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+            range: [-40, 40]
   },
    yaxis: {
     uirevision: 'time',
-     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+     range: [-40, 40]
   },
    zaxis: {
    uirevision: 'time',
-     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+     range: [-40, 40]
   },
         aspectmode: 'string',
            aspectratio: {x:1, y:1, z:1},
@@ -572,6 +572,10 @@ const [stateGraph, setStateGraph] = useState(
 
     else if (Math.sqrt(xManual**2 + yManual**2 + zManual**2) < 3) {
       setInputErrorText("Light source must be outside the event horizon (r0 >= 3)")
+    }
+
+    else if (Math.abs(xManual) > 40 || Math.abs(yManual) > 40 || Math.abs(zManual) > 40) {
+      setInputErrorText("Light source must within the range x, y, z: [-40, 40]")
     }
 
     else if (alpha0Manual > 180 || alpha0Manual < -180) {

@@ -1353,6 +1353,10 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("Light source must be outside the event horizon (r0 >= 3)")
     }
 
+  else if (Math.abs(xManual) > 20 || Math.abs(yManual) > 40) {
+      setInputErrorText("Light source must be within the range x: [-20, 20] and y: [-40, 40]")
+    }
+
     else if (delta0Manual > 180 || delta0Manual < -180) {
       setInputErrorText("delta0 range: [-180, 180]")
     }
