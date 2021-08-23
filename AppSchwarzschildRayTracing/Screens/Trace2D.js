@@ -195,6 +195,8 @@ function Trace2D(props) {
 
             let flag_no_periastron = false
 
+            let c = 0
+
             x_trace.forEach((x, i) => {
               if (periastron === null) {
                 periastron = {x: x, y: y_trace[i]}
@@ -204,12 +206,17 @@ function Trace2D(props) {
                 let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
 
                 if (candPeriastronDist === curPeriastronDist) {
-                  flag_no_periastron = true
+                  c += 1
+                  if (c === 5){
+                    flag_no_periastron = true
+                  }
                 } else if (candPeriastronDist < curPeriastronDist) {
                   periastron = {x: x, y: y_trace[i]}
                 }
               }
             })
+
+            console.log("flag_no_periastron: ", flag_no_periastron)
 
               let trace1 = {
   name: 'Ray Trace',
@@ -263,7 +270,7 @@ let trace2 = {
       yaxis: {
       title: "y-axis",
     range: [-bounds2.cartY, bounds2.cartY],
-        scaleanchor:"x", scaleratio:1
+        scaleanchor:"x", scaleratio:1,
   },
       legend: {
           yanchor:"top",
@@ -485,7 +492,7 @@ let trace2 = {
 
         let buffer = 2//2
         if (x_end_cart > 20 + buffer || x_end_cart < -20 - buffer || y_end_cart > 40 + buffer || y_end_cart < -40 - buffer
-          || cur_i === max_i) {
+          || Math.sqrt(x_end_cart**2 + y_end_cart**2) < 1) {
           let i = 0
           // console.log("boba")
           let ctx = canvas.getContext("2d");
@@ -493,7 +500,16 @@ let trace2 = {
           while (i < 20) {
             // console.log("clearing up")
             ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+            // ctx.fillStyle = "yellow";
+
+
+
+
             ctx.fillRect(0, 0, windowWidth, windowHeight);
+            // x, y, width, height
+            // fills a square in the center around the blackhole
+            // ctx.fillRect(3 / 8 * windowWidth + 1, 7 / 16 * windowHeight + 1, 2/8 * windowWidth - 2, 2 / 16 * windowHeight - 2);
+
 
             drawCoordinateAxes()
             drawBlackHole()
@@ -815,7 +831,13 @@ let trace2 = {
     ctx.lineTo(7 / 8 * windowWidth, windowHeight - 95);
     ctx.stroke();
 
+
+    ctx.strokeStyle = 'black'
+
     ctx.fillText("5 Schwarzschild Radii [SR]", 11 / 16 * windowWidth - 5, windowHeight - 80);
+
+    ctx.fillText("y-axis [SR units]", 8 / 16 * windowWidth + 5, windowHeight - 10);
+    ctx.fillText("x-axis [SR units]", 13 / 16 * windowWidth, windowHeight / 2 + 20);
 
     ctx.closePath();
 
@@ -850,9 +872,6 @@ let trace2 = {
       ctx.stroke();
       i += 1
     }
-
-    ctx.fillText("y-axis [SR units]", 8 / 16 * windowWidth + 5, windowHeight - 10);
-    ctx.fillText("x-axis [SR units]", 13 / 16 * windowWidth, windowHeight / 2 + 20);
 
     ctx.closePath();
   }
@@ -1072,8 +1091,40 @@ let trace2 = {
     // ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+    // ctx.fillStyle = "yellow";
     ctx.fillRect(0, 0, windowWidth, windowHeight);
-        ctx.closePath();
+
+    // let x_end_cart = final_x_list[i + 1], y_end_cart = final_y_list[i + 1]
+    //
+    // if (x_end_cart < -1 && y_end_cart > 1){
+    //   // quad 2
+    // ctx.fillRect(0, 0, 4/8 * windowWidth - 5, 8 / 16 * windowHeight - 5);
+    //     ctx.closePath();
+    // } else if (x_end_cart > 1 && y_end_cart > 1){
+    //   // quad 1
+    // ctx.fillRect(windowWidth / 2 + 5, 0, 4/8 * windowWidth, 8 / 16 * windowHeight - 5);
+    //     ctx.closePath();
+    // } else if (x_end_cart > 1 && y_end_cart < -1){
+    //   // quad 4
+    // ctx.fillRect(windowWidth / 2 + 5, windowHeight / 2 + 5, 4/8 * windowWidth, 8 / 16 * windowHeight);
+    //     ctx.closePath();
+    // drawLegend()
+    // } else if (x_end_cart < -1 && y_end_cart < -1){
+    //   // quad 3
+    // ctx.fillRect(0, windowHeight / 2 + 5, 4/8 * windowWidth - 5, 8 / 16 * windowHeight);
+    // } else {
+    // ctx.fillRect(0, 0, windowWidth, windowHeight);
+    //     ctx.closePath();
+    // drawCoordinateAxes()
+    // }
+    //
+    //
+    // drawBlackHole()
+
+
+
+
+
 
     // ctx.moveTo(pixelObjStart.pixelX, pixelObjStart.pixelY);
     // ctx.lineTo(pixelObjEnd.pixelX, pixelObjEnd.pixelY);
@@ -1084,8 +1135,8 @@ let trace2 = {
     // }
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    drawCoordinateAxes()
     drawBlackHole()
+    drawCoordinateAxes()
     drawLegend()
   }
 
