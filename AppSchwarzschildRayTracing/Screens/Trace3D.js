@@ -135,6 +135,9 @@ function Trace3D(props) {
           console.log("DATA WAS NULL")
         }
         console.log("got data lol")
+
+        setInputErrorText("")
+
         // console.log("response: ", response.data)
         let data
 

@@ -1,5 +1,5 @@
 import numpy as np
-from calc_ray_trace_integral import schwarzschild_get_ray_cartesian
+from .calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
 
 def find_third_dir_cos(ang1, ang2):
@@ -64,7 +64,7 @@ z0 = 0
 alpha0 = 90
 beta0 = 45
 gamma0 = 45
-x_arr, y_arr, z_arr = schwarzschild_3D_get_ray_cartesian(x0, y0, z0, alpha0, beta0, gamma0)
+# x_arr, y_arr, z_arr = schwarzschild_3D_get_ray_cartesian(x0, y0, z0, alpha0, beta0, gamma0)
 #
 # import matplotlib.pyplot as plt
 #
