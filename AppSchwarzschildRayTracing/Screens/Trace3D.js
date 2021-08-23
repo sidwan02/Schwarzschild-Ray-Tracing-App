@@ -43,7 +43,7 @@ function Trace3D(props) {
           i += 1
         }
 
-        console.log("theta_arr: ", theta_arr)
+        // console.log("theta_arr: ", theta_arr)
 
         let phi_arr = []
 
@@ -58,7 +58,7 @@ function Trace3D(props) {
           i += 1
         }
 
-        console.log("phi_arr: ", phi_arr)
+        // console.log("phi_arr: ", phi_arr)
 
         // https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
     //     const cartesian =
@@ -246,22 +246,49 @@ function Trace3D(props) {
             width: windowWidth,
             height: windowHeight - 55,
             title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ', ' + z_trace[0].toFixed(2) + ') <br>with initial velocity <' + alpha0.toFixed(2) + '°, ' + beta0.toFixed(2) + '°, ' + gamma0.toFixed(2) + '°>',
-            xaxis: {
-      title: "x-axis",
-    range: [bounds1.cartX, bounds2.cartX]
+            legend: {
+              yanchor: "top",
+              y: 0.99,
+              xanchor: "left",
+              x: 0.01
+            },
+          //   scene: {
+          //   aspectmode: 'string',
+          //   aspectratio: {x: 1, y: 1, z: 1},
+          //     xaxis: {
+          //     title: "x-axis",
+          //     // range: [bounds1.cartX, bounds2.cartX]
+          //   },
+          //   yaxis: {
+          //     title: "y-axis",
+          //     // range: [bounds2.cartY, bounds1.cartY]
+          //   },
+          // }
+
+            scene: {
+          xaxis: {
+    uirevision: 'time',
+            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
   },
-      yaxis: {
-      title: "y-axis",
-    range: [bounds2.cartY, bounds1.cartY]
+   yaxis: {
+    uirevision: 'time',
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
   },
-      legend: {
-          yanchor:"top",
-    y:0.99,
-    xanchor:"left",
-    x:0.01
+   zaxis: {
+   uirevision: 'time',
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+  },
+        aspectmode: 'string',
+           aspectratio: {x:1, y:1, z:1},
+        camera: {
+            eye: {
+              x:2, y:2, z:2
+            }
+        }
       }
-          }
-        })
+
+                  }
+              })
 
 
         // console.log("x_trace: ", x_trace)
@@ -383,16 +410,29 @@ const [stateGraph, setStateGraph] = useState(
       width: windowWidth,
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
-
-      xaxis: {
-    uirevision: 'time'
+      scene: {
+          xaxis: {
+    uirevision: 'time',
+            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
   },
    yaxis: {
-    uirevision: 'time'
+    uirevision: 'time',
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
   },
    zaxis: {
-   uirevision: 'time'
-  }
+   uirevision: 'time',
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+  },
+        aspectmode: 'string',
+           aspectratio: {x:1, y:1, z:1},
+        camera: {
+            eye: {
+              x:2, y:2, z:2
+            }
+        }
+      }
+
+
 
 
     }
