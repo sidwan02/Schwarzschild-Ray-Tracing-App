@@ -1254,11 +1254,12 @@ const [stateGraph, setStateGraph] = useState(
       title: 'No Recent Trace to Display',
     xaxis: {
       title: "x-axis",
-    range: [bounds1.cartX, bounds2.cartX]
+    range: [-bounds2.cartX, bounds2.cartX]
   },
       yaxis: {
       title: "y-axis",
-    range: [bounds2.cartY, bounds1.cartY]
+    range: [-bounds2.cartY, bounds2.cartY],
+        scaleanchor:"x", scaleratio:1
   },
       legend: {
           yanchor:"top",
