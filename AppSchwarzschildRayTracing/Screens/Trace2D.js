@@ -269,7 +269,7 @@ let trace2 = {
   },
       yaxis: {
       title: "y-axis",
-    range: [-bounds2.cartY, bounds2.cartY],
+    range: [-Math.abs(bounds2.cartY), Math.abs(bounds2.cartY)],
         scaleanchor:"x", scaleratio:1,
   },
       legend: {
@@ -294,7 +294,7 @@ let trace2 = {
   },
       yaxis: {
       title: "y-axis",
-    range: [-bounds2.cartY, bounds2.cartY],
+    range: [-Math.abs(bounds2.cartY), Math.abs(bounds2.cartY)],
         scaleanchor:"x", scaleratio:1
   },
       legend: {
@@ -1016,6 +1016,7 @@ let trace2 = {
     let cartX, cartY
     cartX = (pixelX - blackHoleX) / 10
     cartY = (blackHoleY - pixelY) / 10
+    // cartY = (pixelY - blackHoleY) / 10
     return {cartX: cartX, cartY: cartY}
   }
 
@@ -1349,6 +1350,8 @@ let bounds1 = convertPixelToCartesian(0, 0)
     fillcolor: 'black',
 }
 
+// console.log("gigibobo: ", bounds2.cartY)
+
 const [stateGraph, setStateGraph] = useState(
     {
     data: [trace1],
@@ -1361,8 +1364,9 @@ const [stateGraph, setStateGraph] = useState(
   },
       yaxis: {
       title: "y-axis",
-    range: [-bounds2.cartY, bounds2.cartY],
-        scaleanchor:"x", scaleratio:1
+    range: [-Math.abs(bounds2.cartY), Math.abs(bounds2.cartY)],
+        scaleanchor:"x",
+        scaleratio:1
   },
       legend: {
           yanchor:"top",

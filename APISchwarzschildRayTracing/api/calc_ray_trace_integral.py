@@ -525,7 +525,8 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
         # elif all(last_few[i] / last_few[i+1] >= 1/2 for i in range(len(last_few)-1)):
         #     maximum_r_change *= 1.1
 
-        # print(maximum_r_change)
+        # print("----")
+        # print("maximum_r_change: ", maximum_r_change)
 
         #
         # if all(map(lambda x, y: x == y, last_few_rev, last_few_sorted)):
@@ -537,9 +538,16 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
         # print("new: ", maximum_r_change)
 
+        if math.isnan(theta_acc[-1]):
+            print("is nan")
+            print("rstop is not 1, there is some issue because the ray should be falling into BH")
+
         angle_change = abs(theta_acc[-1] - theta_acc[-2])
+        # print("theta_acc: ", theta_acc)
+        # print("angle_change: ", angle_change)
 
         orders_of_mag = angle_change ** 3 / maximum_r_change
+        # print("orders_of_mag: ", orders_of_mag)
 
         # delta_rr = max(jump_dist / orders_of_mag, maximum_r_change)
         # delta_rr = min(maximum_r_change / orders_of_mag, maximum_r_change)
@@ -854,15 +862,22 @@ def get_rstop(M, r0, delta0):
         rstop = 2
     else:
 
+        delta0 = abs(delta0)
+
         escape_to_inf = False
 
         if (2 * M < r0 < 3 * M) & (delta0 < 2 * np.pi) & (np.sin(delta0) < Dcrit * M / B):
             escape_to_inf = True
+            print("case 1")
         elif (r0 == 3 * M) & (delta0 < np.pi):
             escape_to_inf = True
+            print("case 2")
         elif (r0 > 3 * M) & ((delta0 <= np.pi / 2) or ((delta0 > np.pi / 2) & (np.sin(delta0) > Dcrit * M / B))):
             escape_to_inf = True
+            print("case 3")
 
+
+        print("escape_to_inf: ", escape_to_inf)
         if escape_to_inf:
             # rstop > r0
             if r0 > np.sqrt(20 ** 2 + 40 ** 2):  # values determined from bounds of build traces screen
@@ -954,7 +969,7 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 70, 3)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 0, 45)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(-11.260044751848493, -3.8654770624069954, -157.83101943061544)
 
 # r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
 # x = 3.1 * np.cos(np.deg2rad(45))
