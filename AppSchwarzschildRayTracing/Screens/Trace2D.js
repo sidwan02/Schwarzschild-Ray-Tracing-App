@@ -49,6 +49,14 @@ function Trace2D(props) {
 
   let title
 
+  const [chartRow, setChartRow] = useState({
+    paddingTop: 50,
+    position: 'absolute',
+    height: 0,
+    // flex: 1,
+    width: 0
+  })
+
   const requestRayTrace = (x, y, delta0) => {
 
 
@@ -280,11 +288,11 @@ let trace2 = {
       height: windowHeight - 55,
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
     xaxis: {
-      title: "x-axis",
+      title: "x-axis [SR Units]",
     range: [-bounds2.cartX, bounds2.cartX]
   },
       yaxis: {
-      title: "y-axis",
+      title: "y-axis [SR Units]",
     range: [-Math.abs(bounds2.cartY), Math.abs(bounds2.cartY)],
         scaleanchor:"x", scaleratio:1,
   },
@@ -305,11 +313,11 @@ let trace2 = {
       height: windowHeight - 55,
       title: 'Ray Trace from (' + x_trace[0].toFixed(2) + ', ' + y_trace[0].toFixed(2) + ') <br>with initial angle ' + delta0.toFixed(2) + '°',
     xaxis: {
-      title: "x-axis",
+      title: "x-axis [SR Units]",
     range: [-bounds2.cartX, bounds2.cartX]
   },
       yaxis: {
-      title: "y-axis",
+      title: "y-axis [SR Units]",
     range: [-Math.abs(bounds2.cartY), Math.abs(bounds2.cartY)],
         scaleanchor:"x", scaleratio:1
   },
@@ -1288,13 +1296,23 @@ let trace2 = {
 
     setAnalysisBtnDiv(
       {
+    position: 'absolute',
         height: 0,
         width: 0,
-    position: 'absolute',
     top: windowHeight - 50,
     right: 10,
     // left: 10,
     // zIndex: -10
+  }
+    )
+
+    setChartRow(
+      {
+    paddingTop: 50,
+    position: 'absolute',
+    height: windowHeight + 10,
+    // flex: 1,
+    width: windowWidth
   }
     )
       }
@@ -1319,6 +1337,16 @@ let trace2 = {
     right: 10,
     // left: 10,
     // zIndex: -10
+  }
+    )
+
+    setChartRow(
+      {
+    paddingTop: 50,
+    position: 'absolute',
+    height: 0,
+    // flex: 1,
+    width: 0
   }
     )
     }
@@ -1390,11 +1418,11 @@ const [stateGraph, setStateGraph] = useState(
       height: windowHeight - 55,
       title: 'No Recent Trace to Display',
     xaxis: {
-      title: "x-axis",
+      title: "x-axis [SR Units]",
     range: [-bounds2.cartX, bounds2.cartX]
   },
       yaxis: {
-      title: "y-axis",
+      title: "y-axis [SR Units]",
     range: [-Math.abs(bounds2.cartY), Math.abs(bounds2.cartY)],
         scaleanchor:"x",
         scaleratio:1
@@ -1591,7 +1619,7 @@ const [stateGraph, setStateGraph] = useState(
 
       <View style={container_style}>
 
-        <View style={styles.chartRow}>
+        <View style={chartRow}>
           <Plotly
             data={stateGraph.data}
             layout={stateGraph.layout}
@@ -1620,10 +1648,6 @@ const [stateGraph, setStateGraph] = useState(
 const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row'
-  },
-  chartRow: {
-    flex: 1,
-    width: '100%'
   },
   manualTextInput: {
     borderWidth: 1,

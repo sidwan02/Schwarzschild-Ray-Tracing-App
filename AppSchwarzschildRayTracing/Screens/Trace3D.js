@@ -295,15 +295,18 @@ function Trace3D(props) {
             scene: {
           xaxis: {
     uirevision: 'time',
-            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)],
+            title: "x-axis [SR Units]",
   },
    yaxis: {
     uirevision: 'time',
-     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)],
+     title: "y-axis [SR Units]",
   },
    zaxis: {
    uirevision: 'time',
-     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)],
+     title: "z-axis [SR Units]",
   },
         aspectmode: 'string',
            aspectratio: {x:1, y:1, z:1},
@@ -345,16 +348,20 @@ function Trace3D(props) {
             scene: {
           xaxis: {
     uirevision: 'time',
-            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+            range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)],
+            title: "x-axis [SR Units]",
   },
    yaxis: {
     uirevision: 'time',
-     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)],
+     title: "y-axis [SR Units]",
   },
    zaxis: {
    uirevision: 'time',
-     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)]
+     range: [-Math.max(bounds2.cartX, bounds2.cartY), Math.max(bounds2.cartX, bounds2.cartY)],
+     title: "z-axis [SR Units]",
   },
+
         aspectmode: 'string',
            aspectratio: {x:1, y:1, z:1},
         camera: {
@@ -491,15 +498,18 @@ const [stateGraph, setStateGraph] = useState(
       scene: {
           xaxis: {
     uirevision: 'time',
-            range: [-40, 40]
+            range: [-40, 40],
+            title: "x-axis [SR Units]",
   },
    yaxis: {
     uirevision: 'time',
-     range: [-40, 40]
+     range: [-40, 40],
+     title: "y-axis [SR Units]",
   },
    zaxis: {
    uirevision: 'time',
-     range: [-40, 40]
+     range: [-40, 40],
+     title: "z-axis [SR Units]",
   },
         aspectmode: 'string',
            aspectratio: {x:1, y:1, z:1},
