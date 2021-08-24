@@ -168,6 +168,8 @@ function Trace3D(props) {
 
         // check if the radii are approximately the same towards the end of the trajectory
 
+        let cntr = 0
+
         x_trace.forEach((x, i) => {
           if (periastron === null) {
             periastron = {x: x, y: y_trace[i], z: z_trace[i]}
@@ -179,8 +181,22 @@ function Trace3D(props) {
              if (candPeriastronDist < curPeriastronDist) {
               periastron = {x: x, y: y_trace[i], z: z_trace[i]}
             }
+
+            if (candPeriastronDist.toFixed(5) === curPeriastronDist.toFixed(5)) {
+              cntr += 1
+              if (cntr === 5){
+                flag_no_periastron = true
+              }
+            } else if (candPeriastronDist < curPeriastronDist) {
+              // periastron = {x: x, y: y_trace[i]}
+          periastron = {x: x, y: y_trace[i], z: z_trace[i]}
+              cntr = 0
+            }
+
           }
         })
+
+        console.log("cntr: ", cntr)
 
         let trace1 = {
           name: 'Ray Trace',
