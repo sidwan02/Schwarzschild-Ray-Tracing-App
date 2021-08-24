@@ -31,6 +31,14 @@ function Trace2D(props) {
 
     const [inputErrorText, setInputErrorText] = useState("")
 
+  const [analysisBtnDiv, setAnalysisBtnDiv] = useState({
+    position: 'absolute',
+    top: windowHeight - 50,
+    right: 10,
+    // left: 10,
+    // zIndex: -10
+  })
+
 
   let pop = "hi"
 
@@ -844,7 +852,8 @@ let trace2 = {
 
     ctx.fillText("5 Schwarzschild Radii [SR]", 11 / 16 * windowWidth - 5, windowHeight - 80);
 
-    ctx.fillText("y-axis [SR units]", 8 / 16 * windowWidth + 5, windowHeight - 10);
+    // ctx.rotate(1)
+    ctx.fillText("y-axis [SR units]", 5 / 16 * windowWidth, windowHeight - 10);
     ctx.fillText("x-axis [SR units]", 13 / 16 * windowWidth, windowHeight / 2 + 20);
 
     ctx.closePath();
@@ -1253,6 +1262,7 @@ let trace2 = {
 
   const [container_style, set_container_style] = useState(
     {position: 'absolute',
+      zIndex:1,
     paddingTop: 50,
     width: '0%',
     height: '0%',
@@ -1261,27 +1271,37 @@ let trace2 = {
     justifyContent: 'center'}
   );
 
-  const [titleButton, setTitleButton] = useState('Trace Analysis');
-  const [colorButton, setColorButton] = useState('#00a3ff');
+  // const [titleButton, setTitleButton] = useState('Trace Analysis');
+  // const [colorButton, setColorButton] = useState('#00a3ff');
 
-  const clickAnalysisBuildBtn = () => {
+  const clickAnalysisBtn = () => {
     console.log("button click")
-    if (titleButton === 'Trace Analysis') {
-      setTitleButton('Build Traces')
-      setColorButton('rgb(255,0,0)')
-
       set_container_style({
-    position: 'absolute',
-    paddingTop: 50,
-    width: windowWidth,
-    height: (windowHeight - 5),
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'})
-    } else {
-      setTitleButton('Trace Analysis')
-      setColorButton('#00a3ff')
+        position: 'absolute',
+        paddingTop: 50,
+        width: windowWidth,
+        height: (windowHeight - 5),
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
+      })
 
+    setAnalysisBtnDiv(
+      {
+        height: 0,
+        width: 0,
+    position: 'absolute',
+    top: windowHeight - 50,
+    right: 10,
+    // left: 10,
+    // zIndex: -10
+  }
+    )
+      }
+
+
+  const clickBuildBtn = () => {
+    console.log("button click")
       set_container_style({
     position: 'absolute',
     paddingTop: 50,
@@ -1291,15 +1311,18 @@ let trace2 = {
     alignItems: 'center',
     justifyContent: 'center'
   })
-    }
-    // console.log(e)
-    // let ctx = canvas.getContext("2d");
 
-    // ctx.clearRect(0, 0, windowWidth, windowHeight)
-
-
-
+    setAnalysisBtnDiv(
+      {
+    position: 'absolute',
+    top: windowHeight - 50,
+    right: 10,
+    // left: 10,
+    // zIndex: -10
   }
+    )
+    }
+
 
   // https://snack.expo.io/@rynobax/react-native-plotly-demo
 
@@ -1444,16 +1467,23 @@ const [stateGraph, setStateGraph] = useState(
     <View>
       {/*https://stackoverflow.com/questions/41948900/react-native-detect-tap-on-view*/}
       {/*onPress={canvasTap} is for just tapping*/}
-      <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
+      <View style={styles.canvasDiv}>
+        <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
         {/*<Text>Hi there</Text>*/}
         <Canvas ref={handleCanvas} />
       </TouchableOpacity>
-      <Button
-        onPress={clickAnalysisBuildBtn}
-        title={titleButton}
-        color={colorButton}
+
+
+        <View style={analysisBtnDiv}>
+        <Button
+        onPress={clickAnalysisBtn}
+        title={"Trace Analysis"}
+        color={'#00a3ff'}
         // accessibilityLabel="Learn more about this purple button"
       />
+      </View>
+      </View>
+
 
       <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
       {/*  <Button*/}
@@ -1489,7 +1519,7 @@ const [stateGraph, setStateGraph] = useState(
           <Button
         onPress={clickManualEntryBtn}
         title={'Trace'}
-        color={colorButton}
+        color={'#00a3ff'}
         // accessibilityLabel="Learn more about this purple button"
       />
         </View>
@@ -1571,6 +1601,17 @@ const [stateGraph, setStateGraph] = useState(
             // enableFullPlotly
           />
         </View>
+
+        <View style={styles.buildBtnDiv}>
+          <Button
+        onPress={clickBuildBtn}
+        title={"Build Traces"}
+        color={'#ff6600'}
+        // accessibilityLabel="Learn more about this purple button"
+      />
+        </View>
+
+
       </View>
     </View>
   )
@@ -1591,7 +1632,7 @@ const styles = StyleSheet.create({
   },
   manualEntryDiv: {
     position: 'absolute',
-    top: '5%',
+    top: 50,
     left: '5%',
     backgroundColor: 'rgb(255,255,255)',
     padding: 10,
@@ -1599,6 +1640,17 @@ const styles = StyleSheet.create({
     // display: 'flex',
     // alignItems: 'center',
     // justifyContent: 'center'
+  },
+  buildBtnDiv: {
+    position: 'absolute',
+    top: windowHeight - 50,
+    right: 10,
+    // left: 10,
+    // zIndex: -10
+  },
+  canvasDiv: {
+    position: 'absolute',
+    top: 0,
   },
   inputErrorTextDiv: {
     position: 'absolute',
