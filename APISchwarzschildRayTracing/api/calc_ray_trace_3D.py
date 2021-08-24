@@ -1,5 +1,6 @@
 import numpy as np
 from .calc_ray_trace_integral import schwarzschild_get_ray_cartesian
+# from calc_ray_trace_integral import schwarzschild_get_ray_cartesian
 
 
 def find_third_dir_cos(ang1, ang2):
@@ -58,12 +59,12 @@ def schwarzschild_3D_get_ray_cartesian(x, y, z, alpha0, beta0, gamma0):
 
 
 # if gamma = 90 that means xy plane direction only cuz think of spherical coordinates how the phi comes from +ve z
-x0 = 3
-y0 = 0
-z0 = 0
-alpha0 = 90
-beta0 = 45
-gamma0 = 45
+x0 = 20
+y0 = 1
+z0 = 9
+alpha0 = 27
+beta0 = 96
+gamma0 = 63.781738585605424
 # x_arr, y_arr, z_arr = schwarzschild_3D_get_ray_cartesian(x0, y0, z0, alpha0, beta0, gamma0)
 #
 # import matplotlib.pyplot as plt

@@ -716,7 +716,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             theta = np.repeat(theta0, 70)
         else:
             # rr, theta = lr_recurring([r0], [], True, 0.01)
-            rr, theta = lr_recurring([r0], [], True, 1e-3)
+            rr, theta = lr_recurring([r0], [], True, 5e-3)
 
     else:
         print("falling into bh")
@@ -969,7 +969,7 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 70, 3)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(-11.260044751848493, -3.8654770624069954, -157.83101943061544)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(21.95449840010015, 0, 8.873346460603003)
 
 # r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
 # x = 3.1 * np.cos(np.deg2rad(45))
