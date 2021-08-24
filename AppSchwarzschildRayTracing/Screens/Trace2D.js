@@ -205,16 +205,24 @@ function Trace2D(props) {
                 let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2))
                 let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
 
-                if (candPeriastronDist === curPeriastronDist) {
+                if (candPeriastronDist.toFixed(5) === curPeriastronDist.toFixed(5)) {
                   c += 1
                   if (c === 5){
                     flag_no_periastron = true
                   }
                 } else if (candPeriastronDist < curPeriastronDist) {
                   periastron = {x: x, y: y_trace[i]}
+                  c = 0
                 }
               }
             })
+
+            // x_trace.reverse().forEach((x, i) => {
+            //   let curPeriastronDist = Math.sqrt(Math.pow(periastron.x, 2) + Math.pow(periastron.y, 2))
+            //   let candPeriastronDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y_trace[i], 2))
+            //
+            //
+            // })
 
             console.log("flag_no_periastron: ", flag_no_periastron)
 
