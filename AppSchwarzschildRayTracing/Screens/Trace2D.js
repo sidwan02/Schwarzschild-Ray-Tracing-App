@@ -1,13 +1,15 @@
 import React, {useState} from 'react'
 import {StyleSheet, Dimensions, TouchableOpacity, View, Text, Button, TextInput} from 'react-native';
-import Canvas from 'react-native-canvas';
+import Canvas, {Image as CanvasImage} from 'react-native-canvas';
 import axios from 'axios';
 import AwesomeButton from "react-native-really-awesome-button-fixed";
 // import Button from "react-native-really-awesome-button-fixed";
 // import { LineChart, XAxis, YAxis, Grid } from 'react-native-svg-charts'
 import Plotly from 'react-native-plotly';
 import CollapsibleView from "@eliav2/react-native-collapsible-view";
+// import RNFS from 'react-native-fs';
 import {StatusBar} from "expo-status-bar";
+import * as Expo from "expo-asset";
 // import MyView from "../Components/MyView";
 
   const windowWidth = Dimensions.get('window').width;
@@ -334,6 +336,8 @@ let trace2 = {
 
 
 
+
+
             // console.log("x_trace: ", x_trace)
 
     //  console.log(x_trace)
@@ -535,9 +539,7 @@ let trace2 = {
             // ctx.fillRect(3 / 8 * windowWidth + 1, 7 / 16 * windowHeight + 1, 2/8 * windowWidth - 2, 2 / 16 * windowHeight - 2);
 
 
-            drawCoordinateAxes()
-            drawBlackHole()
-            drawLegend()
+            redrawCanvas()
             i = i + 1;
           }
           console.log("stopping trace")
@@ -901,6 +903,27 @@ let trace2 = {
     ctx.closePath();
   }
 
+  // const redrawCanvas = () => {
+  //   drawCoordinateAxes()
+  //   drawBlackHole()
+  //   drawLegend()
+  // }
+
+  const redrawCanvas = () => {
+    let ctx = canvas.getContext("2d");
+
+    // let image = new Image();
+    // image.src = "./assets/2D-cart-axis.jpg";
+    const image = new CanvasImage(canvas);
+
+    const asset = Expo.Asset.fromModule(require('../assets/trans-2D-cart-axis.png'));
+    image.src = asset.uri;
+
+    ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+
+    console.log("drew image")
+  }
+
 
   const handleCanvas = (can) => {
     if (can !== null) {
@@ -910,9 +933,7 @@ let trace2 = {
       can.height = windowHeight
       can.width = windowWidth
 
-      drawCoordinateAxes()
-      drawBlackHole()
-      drawLegend()
+      redrawCanvas()
     }
   }
 
@@ -1112,58 +1133,50 @@ let trace2 = {
 
     ctx.fill();
     ctx.stroke();
+    ctx.closePath()
 
+    // async function f1() {
+    //   let img = await ctx.getImageData(0, 0, windowWidth, windowHeight);
+    //   console.log("img: ", img)
+    //   // get the image data values
+    //   let imageData = img.data
+    //     console.log("imageData: ", imageData)
+    //   let length = imageData.length;
+    //   // set every fourth value to 50
+    //   for(let i=3; i < length; i+=4){
+    //       imageData[i] = 50;
+    //   }
+    //   // after the manipulation, reset the data
+    //   img.data = imageData;
+    //   // and put the imagedata back to the canvas
+    //   ctx.putImageData(img, 0, 0);
+    //
+    //   ctx.drawImage(img, 0, 0, windowWidth, windowHeight);
+    //
+    //   console.log("updated image")
+    //
+    //   redrawCanvas()
+    // }
+    // f1()
 
-    // ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
-    // ctx.fillStyle = "yellow";
     ctx.fillRect(0, 0, windowWidth, windowHeight);
 
-    // let x_end_cart = final_x_list[i + 1], y_end_cart = final_y_list[i + 1]
+    const image = new CanvasImage(canvas);
+
+    const asset = Expo.Asset.fromModule(require('../assets/trans-2D-cart-axis.png'));
+    image.src = asset.uri;
+
+    ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+
+    // get the image data object
+    // let img = new CanvasImage(canvas);
     //
-    // if (x_end_cart < -1 && y_end_cart > 1){
-    //   // quad 2
-    // ctx.fillRect(0, 0, 4/8 * windowWidth - 5, 8 / 16 * windowHeight - 5);
-    //     ctx.closePath();
-    // } else if (x_end_cart > 1 && y_end_cart > 1){
-    //   // quad 1
-    // ctx.fillRect(windowWidth / 2 + 5, 0, 4/8 * windowWidth, 8 / 16 * windowHeight - 5);
-    //     ctx.closePath();
-    // } else if (x_end_cart > 1 && y_end_cart < -1){
-    //   // quad 4
-    // ctx.fillRect(windowWidth / 2 + 5, windowHeight / 2 + 5, 4/8 * windowWidth, 8 / 16 * windowHeight);
-    //     ctx.closePath();
-    // drawLegend()
-    // } else if (x_end_cart < -1 && y_end_cart < -1){
-    //   // quad 3
-    // ctx.fillRect(0, windowHeight / 2 + 5, 4/8 * windowWidth - 5, 8 / 16 * windowHeight);
-    // } else {
-    // ctx.fillRect(0, 0, windowWidth, windowHeight);
-    //     ctx.closePath();
-    // drawCoordinateAxes()
-    // }
+    // const asset = Expo.Asset.fromModule(require('../assets/2D-cart-axis.jpg'));
+    // img.src = asset.uri;
     //
-    //
-    // drawBlackHole()
-
-
-
-
-
-
-    // ctx.moveTo(pixelObjStart.pixelX, pixelObjStart.pixelY);
-    // ctx.lineTo(pixelObjEnd.pixelX, pixelObjEnd.pixelY);
-    // ctx.stroke();
-    // ctx.closePath();
-    // ctx.setTransform(1, 0, 0, 1, 0, 0);
-    // ctx.restore()
-    // }
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    drawBlackHole()
-    drawCoordinateAxes()
-    drawLegend()
+    // console.log("img: ", img)
   }
 
   const numListRangeInclusive = (start, stop, divisions) => {
