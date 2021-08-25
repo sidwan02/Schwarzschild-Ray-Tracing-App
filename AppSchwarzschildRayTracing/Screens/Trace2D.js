@@ -933,6 +933,11 @@ let trace2 = {
       can.height = windowHeight
       can.width = windowWidth
 
+      // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
+      drawCoordinateAxes()
+      drawLegend()
+      drawBlackHole()
+
       redrawCanvas()
     }
   }
@@ -1163,12 +1168,14 @@ let trace2 = {
     ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
     ctx.fillRect(0, 0, windowWidth, windowHeight);
 
-    const image = new CanvasImage(canvas);
+    redrawCanvas()
 
-    const asset = Expo.Asset.fromModule(require('../assets/trans-2D-cart-axis.png'));
-    image.src = asset.uri;
-
-    ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+    // const image = new CanvasImage(canvas);
+    //
+    // const asset = Expo.Asset.fromModule(require('../assets/trans-2D-cart-axis.png'));
+    // image.src = asset.uri;
+    //
+    // ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
 
     // get the image data object
     // let img = new CanvasImage(canvas);
