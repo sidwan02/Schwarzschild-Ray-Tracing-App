@@ -219,16 +219,28 @@ function Trace3D(props) {
         //   marker: {size: 2},
         // }
 
+        // let trace2 = {
+        //   name: 'Black Hole',
+        //   x: a,
+        //   y: b,
+        //   z: c,
+        //   // size: [1],
+        //   color: 'black',
+        //   type: 'mesh3d',
+        //   // mode: 'markers',
+        //   // marker: {size: 2},
+        // }
+
         let trace2 = {
           name: 'Black Hole',
           x: a,
           y: b,
           z: c,
           // size: [1],
-          color: 'black',
-          type: 'mesh3d',
-          // mode: 'markers',
-          // marker: {size: 2},
+          // color: 'black',
+          type: 'scatter3d',
+          mode: 'markers',
+          marker: {size: 0.1, color: 'black'},
         }
 
         // let trace2 = {
@@ -476,16 +488,28 @@ let bounds1 = convertPixelToCartesian(0, 0)
   //         // marker: {size: 2},
   //       }
   //
+  // let trace1 = {
+  //         name: 'Black Hole',
+  //         x: a,
+  //         y: b,
+  //         z: c,
+  //         // size: [1],
+  //         color: 'black',
+  //         type: 'mesh3d',
+  //         // mode: 'markers',
+  //         // marker: {size: 2},
+  //       }
+
   let trace1 = {
           name: 'Black Hole',
           x: a,
           y: b,
           z: c,
           // size: [1],
-          color: 'black',
-          type: 'mesh3d',
-          // mode: 'markers',
-          // marker: {size: 2},
+          // color: 'black',
+          type: 'scatter3d',
+          mode: 'markers',
+          marker: {size: 0.1, color: 'black'},
         }
 
 const [stateGraph, setStateGraph] = useState(
