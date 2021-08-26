@@ -1698,7 +1698,7 @@ const styles = StyleSheet.create({
   },
   inputErrorTextDiv: {
     position: 'absolute',
-    top: '5%',
+    top: 50,
     right: '5%',
     width: 2 * windowWidth / 5 ,
     backgroundColor: 'rgba(255,255,255, 0)',
