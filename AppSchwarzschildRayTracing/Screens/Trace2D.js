@@ -1483,6 +1483,14 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("delta0 must be filled in.")
     }
 
+    else if (isNaN(parseFloat(xManual))){
+      setInputErrorText("x must be a real number.")
+    } else if (isNaN(parseFloat(yManual))){
+      setInputErrorText("y must be a real number.")
+    } else if (isNaN(parseFloat(delta0Manual))){
+      setInputErrorText("delta0 must be a real number.")
+    }
+
     else if (Math.sqrt(xManual**2 + yManual**2) < 3) {
       setInputErrorText("Light source must be outside the event horizon (r0 >= 3)")
     }

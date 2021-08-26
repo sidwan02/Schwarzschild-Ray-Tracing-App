@@ -597,6 +597,14 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("z must be filled in.")
     }
 
+    else if (isNaN(parseFloat(xManual))){
+      setInputErrorText("x must be a real number.")
+    } else if (isNaN(parseFloat(yManual))){
+      setInputErrorText("y must be a real number.")
+    } else if (isNaN(parseFloat(zManual))){
+      setInputErrorText("z must be a real number.")
+    }
+
     else if ((alpha0Manual === null || alpha0Manual === '')
       && (beta0Manual === null || beta0Manual === '')
       && (gamma0Manual !== null || gamma0Manual !== '')){
@@ -621,6 +629,14 @@ const [stateGraph, setStateGraph] = useState(
       && (beta0Manual === null || beta0Manual === '')
       && (gamma0Manual === null || gamma0Manual === '')){
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
+    }
+
+    else if (isNaN(parseFloat(alpha0Manual))){
+      setInputErrorText("alpha0 must be a real number.")
+    } else if (isNaN(parseFloat(beta0Manual))){
+      setInputErrorText("beta0 must be a real number.")
+    } else if (isNaN(parseFloat(gamma0Manual))){
+      setInputErrorText("gamma0 must be a real number.")
     }
 
     else if (Math.sqrt(xManual**2 + yManual**2 + zManual**2) < 3) {
