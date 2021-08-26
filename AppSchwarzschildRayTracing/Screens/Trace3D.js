@@ -631,11 +631,11 @@ const [stateGraph, setStateGraph] = useState(
       setInputErrorText("At least two of alpha0, beta0 and gamma0 should be filled in.")
     }
 
-    else if (isNaN(parseFloat(alpha0Manual))){
+    else if (isNaN(parseFloat(alpha0Manual)) && alpha0Manual !== '' && alpha0Manual !== null){
       setInputErrorText("alpha0 must be a real number.")
-    } else if (isNaN(parseFloat(beta0Manual))){
+    } else if (isNaN(parseFloat(beta0Manual)) && beta0Manual !== '' && beta0Manual !== null){
       setInputErrorText("beta0 must be a real number.")
-    } else if (isNaN(parseFloat(gamma0Manual))){
+    } else if (isNaN(parseFloat(gamma0Manual)) && gamma0Manual !== '' && gamma0Manual !== null){
       setInputErrorText("gamma0 must be a real number.")
     }
 

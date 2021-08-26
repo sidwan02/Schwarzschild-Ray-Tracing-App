@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
   },
   container: {
     // flex: 1,
-    paddingTop: StatusBar.currentHeight + 25,
-    height: windowHeight,
+    top: StatusBar.currentHeight + 25,
+    height: windowHeight - 120,
     width: windowWidth,
     position: 'absolute',
   },
