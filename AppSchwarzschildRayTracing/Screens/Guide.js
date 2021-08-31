@@ -29,11 +29,18 @@ function Guide(props) {
         </CollapsibleView>
 
         <CollapsibleView title="Manual Input">
-          <Text>Expand the Manual Entry Drop down. The cartesian plan is divided such that the black hole is situated at the origin.</Text>
+          <Text>Expand the Manual Entry Drop down. The cartesian plane is divided such that the black hole is situated at the origin.</Text>
           <Text/>
-          <Text>The width of the screen spans +/- 20, and the height of the screen spans +/- 40.</Text>
+          <Text>The width of the screen spans +/- 20 Schwarzschild Radii (SR), and the height of the screen spans +/- 40 SR.</Text>
           <Text/>
           <Text>Note that delta0 is defined to be anti-clockwise angle formed by the position vector of the ray source and the initial direction of the ray. </Text>
+
+          <CollapsibleView title="Source Point Constraints">
+            <Text>We denote r0 as the initial distance of the light source to the Black Hole. Please ensure that the ray starts outside the event horizon, i.e., that r0 >= 3</Text>
+            <Text/>
+            <Text>r0 can be calculated by the following equation: r0 = sqrt(x^2 + y^2).</Text>
+          </CollapsibleView>
+
         </CollapsibleView>
 
         <CollapsibleView title="Analysis Mode">
@@ -45,11 +52,21 @@ function Guide(props) {
       <CollapsibleView title="3D Trace">
 
         <CollapsibleView title="Manual Input">
-          <Text>Note that alpha0, beta0 and gamma0 must be degree angles</Text>
+
+          <CollapsibleView title="Source Point Constraints">
+            <Text>We denote r0 as the initial distance of the light source to the Black Hole. Please ensure that the ray starts outside the event horizon, i.e., that r0 >= 3</Text>
+            <Text/>
+            <Text>r0 can be calculated by the following equation: r0 = sqrt(x^2 + y^2 + z^2).</Text>
+          </CollapsibleView>
+
+          <CollapsibleView title="Angle Constraints">
+            <Text>Note that alpha0, beta0 and gamma0 must be degree angles</Text>
           <Text/>
-          <Text>Make sure that input values satisfy the following constraint in accordance with direction cosines: cos(l)^2 + cos(m)^2 + cos(n)^2 = 1 where l, m and n correspond to the converted forms of alpha0, beta0 and gamma0 into radians.</Text>
+          <Text>Make sure that the angle input values satisfy the following constraint in accordance with direction cosines: cos(l)^2 + cos(m)^2 + cos(n)^2 = 1 where l, m and n correspond to the radian values of alpha0, beta0 and gamma0 respectively.</Text>
           <Text/>
-          <Text>Note that you can input any two of alpha0, beta0 and gamma0. The third will be automatically populated if possible.</Text>
+          <Text>Note that you can also input just two of alpha0, beta0 and gamma0. The third will be automatically populated if possible.</Text>
+          </CollapsibleView>
+
         </CollapsibleView>
 
       </CollapsibleView>

@@ -506,6 +506,10 @@ function Trace3D(props) {
   const [beta0Manual, setBeta0Manual] = useState(null)
   const [gamma0Manual, setGamma0Manual] = useState(null)
 
+  const [xPlaceholder, setXPlaceholder] = useState('x coordinate of light source')
+  const [yPlaceholder, setYPlaceholder] = useState('y coordinate of light source')
+  const [zPlaceholder, setZPlaceholder] = useState('z coordinate of light source')
+
   const handleCanvas = (can) => {
     if (can !== null) {
       console.log("not null")
@@ -522,45 +526,45 @@ function Trace3D(props) {
 
         <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
           <View>
-            <Text>Start x:</Text>
+            <Text>x:</Text>
             <TextInput
               style={styles.manualTextInput}
-              placeholder="x"
+              placeholder={xPlaceholder}
               keyboardType='numeric'
               value={xManual}
               onChangeText={setXManual}/>
-            <Text>Start y:</Text>
+            <Text>y:</Text>
             <TextInput
               style={styles.manualTextInput}
-              placeholder="y"
+              placeholder={yPlaceholder}
               keyboardType='numeric'
               value={yManual}
               onChangeText={setYManual}/>
-            <Text>Start z:</Text>
+            <Text>z:</Text>
             <TextInput
               style={styles.manualTextInput}
-              placeholder="z"
+              placeholder={zPlaceholder}
               keyboardType='numeric'
               value={zManual}
               onChangeText={setZManual}/>
-            <Text>Start angle to x-axis:</Text>
+            <Text>alpha0:</Text>
             <TextInput
               style={styles.manualTextInput}
-              placeholder="alpha0"
+              placeholder="Initial angle of ray trajectory to x-axis"
               keyboardType='numeric'
               value={alpha0Manual}
               onChangeText={setAlpha0Manual}/>
-            <Text>Start angle to y-axis:</Text>
+            <Text>beta0:</Text>
             <TextInput
               style={styles.manualTextInput}
-              placeholder="beta0"
+              placeholder="Initial angle of ray trajectory to y-axis"
               keyboardType='numeric'
               value={beta0Manual}
               onChangeText={setBeta0Manual}/>
-            <Text>Start angle to z-axis:</Text>
+            <Text>gamma0:</Text>
             <TextInput
               style={styles.manualTextInput}
-              placeholder="gamma0"
+              placeholder="Initial angle of ray trajectory to z-axis"
               keyboardType='numeric'
               value={gamma0Manual}
               onChangeText={setGamma0Manual}/>

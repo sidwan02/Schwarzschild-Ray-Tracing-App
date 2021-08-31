@@ -795,24 +795,24 @@ function Trace2D(props) {
 
       <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
         <View>
-          <Text>Start x:</Text>
+          <Text>x:</Text>
           <TextInput
             style={styles.manualTextInput}
-            placeholder='x'
+            placeholder='x coordinate of light source'
             keyboardType='numeric'
             value={xManual}
             onChangeText={setXManual}/>
-          <Text>Start y:</Text>
+          <Text>y:</Text>
           <TextInput
             style={styles.manualTextInput}
-            placeholder="y"
+            placeholder="y coordinate of light source"
             keyboardType='numeric'
             value={yManual}
             onChangeText={setYManual}/>
-          <Text>Start angle:</Text>
+          <Text>delta0:</Text>
           <TextInput
             style={styles.manualTextInput}
-            placeholder="delta0"
+            placeholder="Initial angle of ray trajectory to light source position vector"
             keyboardType='numeric'
             value={delta0Manual}
             onChangeText={setDelta0Manual}/>
