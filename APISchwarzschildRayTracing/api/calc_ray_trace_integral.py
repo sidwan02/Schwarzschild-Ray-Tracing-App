@@ -58,7 +58,6 @@ def if_D_gt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
     CC = np.sqrt(2 / (b1 - b3))
 
     if (inout == 1):  # outward rays
-        # rr = np.linspace(r0, rstop, npoints)
         rr = np.linspace(r0, rstop, npoints)
         uu = 1 / rr
         phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
@@ -264,17 +263,6 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
 
             rr, Fi, count = gt_recurring([r0], [theta0], condition, 0, maximum_r_change=0.01)
             print(count)
-            #
-            # rr = np.linspace(r0, rf, npoints)
-            #
-            # uu = 1 / rr
-            # phi = np.arcsin(np.sqrt((b2 - uu) / (b1 - uu) / m))
-            # Fi = -updn * CC * ei(phi, m)
-            # #
-            # # print("rr: ", rr)
-            # # print("uu: ", uu)
-            # # print("phi: ", phi)
-            # # print("Fi: ", Fi)
 
             print(rr[-1])
             print(Fi[-1])
@@ -563,37 +551,6 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
             rr = r_acc[-1] - delta_rr
 
     return rr, maximum_r_change
-
-
-# def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
-#     if len(r_acc) <= 2:
-#         if condition:
-#             rr = r_acc[-1] + 1e-3
-#         else:
-#             rr = r_acc[-1] - 1e-3
-#     else:
-#         # if consistently theta change is decreasing, then increase maximum_r_change
-#
-#         x1 = r_acc[-2] * np.cos(theta_acc[-2])
-#         y1 = r_acc[-2] * np.sin(theta_acc[-2])
-#
-#         x2 = r_acc[-1] * np.cos(theta_acc[-1])
-#         y2 = r_acc[-1] * np.sin(theta_acc[-1])
-#
-#         target_dist = 0.01
-#         dist = np.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-#
-#         magnitude_change = dist / target_dist
-#         # if dist > target_dist, then mag > 1
-#
-#         delta_rr = target_dist / magnitude_change
-#
-#         if condition:
-#             rr = r_acc[-1] + delta_rr
-#         else:
-#             rr = r_acc[-1] - delta_rr
-#
-#     return rr, maximum_r_change
 
 def if_D_lt_Dcrit_get_ray(D, r0, theta0, delta0, rstop, npoints):
     # print("within lesser")

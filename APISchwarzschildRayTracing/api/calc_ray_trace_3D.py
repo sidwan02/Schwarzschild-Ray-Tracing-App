@@ -10,16 +10,12 @@ def find_third_dir_cos(ang1, ang2):
     return np.rad2deg(np.arccos(1 - ((np.cos(ang1)) ** 2 + (np.cos(ang2)) ** 2)))
 
 
-# print("booboo")
-# print(find_third_dir_cos(90, 0))
-
-
 def schwarzschild_3D_get_ray_cartesian(x, y, z, alpha0, beta0, gamma0):
     alpha0 = np.deg2rad(alpha0)
     beta0 = np.deg2rad(beta0)
     gamma0 = np.deg2rad(gamma0)
 
-    # file:///C:/Users/sidwa/OneDrive/OneDriveNew/Personal/Sid/Brown%20University/Personal%20Projects/schwarzschild-ray-tracing-app/CamScanner%2005-08-2021%2023.05.pdf
+    # CamScanner%2005-08-2021%2023.05.pdf
     print("dir cos squared sum", np.cos(alpha0) ** 2 + np.cos(beta0) ** 2 + np.cos(gamma0) ** 2)
     assert round(np.cos(alpha0) ** 2 + np.cos(beta0) ** 2 + np.cos(gamma0) ** 2, 5) == 1
 
@@ -54,17 +50,16 @@ def schwarzschild_3D_get_ray_cartesian(x, y, z, alpha0, beta0, gamma0):
         y_arr.append(position[1])
         z_arr.append(position[2])
 
-    # print()
     return np.array(x_arr), np.array(y_arr), np.array(z_arr)
 
 
 # if gamma = 90 that means xy plane direction only cuz think of spherical coordinates how the phi comes from +ve z
-x0 = 20
-y0 = 1
-z0 = 9
-alpha0 = 27
-beta0 = 96
-gamma0 = 63.781738585605424
+# x0 = 20
+# y0 = 1
+# z0 = 9
+# alpha0 = 27
+# beta0 = 96
+# gamma0 = 63.781738585605424
 # x_arr, y_arr, z_arr = schwarzschild_3D_get_ray_cartesian(x0, y0, z0, alpha0, beta0, gamma0)
 #
 # import matplotlib.pyplot as plt
