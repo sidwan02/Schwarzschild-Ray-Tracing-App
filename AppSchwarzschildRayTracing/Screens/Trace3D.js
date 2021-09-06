@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   chartRow: {
-    paddingTop: 50,
+    paddingTop: 100,
     flex: 1,
     width: windowWidth - 30
   },
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: windowWidth * 0.85,
     zIndex: 1,
-    top: 50,
+    top: 70,
     left: '5%',
     backgroundColor: 'rgb(255,255,255)',
     padding: 10,
@@ -609,9 +609,9 @@ const styles = StyleSheet.create({
   },
   inputErrorTextDiv: {
     position: 'absolute',
-    top: 50,
+    top: 30,
     zIndex: 1,
-    right: '5%',
+    left: '5%',
     width: 2 * windowWidth / 5,
     backgroundColor: 'rgba(255,255,255, 0)',
     padding: 10,
