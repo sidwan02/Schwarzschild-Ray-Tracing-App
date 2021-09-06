@@ -510,16 +510,6 @@ function Trace3D(props) {
   const [yPlaceholder, setYPlaceholder] = useState('y coordinate of light source')
   const [zPlaceholder, setZPlaceholder] = useState('z coordinate of light source')
 
-  const handleCanvas = (can) => {
-    if (can !== null) {
-      console.log("not null")
-      canvas = can
-
-      can.height = windowHeight
-      can.width = windowWidth
-    }
-  }
-
   return (
     <View>
       <View style={container_style}>
@@ -609,6 +599,7 @@ const styles = StyleSheet.create({
   },
   manualEntryDiv: {
     position: 'absolute',
+    width: windowWidth * 0.85,
     zIndex: 1,
     top: 50,
     left: '5%',

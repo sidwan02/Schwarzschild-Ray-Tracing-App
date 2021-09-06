@@ -812,7 +812,7 @@ function Trace2D(props) {
           <Text>delta0:</Text>
           <TextInput
             style={styles.manualTextInput}
-            placeholder="Initial angle of ray trajectory to light source position vector"
+            placeholder="Initial angle of ray to light src position vector"
             keyboardType='numeric'
             value={delta0Manual}
             onChangeText={setDelta0Manual}/>
@@ -862,6 +862,7 @@ const styles = StyleSheet.create({
   },
   manualEntryDiv: {
     position: 'absolute',
+    width: windowWidth * 0.85,
     top: 50,
     left: '5%',
     backgroundColor: 'rgb(255,255,255)',
