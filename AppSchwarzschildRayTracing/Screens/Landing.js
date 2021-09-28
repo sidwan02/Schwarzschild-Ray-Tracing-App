@@ -4,6 +4,8 @@ import Trace2D from "./Trace2D";
 import Trace3D from "./Trace3D";
 import Credits from "./Credits";
 import Guide from "./Guide";
+import Trace3DInstructions from "./Trace3DInstructions";
+import Trace2DInstructions from "./Trace2DInstructions";
 
 function Landing() {
   const [titleContainer, setTitleContainer] = useState(
@@ -88,6 +90,9 @@ function Landing() {
   const [creditsVisibility, setCreditsVisibility] = useState(false)
   const [trace2DVisibility, setTrace2DVisibility] = useState(false)
   const [trace3DVisibility, setTrace3DVisibility] = useState(false)
+
+  const [trace2DInstrucVisibility, setTrace2DInstrucVisibility] = useState(false)
+  const [trace3DInstrucVisibility, setTrace3DInstrucVisibility] = useState(false)
 
   const showAllButtons = () => {
     setBtn1Container({
@@ -200,7 +205,8 @@ function Landing() {
 
   const trace2DBtnClick = () => {
     console.log("2D clicked")
-    setTrace2DVisibility(true)
+    // setTrace2DVisibility(true)
+    setTrace2DInstrucVisibility(true)
     hideAllButtons()
     setBtnBackContainer({
       position: 'absolute',
@@ -212,7 +218,8 @@ function Landing() {
 
     const trace3DBtnClick = () => {
     console.log("3D clicked")
-    setTrace3DVisibility(true)
+    // setTrace3DVisibility(true)
+      setTrace3DInstrucVisibility(true)
       hideAllButtons()
       setBtnBackContainer({
       position: 'absolute',
@@ -237,6 +244,36 @@ function Landing() {
     })
   }
 
+  const go2DBtnClick = () => {
+    console.log("go 2D clicked")
+    showAllButtons()
+    setTrace2DVisibility(true)
+    setTrace3DVisibility(false)
+    setCreditsVisibility(false)
+    setGuideVisibility(false)
+    setBtnBackContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      left: 10
+    })
+  }
+
+
+  const go3DBtnClick = () => {
+    console.log("go 2D clicked")
+    showAllButtons()
+    setTrace2DVisibility(false)
+    setTrace3DVisibility(true)
+    setCreditsVisibility(false)
+    setGuideVisibility(false)
+    setBtnBackContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      left: 10
+    })
+  }
 
   return (
   //   regarding the ordering of stuff within the html:
@@ -251,6 +288,8 @@ function Landing() {
       <Credits visible={creditsVisibility} />
       <Trace2D visible={trace2DVisibility} />
       <Trace3D visible={trace3DVisibility}/>
+      <Trace2DInstructions visible={trace2DInstrucVisibility}/>
+      <Trace3DInstructions visible={trace3DInstrucVisibility}/>
 
       <View style={btn1Container}>
         <Button
