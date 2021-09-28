@@ -48,6 +48,15 @@ function Landing() {
   }
   );
 
+    const [settingsBtnContainer, setSettingsBtnContainer] = useState(
+    {
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 150,
+      left: (windowWidth / 2) - (100 / 2),
+  }
+  );
+
   const [btn1Container, setBtn1Container] = useState(
     {
       position: 'absolute',
@@ -177,6 +186,18 @@ function Landing() {
     })
   }
 
+  const settingsBtnClick = () => {
+    console.log("settings btn clicked")
+    setGuideVisibility(true)
+    hideAllButtons()
+    setBtnBackContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      left: 10,
+    })
+  }
+
   const trace2DBtnClick = () => {
     console.log("2D clicked")
     setTrace2DVisibility(true)
@@ -244,6 +265,14 @@ function Landing() {
           onPress={trace3DBtnClick}
         title="3D Trace"
         color="green"
+      />
+      </View>
+
+      <View style={settingsBtnContainer}>
+        <Button
+          onPress={settingsBtnClick}
+        title="Settings"
+        color="black"
       />
       </View>
 
