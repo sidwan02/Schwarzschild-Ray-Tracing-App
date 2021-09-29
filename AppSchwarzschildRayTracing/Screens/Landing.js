@@ -55,19 +55,17 @@ function Landing() {
 
     const [checkbox2DContainer, setCheckbox2DContainer] = useState(
     {
-      position: 'absolute',
-      width: 100,
       top: windowHeight - 100,
-      left: (windowWidth / 2) - (100 / 2),
+      alignItems: "center",
+    justifyContent: "center",
   }
   );
 
      const [checkbox3DContainer, setCheckbox3DContainer] = useState(
     {
-      position: 'absolute',
-      width: 100,
-      top: windowHeight - 50,
-      left: (windowWidth / 2) - (100 / 2),
+      top: windowHeight - 100,
+      alignItems: "center",
+    justifyContent: "center",
   }
   );
 
@@ -166,17 +164,15 @@ function Landing() {
   })
 
     setCheckbox2DContainer({
-      position: 'absolute',
-      width: 100,
       top: windowHeight - 100,
-      left: (windowWidth / 2) - (100 / 2),
+      alignItems: "center",
+    justifyContent: "center",
   })
 
     setCheckbox3DContainer({
-      position: 'absolute',
-      width: 100,
-      top: windowHeight - 50,
-      left: (windowWidth / 2) - (100 / 2),
+      alignItems: "center",
+    justifyContent: "center",
+      top: windowHeight - 100,
   })
 
   }
@@ -216,12 +212,14 @@ function Landing() {
       position: 'absolute',
       width: '0%',
       height: '0%',
+      top: -100,
   })
 
     setCheckbox3DContainer({
       position: 'absolute',
       width: '0%',
       height: '0%',
+      top: -100,
   })
   }
 
