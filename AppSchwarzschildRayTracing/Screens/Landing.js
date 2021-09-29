@@ -86,6 +86,25 @@ function Landing() {
   }
   );
 
+  const [btnGo3DContainer, setBtnGo3DContainer] = useState(
+    {
+      position: 'absolute',
+      width: 0,
+      top: windowHeight - 50,
+      right: 10,
+  }
+  );
+
+
+  const [btnGo2DContainer, setBtnGo2DContainer] = useState(
+    {
+      position: 'absolute',
+      width: 0,
+      top: windowHeight - 50,
+      right: 10,
+  }
+  );
+
   const [guideVisibility, setGuideVisibility] = useState(false)
   const [creditsVisibility, setCreditsVisibility] = useState(false)
   const [trace2DVisibility, setTrace2DVisibility] = useState(false)
@@ -228,6 +247,13 @@ function Landing() {
       top: windowHeight - 50,
       left: 10,
     })
+
+    setBtnGo2DContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      right: 10,
+    })
   }
 
     const trace3DBtnClick = () => {
@@ -240,6 +266,13 @@ function Landing() {
       width: 100,
       top: windowHeight - 50,
       left: 10,
+    })
+
+      setBtnGo3DContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      right: 10,
     })
   }
 
@@ -258,36 +291,58 @@ function Landing() {
       top: windowHeight - 50,
       left: 10
     })
+
+    setBtnGo2DContainer({
+      position: 'absolute',
+      width: 0,
+      top: windowHeight - 50,
+      right: 10
+    })
+
+    setBtnGo3DContainer({
+      position: 'absolute',
+      width: 0,
+      top: windowHeight - 50,
+      right: 10
+    })
   }
 
   const go2DBtnClick = () => {
     console.log("go 2D clicked")
-    showAllButtons()
     setTrace2DVisibility(true)
-    setTrace3DVisibility(false)
-    setCreditsVisibility(false)
-    setGuideVisibility(false)
+    setTrace2DInstrucVisibility(false)
     setBtnBackContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
       left: 10
     })
+
+    setBtnGo2DContainer({
+      position: 'absolute',
+      width: 0,
+      top: windowHeight - 50,
+      right: 10
+    })
   }
 
 
   const go3DBtnClick = () => {
-    console.log("go 2D clicked")
-    showAllButtons()
-    setTrace2DVisibility(false)
+    console.log("go 3D clicked")
     setTrace3DVisibility(true)
-    setCreditsVisibility(false)
-    setGuideVisibility(false)
+    setTrace3DInstrucVisibility(false)
     setBtnBackContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
       left: 10
+    })
+
+    setBtnGo3DContainer({
+      position: 'absolute',
+      width: 0,
+      top: windowHeight - 50,
+      right: 10
     })
   }
 
@@ -352,6 +407,22 @@ function Landing() {
           onPress={backBtnClick}
         title="Back"
         color="purple"
+      />
+      </View>
+
+      <View style={btnGo2DContainer}>
+        <Button
+          onPress={go2DBtnClick}
+        title="Go"
+        color="orange"
+      />
+      </View>
+
+      <View style={btnGo3DContainer}>
+        <Button
+          onPress={go3DBtnClick}
+        title="Go"
+        color="orange"
       />
       </View>
 
