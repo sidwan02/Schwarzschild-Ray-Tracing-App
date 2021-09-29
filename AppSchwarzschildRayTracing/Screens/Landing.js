@@ -133,6 +133,14 @@ function Landing() {
       backgroundColor: 'grey',
       justifyContent: 'center'
   })
+
+    setSettingsBtnContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 150,
+      left: (windowWidth / 2) - (100 / 2),
+  })
+
   }
 
   const hideAllButtons = () => {
@@ -161,6 +169,12 @@ function Landing() {
   })
 
     setTitleContainer({
+      position: 'absolute',
+      width: '0%',
+      height: '0%',
+  })
+
+    setSettingsBtnContainer({
       position: 'absolute',
       width: '0%',
       height: '0%',
@@ -236,6 +250,8 @@ function Landing() {
     setTrace3DVisibility(false)
     setCreditsVisibility(false)
     setGuideVisibility(false)
+    setTrace2DInstrucVisibility(false)
+    setTrace3DInstrucVisibility(false)
     setBtnBackContainer({
       position: 'absolute',
       width: 0,
