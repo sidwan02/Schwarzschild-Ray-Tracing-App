@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Dimensions, View, Text, Button} from 'react-native';
+import {Dimensions, View, Text, Button, CheckBox} from 'react-native';
 import Trace2D from "./Trace2D";
 import Trace3D from "./Trace3D";
 import Credits from "./Credits";
@@ -8,6 +8,9 @@ import Trace3DInstructions from "./Trace3DInstructions";
 import Trace2DInstructions from "./Trace2DInstructions";
 
 function Landing() {
+  const [instructions2DHidden, setInstructions2DHidden] = useState(false);
+  const [instructions3DHidden, setInstructions3DHidden] = useState(false);
+
   const [titleContainer, setTitleContainer] = useState(
     {
       position: 'absolute',
@@ -36,7 +39,7 @@ function Landing() {
     {
       position: 'absolute',
       width: 100,
-      top: windowHeight - 50,
+      top: windowHeight - 150,
       left: (windowWidth / 2) - (100 / 2),
   }
   );
@@ -45,16 +48,25 @@ function Landing() {
     {
       position: 'absolute',
       width: 100,
+      top: windowHeight - 200,
+      left: (windowWidth / 2) - (100 / 2),
+  }
+  );
+
+    const [checkbox2DContainer, setCheckbox2DContainer] = useState(
+    {
+      position: 'absolute',
+      width: 100,
       top: windowHeight - 100,
       left: (windowWidth / 2) - (100 / 2),
   }
   );
 
-    const [settingsBtnContainer, setSettingsBtnContainer] = useState(
+     const [checkbox3DContainer, setCheckbox3DContainer] = useState(
     {
       position: 'absolute',
       width: 100,
-      top: windowHeight - 150,
+      top: windowHeight - 50,
       left: (windowWidth / 2) - (100 / 2),
   }
   );
@@ -131,14 +143,14 @@ function Landing() {
     setCreditsBtnContainer({
       position: 'absolute',
       width: 100,
-      top: windowHeight - 50,
+      top: windowHeight - 150,
       left: (windowWidth / 2) - (100 / 2),
   })
 
     setGuideBtnContainer({
       position: 'absolute',
       width: 100,
-      top: windowHeight - 100,
+      top: windowHeight - 200,
       left: (windowWidth / 2) - (100 / 2),
   })
 
@@ -153,10 +165,17 @@ function Landing() {
       justifyContent: 'center'
   })
 
-    setSettingsBtnContainer({
+    setCheckbox2DContainer({
       position: 'absolute',
       width: 100,
-      top: windowHeight - 150,
+      top: windowHeight - 100,
+      left: (windowWidth / 2) - (100 / 2),
+  })
+
+    setCheckbox3DContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
       left: (windowWidth / 2) - (100 / 2),
   })
 
@@ -193,7 +212,13 @@ function Landing() {
       height: '0%',
   })
 
-    setSettingsBtnContainer({
+    setCheckbox2DContainer({
+      position: 'absolute',
+      width: '0%',
+      height: '0%',
+  })
+
+    setCheckbox3DContainer({
       position: 'absolute',
       width: '0%',
       height: '0%',
@@ -238,7 +263,19 @@ function Landing() {
 
   const trace2DBtnClick = () => {
     console.log("2D clicked")
-    // setTrace2DVisibility(true)
+
+    if (instructions2DHidden) {
+      // setTrace2DVisibility(true)
+    setTrace2DVisibility(true)
+    hideAllButtons()
+    setBtnBackContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      left: 10,
+    })
+    } else {
+      // setTrace2DVisibility(true)
     setTrace2DInstrucVisibility(true)
     hideAllButtons()
     setBtnBackContainer({
@@ -254,12 +291,23 @@ function Landing() {
       top: windowHeight - 50,
       right: 10,
     })
+    }
   }
 
     const trace3DBtnClick = () => {
     console.log("3D clicked")
-    // setTrace3DVisibility(true)
-      setTrace3DInstrucVisibility(true)
+
+      if (instructions3DHidden) {
+        setTrace3DVisibility(true)
+      hideAllButtons()
+      setBtnBackContainer({
+      position: 'absolute',
+      width: 100,
+      top: windowHeight - 50,
+      left: 10,
+    })
+      } else {
+        setTrace3DInstrucVisibility(true)
       hideAllButtons()
       setBtnBackContainer({
       position: 'absolute',
@@ -274,6 +322,7 @@ function Landing() {
       top: windowHeight - 50,
       right: 10,
     })
+      }
   }
 
   const backBtnClick = () => {
@@ -378,13 +427,13 @@ function Landing() {
       />
       </View>
 
-      <View style={settingsBtnContainer}>
-        <Button
-          onPress={settingsBtnClick}
-        title="Settings"
-        color="black"
-      />
-      </View>
+      {/*<View style={settingsBtnContainer}>*/}
+      {/*  <Button*/}
+      {/*    onPress={settingsBtnClick}*/}
+      {/*  title="Settings"*/}
+      {/*  color="black"*/}
+      {/*/>*/}
+      {/*</View>*/}
 
       <View style={guideBtnContainer}>
         <Button
@@ -426,6 +475,21 @@ function Landing() {
       />
       </View>
 
+      <View style={checkbox2DContainer}>
+        <CheckBox
+          value={instructions2DHidden}
+          onValueChange={setInstructions2DHidden}
+        />
+        <Text>Skip 2D Trace Instructions</Text>
+      </View>
+
+      <View style={checkbox3DContainer}>
+        <CheckBox
+          value={instructions3DHidden}
+          onValueChange={setInstructions3DHidden}
+        />
+      <Text>Skip 3D Trace Instructions</Text>
+      </View>
 
     </View>
   )
