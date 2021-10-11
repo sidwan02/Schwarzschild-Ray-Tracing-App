@@ -347,7 +347,7 @@ function Trace2D(props) {
 
     // black hole
     ctx.beginPath()
-    ctx.arc(blackHoleX, blackHoleY, 30, 0, 2 * Math.PI);
+    ctx.arc(blackHoleX, blackHoleY, 25, 0, 2 * Math.PI);
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
 
@@ -412,7 +412,7 @@ function Trace2D(props) {
 
     ctx.strokeStyle = 'black'
 
-    ctx.fillText("5 Schwarzschild Radii [SR]", 11 / 16 * windowWidth - 5, windowHeight - 80);
+    ctx.fillText("2 Schwarzschild Radii [SR]", 11 / 16 * windowWidth - 5, windowHeight - 80);
 
     ctx.fillText("y-axis [SR units]", 5 / 16 * windowWidth, windowHeight - 10);
     ctx.fillText("x-axis [SR units]", 13 / 16 * windowWidth, windowHeight / 2 + 20);
@@ -551,15 +551,15 @@ function Trace2D(props) {
 
   const convertCartesianToPixel = (cartX, cartY) => {
     let pixelX, pixelY
-    pixelX = cartX * 30 + blackHoleX
-    pixelY = blackHoleY - cartY * 30
+    pixelX = cartX * 25 + blackHoleX
+    pixelY = blackHoleY - cartY * 25
     return {pixelX: pixelX, pixelY: pixelY}
   }
 
   const convertPixelToCartesian = (pixelX, pixelY) => {
     let cartX, cartY
-    cartX = (pixelX - blackHoleX) / 30
-    cartY = (blackHoleY - pixelY) / 30
+    cartX = (pixelX - blackHoleX) / 25
+    cartY = (blackHoleY - pixelY) / 25
     return {cartX: cartX, cartY: cartY}
   }
 
