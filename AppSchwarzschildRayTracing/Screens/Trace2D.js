@@ -356,6 +356,40 @@ function Trace2D(props) {
     ctx.closePath();
   }
 
+  const drawRaySourceAndDelta0 = () => {
+    // console.log("drawing bh")
+    let ctx = canvas.getContext("2d");
+
+    // black hole
+    ctx.beginPath()
+    ctx.arc(press_x, press_Y, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgb(0,0,0)';
+    ctx.strokeStyle = '#000000';
+
+    ctx.fill();
+    ctx.stroke();
+
+    canvas_arrow(ctx, press_x, press_Y, release_x, releaseY)
+
+  }
+
+  const canvas_arrow = (ctx, fromx, fromy, tox, toy) => {
+    ctx.beginPath();
+
+    let headlen = 10; // length of head in pixels
+    let dx = tox - fromx;
+    let dy = toy - fromy;
+    let angle = Math.atan2(dy, dx);
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(tox, toy);
+    ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+    ctx.moveTo(tox, toy);
+    ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+
+    ctx.stroke();
+    ctx.closePath()
+}
+
   const drawLegend = () => {
     // console.log("drawing bh")
     let ctx = canvas.getContext("2d");
@@ -428,7 +462,9 @@ function Trace2D(props) {
 
     ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
 
-    console.log("drew image")
+    // console.log("drew image")
+
+    drawRaySourceAndDelta0()
   }
 
   const handleCanvas = (can) => {
@@ -515,15 +551,15 @@ function Trace2D(props) {
 
   const convertCartesianToPixel = (cartX, cartY) => {
     let pixelX, pixelY
-    pixelX = cartX * 10 + blackHoleX
-    pixelY = blackHoleY - cartY * 10
+    pixelX = cartX * 20 + blackHoleX
+    pixelY = blackHoleY - cartY * 20
     return {pixelX: pixelX, pixelY: pixelY}
   }
 
   const convertPixelToCartesian = (pixelX, pixelY) => {
     let cartX, cartY
-    cartX = (pixelX - blackHoleX) / 10
-    cartY = (blackHoleY - pixelY) / 10
+    cartX = (pixelX - blackHoleX) / 20
+    cartY = (blackHoleY - pixelY) / 20
     return {cartX: cartX, cartY: cartY}
   }
 
@@ -584,6 +620,7 @@ function Trace2D(props) {
 
     let delta0 = getDelta0(pressCoorObj.cartX, releaseCoorObj.cartX, pressCoorObj.cartY, releaseCoorObj.cartY)
 
+    drawRaySourceAndDelta0()
 
     requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0)
     // console.log("x_trace: ", x_trace)

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: windowHeight - 120,
     width: windowWidth,
     position: 'absolute',
-    padding: 20
+    margin: 20
   },
   h1: {
       fontSize: 50
