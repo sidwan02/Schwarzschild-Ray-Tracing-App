@@ -347,7 +347,7 @@ function Trace2D(props) {
 
     // black hole
     ctx.beginPath()
-    ctx.arc(blackHoleX, blackHoleY, 10, 0, 2 * Math.PI);
+    ctx.arc(blackHoleX, blackHoleY, 30, 0, 2 * Math.PI);
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
 
@@ -551,15 +551,15 @@ function Trace2D(props) {
 
   const convertCartesianToPixel = (cartX, cartY) => {
     let pixelX, pixelY
-    pixelX = cartX * 20 + blackHoleX
-    pixelY = blackHoleY - cartY * 20
+    pixelX = cartX * 30 + blackHoleX
+    pixelY = blackHoleY - cartY * 30
     return {pixelX: pixelX, pixelY: pixelY}
   }
 
   const convertPixelToCartesian = (pixelX, pixelY) => {
     let cartX, cartY
-    cartX = (pixelX - blackHoleX) / 20
-    cartY = (blackHoleY - pixelY) / 20
+    cartX = (pixelX - blackHoleX) / 30
+    cartY = (blackHoleY - pixelY) / 30
     return {cartX: cartX, cartY: cartY}
   }
 
