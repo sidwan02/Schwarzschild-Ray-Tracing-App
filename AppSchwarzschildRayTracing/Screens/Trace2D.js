@@ -18,6 +18,9 @@ import * as Expo from 'expo-asset';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+let randomFlag = true;
+
 let currentlyDrawing = false;
 
 function Trace2D(props) {
@@ -27,6 +30,7 @@ function Trace2D(props) {
   }
 
   let canvas;
+  let canvas2;
 
   let x_trace = [];
   let y_trace = [];
@@ -479,6 +483,74 @@ function Trace2D(props) {
     ctx.closePath();
   };
 
+  const drawStuff = () => {
+    let ctx = canvas.getContext('2d');
+
+    ctx.beginPath();
+
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo((6 / 8) * windowWidth, windowHeight - 100);
+    ctx.lineTo((7 / 8) * windowWidth, windowHeight - 100);
+    ctx.stroke();
+
+    ctx.moveTo((6 / 8) * windowWidth, windowHeight - 105);
+    ctx.lineTo((6 / 8) * windowWidth, windowHeight - 95);
+    ctx.stroke();
+
+    ctx.moveTo((7 / 8) * windowWidth, windowHeight - 105);
+    ctx.lineTo((7 / 8) * windowWidth, windowHeight - 95);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'black';
+
+    ctx.fillText(
+      '2 Gravitational Units [R_G]',
+      (11 / 16) * windowWidth - 5,
+      windowHeight - 80
+    );
+
+    ctx.fillText('y-axis [R_G]', (5 / 16) * windowWidth, windowHeight - 10);
+    ctx.fillText(
+      'x-axis [R_G]',
+      (13 / 16) * windowWidth,
+      windowHeight / 2 + 20
+    );
+
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo(0, blackHoleY);
+    ctx.lineTo(windowWidth, blackHoleY);
+    ctx.stroke();
+
+    ctx.moveTo(blackHoleX, 0);
+    ctx.lineTo(blackHoleX, windowHeight);
+    ctx.stroke();
+
+    let i = 0;
+
+    while (i <= 8) {
+      ctx.moveTo((i / 8) * windowWidth, windowHeight / 2 + 5);
+      ctx.lineTo((i / 8) * windowWidth, windowHeight / 2 - 5);
+      ctx.stroke();
+      i += 1;
+    }
+    i = 0;
+    while (i <= 16) {
+      ctx.moveTo(windowWidth / 2 + 5, (i / 16) * windowHeight);
+      ctx.lineTo(windowWidth / 2 - 5, (i / 16) * windowHeight);
+      ctx.stroke();
+      i += 1;
+    }
+
+    ctx.arc(blackHoleX, blackHoleY, 25, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgb(0,0,0)';
+    ctx.strokeStyle = '#000000';
+
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.closePath();
+  };
+
   const drawCoordinateAxes = () => {
     let ctx = canvas.getContext('2d');
 
@@ -511,6 +583,22 @@ function Trace2D(props) {
     ctx.closePath();
   };
 
+  const drawBg2 = () => {
+    // console.log()
+    let ctx = canvas2.getContext('2d');
+
+    const image = new CanvasImage(canvas2);
+
+    const asset = Expo.Asset.fromModule(
+      require('../assets/trans-2D-cart-axis.png')
+    );
+    image.src = asset.uri;
+
+    // console.log('loaded it woo');
+
+    ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+  };
+
   const drawBg = () => {
     let ctx = canvas.getContext('2d');
 
@@ -527,7 +615,7 @@ function Trace2D(props) {
   };
 
   const redrawCanvas = () => {
-    drawBg();
+    // drawBg();
 
     // console.log("drew image")
 
@@ -537,23 +625,78 @@ function Trace2D(props) {
   const handleCanvas = (can) => {
     if (can !== null) {
       console.log('not null');
+      console.log('HANDING CANVAS ==================================');
       canvas = can;
 
       can.height = windowHeight;
       can.width = windowWidth;
 
       // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
-      drawCoordinateAxes();
-      drawLegend();
-      drawBlackHole();
+      // if (randomFlag) {
+      //   // drawCoordinateAxes();
+      //   // drawLegend();
+      //   // drawBlackHole();
+      //   drawStuff();
+      //   randomFlag = false;
+      // }
 
-      console.log('about to redraw canvas');
+      // console.log('about to redraw canvas');
+
+      // redrawCanvas();
+    }
+  };
+
+  const handleCanvas2 = (can) => {
+    if (can !== null) {
+      console.log('not null');
+      console.log('222222222 ==================================');
+
+      canvas2 = can;
+      // console.log(canvas2);
+
+      can.height = windowHeight;
+      can.width = windowWidth;
+
+      let ctx = can.getContext('2d');
+      // ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      // ctx.fillRect(0, 0, windowWidth, windowHeight);
+
+      // drawBg2();
+
+      if (!(can instanceof Canvas)) {
+        return;
+      }
+
+      // let ctx = canvas2.getContext('2d');
+
+      const image = new CanvasImage(can);
+
+      const asset = Expo.Asset.fromModule(
+        require('../assets/trans-2D-cart-axis.png')
+      );
+      image.src = asset.uri;
+
+      // console.log('loaded it woo');
+
+      ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+
+      // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
+      // if (randomFlag) {
+      //   // drawCoordinateAxes();
+      //   // drawLegend();
+      //   // drawBlackHole();
+      //   drawStuff();
+      //   randomFlag = false;
+      // }
+
+      // console.log('about to redraw canvas');
 
       // redrawCanvas();
     }
   };
 
   const canvasPress = (e) => {
+    console.log('CANVAS PRESS IN');
     // https://stackoverflow.com/questions/36862765/react-native-get-the-coordinates-of-my-touch-event
 
     press_x = e.nativeEvent.locationX;
@@ -753,10 +896,6 @@ function Trace2D(props) {
       ctx.fillRect(0, 0, windowWidth, windowHeight);
       console.log('canvas cleared');
 
-      // drawBg();
-
-      // drawRaySourceAndDelta0();
-
       redrawCanvas();
 
       requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
@@ -943,8 +1082,9 @@ function Trace2D(props) {
       {/*onPress={canvasTap} is for just tapping*/}
       <View style={styles.canvasDiv}>
         <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
-          {/*<Text>Hi there</Text>*/}
           <Canvas ref={handleCanvas} />
+          {/*<Text>Hi there</Text>*/}
+          <Canvas ref={handleCanvas2} style={styles.thingDiv} />
         </TouchableOpacity>
 
         <View style={analysisBtnDiv}>
@@ -1040,8 +1180,14 @@ const styles = StyleSheet.create({
     right: 10,
   },
   canvasDiv: {
+    // display: 'flex',
     position: 'absolute',
     top: 0,
+  },
+  thingDiv: {
+    position: 'absolute',
+    top: 0,
+    // zIndex: -10,
   },
   inputErrorTextDiv: {
     position: 'absolute',
