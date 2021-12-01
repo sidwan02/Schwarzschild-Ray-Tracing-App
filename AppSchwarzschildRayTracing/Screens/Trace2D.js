@@ -22,15 +22,14 @@ const windowHeight = Dimensions.get('window').height;
 let randomFlag = true;
 
 let currentlyDrawing = false;
+let canvas2 = null;
+let canvas = null;
 
 function Trace2D(props) {
   let thingy = 0;
   if (props.visible === false) {
     return <View></View>;
   }
-
-  let canvas;
-  let canvas2;
 
   let x_trace = [];
   let y_trace = [];
@@ -484,9 +483,40 @@ function Trace2D(props) {
   };
 
   const drawStuff = () => {
-    let ctx = canvas.getContext('2d');
+    // coordinate axis
+    let ctx = canvas2.getContext('2d');
 
     ctx.beginPath();
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo(0, blackHoleY);
+    ctx.lineTo(windowWidth, blackHoleY);
+    ctx.stroke();
+
+    ctx.moveTo(blackHoleX, 0);
+    ctx.lineTo(blackHoleX, windowHeight);
+    ctx.stroke();
+
+    let i = 0;
+
+    while (i <= 8) {
+      ctx.moveTo((i / 8) * windowWidth, windowHeight / 2 + 5);
+      ctx.lineTo((i / 8) * windowWidth, windowHeight / 2 - 5);
+      ctx.stroke();
+      i += 1;
+    }
+    i = 0;
+    while (i <= 16) {
+      ctx.moveTo(windowWidth / 2 + 5, (i / 16) * windowHeight);
+      ctx.lineTo(windowWidth / 2 - 5, (i / 16) * windowHeight);
+      ctx.stroke();
+      i += 1;
+    }
+
+    // ctx.closePath();
+
+    // draw legend
+
+    // ctx.beginPath();
 
     ctx.strokeStyle = '#000000';
     ctx.moveTo((6 / 8) * windowWidth, windowHeight - 100);
@@ -516,38 +546,17 @@ function Trace2D(props) {
       windowHeight / 2 + 20
     );
 
-    ctx.strokeStyle = '#000000';
-    ctx.moveTo(0, blackHoleY);
-    ctx.lineTo(windowWidth, blackHoleY);
-    ctx.stroke();
+    // ctx.closePath();
 
-    ctx.moveTo(blackHoleX, 0);
-    ctx.lineTo(blackHoleX, windowHeight);
-    ctx.stroke();
+    // draw black hole
 
-    let i = 0;
-
-    while (i <= 8) {
-      ctx.moveTo((i / 8) * windowWidth, windowHeight / 2 + 5);
-      ctx.lineTo((i / 8) * windowWidth, windowHeight / 2 - 5);
-      ctx.stroke();
-      i += 1;
-    }
-    i = 0;
-    while (i <= 16) {
-      ctx.moveTo(windowWidth / 2 + 5, (i / 16) * windowHeight);
-      ctx.lineTo(windowWidth / 2 - 5, (i / 16) * windowHeight);
-      ctx.stroke();
-      i += 1;
-    }
-
+    // ctx.beginPath();
     ctx.arc(blackHoleX, blackHoleY, 25, 0, 2 * Math.PI);
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
 
     ctx.fill();
     ctx.stroke();
-
     ctx.closePath();
   };
 
@@ -626,10 +635,12 @@ function Trace2D(props) {
     if (can !== null) {
       console.log('not null');
       console.log('HANDING CANVAS ==================================');
-      canvas = can;
-
-      can.height = windowHeight;
-      can.width = windowWidth;
+      if (canvas !== can) {
+        canvas = can;
+        can.height = windowHeight;
+        can.width = windowWidth;
+        console.log('DIFF ==================================');
+      }
 
       // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
       // if (randomFlag) {
@@ -651,11 +662,15 @@ function Trace2D(props) {
       console.log('not null');
       console.log('222222222 ==================================');
 
-      canvas2 = can;
-      // console.log(canvas2);
-
-      can.height = windowHeight;
-      can.width = windowWidth;
+      if (canvas2 !== can) {
+        console.log('JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ');
+        canvas2 = can;
+        can.height = windowHeight;
+        can.width = windowWidth;
+      } else {
+        // return;
+        console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
+      }
 
       let ctx = can.getContext('2d');
       // ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
@@ -668,6 +683,12 @@ function Trace2D(props) {
       }
 
       // let ctx = canvas2.getContext('2d');
+
+      // drawCoordinateAxes();
+      // drawLegend();
+      // drawBlackHole();
+
+      // drawStuff();
 
       const image = new CanvasImage(can);
 
