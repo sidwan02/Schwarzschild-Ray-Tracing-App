@@ -449,18 +449,14 @@ function Trace2D(props) {
     ctx.strokeStyle = 'black';
 
     ctx.fillText(
-      '2 Schwarzschild Radii [SR]',
+      '2 Gravitational Units [R_G]',
       (11 / 16) * windowWidth - 5,
       windowHeight - 80
     );
 
+    ctx.fillText('y-axis [R_G]', (5 / 16) * windowWidth, windowHeight - 10);
     ctx.fillText(
-      'y-axis [SR units]',
-      (5 / 16) * windowWidth,
-      windowHeight - 10
-    );
-    ctx.fillText(
-      'x-axis [SR units]',
+      'x-axis [R_G]',
       (13 / 16) * windowWidth,
       windowHeight / 2 + 20
     );
@@ -532,13 +528,13 @@ function Trace2D(props) {
       can.width = windowWidth;
 
       // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
-      // drawCoordinateAxes();
-      // drawLegend();
-      // drawBlackHole();
+      drawCoordinateAxes();
+      drawLegend();
+      drawBlackHole();
 
       console.log('about to redraw canvas');
 
-      redrawCanvas();
+      // redrawCanvas();
     }
   };
 
@@ -931,7 +927,7 @@ function Trace2D(props) {
 
       <CollapsibleView title="Manual Entry" style={styles.manualEntryDiv}>
         <View>
-          <Text>x:</Text>
+          <Text>x [R_G]:</Text>
           <TextInput
             style={styles.manualTextInput}
             placeholder="x coordinate of light source"
@@ -939,7 +935,7 @@ function Trace2D(props) {
             value={xManual}
             onChangeText={setXManual}
           />
-          <Text>y:</Text>
+          <Text>y [R_G]:</Text>
           <TextInput
             style={styles.manualTextInput}
             placeholder="y coordinate of light source"
@@ -947,7 +943,7 @@ function Trace2D(props) {
             value={yManual}
             onChangeText={setYManual}
           />
-          <Text>delta0:</Text>
+          <Text>delta0 [°]:</Text>
           <TextInput
             style={styles.manualTextInput}
             placeholder="Initial angle of ray to light src position vector"
