@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   container: {
     top: StatusBar.currentHeight,
-    height: windowHeight - 120,
+    height: windowHeight - 110,
     width: windowWidth - 40,
     position: 'absolute',
     margin: 20,

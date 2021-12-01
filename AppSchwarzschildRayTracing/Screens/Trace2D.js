@@ -18,8 +18,10 @@ import * as Expo from 'expo-asset';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+let currentlyDrawing = false;
 
 function Trace2D(props) {
+  let thingy = 0;
   if (props.visible === false) {
     return <View></View>;
   }
@@ -323,6 +325,7 @@ function Trace2D(props) {
         let color = rainbowStop(colorStop);
 
         requestAnimationFrame(function animateTrace() {
+          thingy += 1;
           let x_end_cart = final_x_list[cur_i + 1],
             y_end_cart = final_y_list[cur_i + 1];
 
@@ -339,7 +342,7 @@ function Trace2D(props) {
             y_end_cart < -18 - buffer ||
             Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 1
           ) {
-            // console.log('doing');
+            console.log('doing ---------------------');
             let i = 0;
 
             let ctx = canvas.getContext('2d');
@@ -351,12 +354,24 @@ function Trace2D(props) {
 
               redrawCanvas();
               i = i + 1;
+              // console.log('gaga');
+              // if (i == 19) {
+              //   currentlyDrawing = false;
+              //   setInputErrorText('');
+              // }
             }
-            console.log('stopping trace');
+
+            // console.log('stopping trace ------------------------------');
           } else {
             requestAnimationFrame(animateTrace); // queue request for next frame
           }
         });
+
+        setTimeout(function () {
+          currentlyDrawing = false;
+          console.log('done ==========================');
+          setInputErrorText('');
+        }, 6000);
       })
       .catch(function (error) {
         console.log(error);
@@ -393,7 +408,7 @@ function Trace2D(props) {
     // black hole
     ctx.beginPath();
     ctx.arc(press_x, press_Y, 10, 0, 2 * Math.PI);
-    // ctx.fillStyle = 'rgb(0,0,0)';
+    ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
     // ctx.lineWidth = 2;
 
@@ -704,37 +719,53 @@ function Trace2D(props) {
     // console.log(e.nativeEvent.locationX)
     // console.log(e.nativeEvent.locationY)
 
-    x_trace = [];
-    y_trace = [];
+    console.log('currentlyDrawing: ', currentlyDrawing);
 
-    release_x = e.nativeEvent.locationX;
-    releaseY = e.nativeEvent.locationY;
+    if (currentlyDrawing) {
+      setInputErrorText('Please wait for current trace to render');
+    } else {
+      currentlyDrawing = true;
 
-    let pressCoorObj = convertPixelToCartesian(press_x, press_Y);
-    let releaseCoorObj = convertPixelToCartesian(release_x, releaseY);
+      console.log('INSIDE currentlyDrawing: ', currentlyDrawing);
 
-    let delta0 = getDelta0(
-      pressCoorObj.cartX,
-      releaseCoorObj.cartX,
-      pressCoorObj.cartY,
-      releaseCoorObj.cartY
-    );
+      x_trace = [];
+      y_trace = [];
 
-    if (delta0 === undefined) {
-      delta0 = 90;
+      release_x = e.nativeEvent.locationX;
+      releaseY = e.nativeEvent.locationY;
+
+      let pressCoorObj = convertPixelToCartesian(press_x, press_Y);
+      let releaseCoorObj = convertPixelToCartesian(release_x, releaseY);
+
+      let delta0 = getDelta0(
+        pressCoorObj.cartX,
+        releaseCoorObj.cartX,
+        pressCoorObj.cartY,
+        releaseCoorObj.cartY
+      );
+
+      if (delta0 === undefined) {
+        delta0 = 90;
+      }
+
+      let ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+      ctx.fillRect(0, 0, windowWidth, windowHeight);
+      console.log('canvas cleared');
+
+      // drawBg();
+
+      // drawRaySourceAndDelta0();
+
+      redrawCanvas();
+
+      requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
+      // console.log('desired ans: ', ans);
+      // console.log("x_trace: ", x_trace)
+      // console.log("y_trace: ", y_trace)
+
+      // setCurrentlyDrawing(false);
     }
-
-    drawBg();
-
-    console.log('canvas cleared');
-
-    drawRaySourceAndDelta0();
-
-    // redrawCanvas();
-
-    requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
-    // console.log("x_trace: ", x_trace)
-    // console.log("y_trace: ", y_trace)
   };
 
   const [container_style, set_container_style] = useState({
@@ -1016,7 +1047,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: '5%',
-    width: (2 * windowWidth) / 5,
+    // width: (2 * windowWidth) / 5,
+    width: windowWidth,
     backgroundColor: 'rgba(255,255,255, 0)',
     padding: 10,
     borderRadius: 5,
