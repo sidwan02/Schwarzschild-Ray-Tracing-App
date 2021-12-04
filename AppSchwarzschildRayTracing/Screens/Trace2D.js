@@ -7,6 +7,7 @@ import {
   Text,
   Button,
   TextInput,
+  Image,
 } from 'react-native';
 import Canvas, { Image as CanvasImage } from 'react-native-canvas';
 import axios from 'axios';
@@ -34,6 +35,20 @@ function Trace2D(props) {
   let x_trace = [];
   let y_trace = [];
 
+  const [loadingDivStyle, setLoadingDivStyle] = useState({
+    top: windowHeight,
+    width: 0,
+    // width: windowWidth,
+    display: 'flex',
+    left: windowWidth / 2 - 88,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    alignItems: 'center',
+    // padding: 10,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+  });
+
   const [inputErrorText, setInputErrorText] = useState('');
 
   const [analysisBtnDiv, setAnalysisBtnDiv] = useState({
@@ -55,9 +70,9 @@ function Trace2D(props) {
   });
 
   const requestRayTrace = (x, y, delta0) => {
-    console.log('x0: ', x);
-    console.log('y0: ', y);
-    console.log('delta0: ', delta0);
+    // console.log('x0: ', x);
+    // console.log('y0: ', y);
+    // console.log('delta0: ', delta0);
 
     if (delta0 < 0) {
       // delta0 = - (180 - Math.abs(delta0)) // diffeq
@@ -85,17 +100,19 @@ function Trace2D(props) {
       )
       .then((response) => {
         if (response.data === null) {
-          console.log('DATA WAS NULL');
+          // console.log('DATA WAS NULL');
         }
-        console.log('got data lol');
+        // console.log('got data lol');
         let data;
 
-        console.log('type:', typeof response.data);
+        // console.log('type:', typeof response.data);
         if (typeof response.data === 'object') {
           data = response.data;
         } else {
           data = JSON.parse(response.data);
         }
+
+        // console.log('data: ', data);
 
         if (x >= 0 && y >= 0) {
           // https://stackoverflow.com/questions/35969974/foreach-is-not-a-function-error-with-javascript-array
@@ -152,7 +169,7 @@ function Trace2D(props) {
           }
         });
 
-        console.log('flag_no_periastron: ', flag_no_periastron);
+        // console.log('flag_no_periastron: ', flag_no_periastron);
 
         let trace1 = {
           name: 'Ray Trace',
@@ -257,7 +274,7 @@ function Trace2D(props) {
         let max_i = x_trace.length - 1;
         let cur_i = 0;
 
-        console.log('bfbababa: ', final_x_list);
+        // console.log('bfbababa: ', final_x_list);
 
         prev_x = 0;
         prev_y = 0;
@@ -321,7 +338,7 @@ function Trace2D(props) {
           }
         });
 
-        console.log('target_length: ', target_length);
+        // console.log('target_length: ', target_length);
 
         let colorStop = Math.random();
 
@@ -345,7 +362,7 @@ function Trace2D(props) {
             y_end_cart < -18 - buffer ||
             Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 1
           ) {
-            console.log('doing ---------------------');
+            // console.log('doing ---------------------');
             let i = 0;
 
             let ctx = canvas.getContext('2d');
@@ -357,14 +374,14 @@ function Trace2D(props) {
 
               redrawCanvas();
               i = i + 1;
-              // console.log('gaga');
+              //console.log('gaga');
               // if (i == 19) {
               //   currentlyDrawing = false;
               //   setInputErrorText('');
               // }
             }
 
-            // console.log('stopping trace ------------------------------');
+            //console.log('stopping trace ------------------------------');
           } else {
             requestAnimationFrame(animateTrace); // queue request for next frame
           }
@@ -372,12 +389,13 @@ function Trace2D(props) {
 
         setTimeout(function () {
           currentlyDrawing = false;
-          console.log('done ==========================');
+          // console.log('done ==========================');
           setInputErrorText('');
-        }, 6000);
+          hideLoadingDiv();
+        }, 8000);
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -390,7 +408,7 @@ function Trace2D(props) {
   let blackHoleY = windowHeight / 2;
 
   const drawBlackHole = () => {
-    // console.log("drawing bh")
+    //console.log("drawing bh")
     let ctx = canvas.getContext('2d');
 
     // black hole
@@ -405,7 +423,7 @@ function Trace2D(props) {
   };
 
   const drawRaySourceAndDelta0 = () => {
-    // console.log("drawing bh")
+    //console.log("drawing bh")
     let ctx = canvas.getContext('2d');
 
     // black hole
@@ -446,7 +464,7 @@ function Trace2D(props) {
   };
 
   const drawLegend = () => {
-    // console.log("drawing bh")
+    //console.log("drawing bh")
     let ctx = canvas.getContext('2d');
 
     ctx.beginPath();
@@ -593,7 +611,7 @@ function Trace2D(props) {
   };
 
   const drawBg2 = () => {
-    // console.log()
+    //console.log()
     let ctx = canvas2.getContext('2d');
 
     const image = new CanvasImage(canvas2);
@@ -603,7 +621,7 @@ function Trace2D(props) {
     );
     image.src = asset.uri;
 
-    // console.log('loaded it woo');
+    //console.log('loaded it woo');
 
     ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
   };
@@ -618,7 +636,7 @@ function Trace2D(props) {
     );
     image.src = asset.uri;
 
-    // console.log('loaded it woo');
+    //console.log('loaded it woo');
 
     ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
   };
@@ -626,20 +644,20 @@ function Trace2D(props) {
   const redrawCanvas = () => {
     // drawBg();
 
-    // console.log("drew image")
+    //console.log("drew image")
 
     drawRaySourceAndDelta0();
   };
 
   const handleCanvas = (can) => {
     if (can !== null) {
-      console.log('not null');
-      console.log('HANDING CANVAS ==================================');
+      // console.log('not null');
+      // console.log('HANDING CANVAS ==================================');
       if (canvas !== can) {
         canvas = can;
         can.height = windowHeight;
         can.width = windowWidth;
-        console.log('DIFF ==================================');
+        // console.log('DIFF ==================================');
       }
 
       // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
@@ -651,7 +669,7 @@ function Trace2D(props) {
       //   randomFlag = false;
       // }
 
-      // console.log('about to redraw canvas');
+      //console.log('about to redraw canvas');
 
       // redrawCanvas();
     }
@@ -659,17 +677,17 @@ function Trace2D(props) {
 
   const handleCanvas2 = (can) => {
     if (can !== null) {
-      console.log('not null');
-      console.log('222222222 ==================================');
+      // console.log('not null');
+      // console.log('222222222 ==================================');
 
       if (canvas2 !== can) {
-        console.log('JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ');
+        // console.log('JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ');
         canvas2 = can;
         can.height = windowHeight;
         can.width = windowWidth;
       } else {
         // return;
-        console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
+        // console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
       }
 
       let ctx = can.getContext('2d');
@@ -697,7 +715,7 @@ function Trace2D(props) {
       );
       image.src = asset.uri;
 
-      // console.log('loaded it woo');
+      //console.log('loaded it woo');
 
       ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
 
@@ -710,14 +728,14 @@ function Trace2D(props) {
       //   randomFlag = false;
       // }
 
-      // console.log('about to redraw canvas');
+      //console.log('about to redraw canvas');
 
       // redrawCanvas();
     }
   };
 
   const canvasPress = (e) => {
-    console.log('CANVAS PRESS IN');
+    // console.log('CANVAS PRESS IN');
     // https://stackoverflow.com/questions/36862765/react-native-get-the-coordinates-of-my-touch-event
 
     press_x = e.nativeEvent.locationX;
@@ -743,7 +761,7 @@ function Trace2D(props) {
     } else if (releaseY < pressY && releaseX < pressX) {
       // down left
       theta = -(180 - theta);
-      console.log('theta: ', theta);
+      // console.log('theta: ', theta);
       delta0 = -(Math.abs(theta) + phi);
       if (delta0 < -180) {
         delta0 = 180 - (Math.abs(delta0) - 180);
@@ -753,10 +771,10 @@ function Trace2D(props) {
   };
 
   const getDelta0 = (press_x, release_x, press_y, release_y) => {
-    // console.log(pressY)
-    // console.log(releaseY)
-    // console.log(pressX)
-    // console.log(releaseX)
+    //console.log(pressY)
+    //console.log(releaseY)
+    //console.log(pressX)
+    //console.log(releaseX)
     let blackHoleObj = convertPixelToCartesian(blackHoleX, blackHoleY);
     let theta; // angle to line parallel to x axis
     theta =
@@ -878,19 +896,20 @@ function Trace2D(props) {
   };
 
   const canvasRelease = (e) => {
-    console.log('release');
-    console.log('-------');
-    // console.log(e.nativeEvent.locationX)
-    // console.log(e.nativeEvent.locationY)
+    // console.log('release');
+    // console.log('-------');
+    //console.log(e.nativeEvent.locationX)
+    //console.log(e.nativeEvent.locationY)
 
-    console.log('currentlyDrawing: ', currentlyDrawing);
+    // console.log('currentlyDrawing: ', currentlyDrawing);
 
     if (currentlyDrawing) {
       setInputErrorText('Please wait for current trace to render');
     } else {
       currentlyDrawing = true;
+      showLoadingDiv();
 
-      console.log('INSIDE currentlyDrawing: ', currentlyDrawing);
+      // console.log('INSIDE currentlyDrawing: ', currentlyDrawing);
 
       x_trace = [];
       y_trace = [];
@@ -915,14 +934,14 @@ function Trace2D(props) {
       let ctx = canvas.getContext('2d');
       ctx.fillStyle = 'rgba(255, 255, 255, 1)';
       ctx.fillRect(0, 0, windowWidth, windowHeight);
-      console.log('canvas cleared');
+      // console.log('canvas cleared');
 
       redrawCanvas();
 
       requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
-      // console.log('desired ans: ', ans);
-      // console.log("x_trace: ", x_trace)
-      // console.log("y_trace: ", y_trace)
+      //console.log('desired ans: ', ans);
+      //console.log("x_trace: ", x_trace)
+      //console.log("y_trace: ", y_trace)
 
       // setCurrentlyDrawing(false);
     }
@@ -940,7 +959,7 @@ function Trace2D(props) {
   });
 
   const clickAnalysisBtn = () => {
-    console.log('button click');
+    // console.log('button click');
     set_container_style({
       position: 'absolute',
       paddingTop: 50,
@@ -968,7 +987,7 @@ function Trace2D(props) {
   };
 
   const clickBuildBtn = () => {
-    console.log('button click');
+    // console.log('button click');
     set_container_style({
       position: 'absolute',
       paddingTop: 50,
@@ -1083,14 +1102,46 @@ function Trace2D(props) {
     } else if (delta0Manual > 180 || delta0Manual < -180) {
       setInputErrorText('delta0 range: [-180, 180]');
     } else {
-      console.log('x: ', xManual);
-      console.log('y: ', yManual);
-      console.log('delta0: ', delta0Manual);
+      // console.log('x: ', xManual);
+      // console.log('y: ', yManual);
+      // console.log('delta0: ', delta0Manual);
 
       setInputErrorText('');
 
       requestRayTrace(xManual, yManual, delta0Manual);
     }
+  };
+
+  const showLoadingDiv = () => {
+    setLoadingDivStyle({
+      top: windowHeight,
+      width: 150,
+      // width: windowWidth,
+      display: 'flex',
+      left: windowWidth / 2 - 88,
+      justifyContent: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      alignItems: 'center',
+      // padding: 10,
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
+    });
+  };
+
+  const hideLoadingDiv = () => {
+    setLoadingDivStyle({
+      top: windowHeight,
+      width: 0,
+      // width: windowWidth,
+      display: 'flex',
+      left: windowWidth / 2 - 88,
+      justifyContent: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      alignItems: 'center',
+      // padding: 10,
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
+    });
   };
 
   const [xManual, setXManual] = useState(null);
@@ -1156,12 +1207,27 @@ function Trace2D(props) {
         <Text style={styles.errorText}>{inputErrorText}</Text>
       </View>
 
+      <View style={loadingDivStyle}>
+        <View style={styles.inline}>
+          <Text>Tracing</Text>
+          <Image
+            source={require('../assets/loading.gif')}
+            style={{
+              width: 35,
+              height: 35,
+              resizeMode: 'contain',
+            }}
+          />
+          <Text>Ray</Text>
+        </View>
+      </View>
+
       <View style={container_style}>
         <View style={chartRow}>
           <Plotly
             data={stateGraph.data}
             layout={stateGraph.layout}
-            onLoad={() => console.log('loaded')}
+            // onLoad={() => console.log('loaded')}
           />
         </View>
 
@@ -1219,6 +1285,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255, 0)',
     padding: 10,
     borderRadius: 5,
+  },
+
+  inline: {
+    // marginRight: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   errorText: {
     color: 'red',
