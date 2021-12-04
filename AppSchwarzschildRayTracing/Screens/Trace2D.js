@@ -70,12 +70,7 @@ function Trace2D(props) {
   });
 
   const requestRayTrace = (x, y, delta0) => {
-    // console.log('x0: ', x);
-    // console.log('y0: ', y);
-    // console.log('delta0: ', delta0);
-
     if (delta0 < 0) {
-      // delta0 = - (180 - Math.abs(delta0)) // diffeq
       delta0 = delta0; // integral
     }
 
@@ -100,19 +95,14 @@ function Trace2D(props) {
       )
       .then((response) => {
         if (response.data === null) {
-          // console.log('DATA WAS NULL');
         }
-        // console.log('got data lol');
         let data;
 
-        // console.log('type:', typeof response.data);
         if (typeof response.data === 'object') {
           data = response.data;
         } else {
           data = JSON.parse(response.data);
         }
-
-        // console.log('data: ', data);
 
         if (x >= 0 && y >= 0) {
           // https://stackoverflow.com/questions/35969974/foreach-is-not-a-function-error-with-javascript-array
@@ -168,8 +158,6 @@ function Trace2D(props) {
             }
           }
         });
-
-        // console.log('flag_no_periastron: ', flag_no_periastron);
 
         let trace1 = {
           name: 'Ray Trace',
@@ -239,7 +227,6 @@ function Trace2D(props) {
         } else {
           setStateGraph({
             data: [trace1, trace2, trace3],
-            // data: [trace1, trace3],
             layout: {
               width: windowWidth,
               height: windowHeight - 55,
@@ -273,8 +260,6 @@ function Trace2D(props) {
 
         let max_i = x_trace.length - 1;
         let cur_i = 0;
-
-        // console.log('bfbababa: ', final_x_list);
 
         prev_x = 0;
         prev_y = 0;
@@ -338,8 +323,6 @@ function Trace2D(props) {
           }
         });
 
-        // console.log('target_length: ', target_length);
-
         let colorStop = Math.random();
 
         let color = rainbowStop(colorStop);
@@ -362,7 +345,6 @@ function Trace2D(props) {
             y_end_cart < -18 - buffer ||
             Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 1
           ) {
-            // console.log('doing ---------------------');
             let i = 0;
 
             let ctx = canvas.getContext('2d');
@@ -374,14 +356,7 @@ function Trace2D(props) {
 
               redrawCanvas();
               i = i + 1;
-              //console.log('gaga');
-              // if (i == 19) {
-              //   currentlyDrawing = false;
-              //   setInputErrorText('');
-              // }
             }
-
-            //console.log('stopping trace ------------------------------');
           } else {
             requestAnimationFrame(animateTrace); // queue request for next frame
           }
@@ -389,13 +364,12 @@ function Trace2D(props) {
 
         setTimeout(function () {
           currentlyDrawing = false;
-          // console.log('done ==========================');
           setInputErrorText('');
           hideLoadingDiv();
         }, 8000);
       })
       .catch(function (error) {
-        // console.log(error);
+        console.log(error);
       });
   };
 
@@ -404,11 +378,12 @@ function Trace2D(props) {
   let release_x;
   let releaseY;
 
+  // let
+
   let blackHoleX = windowWidth / 2;
   let blackHoleY = windowHeight / 2;
 
   const drawBlackHole = () => {
-    //console.log("drawing bh")
     let ctx = canvas.getContext('2d');
 
     // black hole
@@ -423,15 +398,12 @@ function Trace2D(props) {
   };
 
   const drawRaySourceAndDelta0 = () => {
-    //console.log("drawing bh")
     let ctx = canvas.getContext('2d');
 
-    // black hole
     ctx.beginPath();
     ctx.arc(press_x, press_Y, 10, 0, 2 * Math.PI);
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.strokeStyle = '#000000';
-    // ctx.lineWidth = 2;
 
     ctx.fill();
     ctx.stroke();
@@ -464,7 +436,6 @@ function Trace2D(props) {
   };
 
   const drawLegend = () => {
-    //console.log("drawing bh")
     let ctx = canvas.getContext('2d');
 
     ctx.beginPath();
@@ -497,84 +468,6 @@ function Trace2D(props) {
       windowHeight / 2 + 20
     );
 
-    ctx.closePath();
-  };
-
-  const drawStuff = () => {
-    // coordinate axis
-    let ctx = canvas2.getContext('2d');
-
-    ctx.beginPath();
-    ctx.strokeStyle = '#000000';
-    ctx.moveTo(0, blackHoleY);
-    ctx.lineTo(windowWidth, blackHoleY);
-    ctx.stroke();
-
-    ctx.moveTo(blackHoleX, 0);
-    ctx.lineTo(blackHoleX, windowHeight);
-    ctx.stroke();
-
-    let i = 0;
-
-    while (i <= 8) {
-      ctx.moveTo((i / 8) * windowWidth, windowHeight / 2 + 5);
-      ctx.lineTo((i / 8) * windowWidth, windowHeight / 2 - 5);
-      ctx.stroke();
-      i += 1;
-    }
-    i = 0;
-    while (i <= 16) {
-      ctx.moveTo(windowWidth / 2 + 5, (i / 16) * windowHeight);
-      ctx.lineTo(windowWidth / 2 - 5, (i / 16) * windowHeight);
-      ctx.stroke();
-      i += 1;
-    }
-
-    // ctx.closePath();
-
-    // draw legend
-
-    // ctx.beginPath();
-
-    ctx.strokeStyle = '#000000';
-    ctx.moveTo((6 / 8) * windowWidth, windowHeight - 100);
-    ctx.lineTo((7 / 8) * windowWidth, windowHeight - 100);
-    ctx.stroke();
-
-    ctx.moveTo((6 / 8) * windowWidth, windowHeight - 105);
-    ctx.lineTo((6 / 8) * windowWidth, windowHeight - 95);
-    ctx.stroke();
-
-    ctx.moveTo((7 / 8) * windowWidth, windowHeight - 105);
-    ctx.lineTo((7 / 8) * windowWidth, windowHeight - 95);
-    ctx.stroke();
-
-    ctx.strokeStyle = 'black';
-
-    ctx.fillText(
-      '2 Gravitational Units [R_G]',
-      (11 / 16) * windowWidth - 5,
-      windowHeight - 80
-    );
-
-    ctx.fillText('y-axis [R_G]', (5 / 16) * windowWidth, windowHeight - 10);
-    ctx.fillText(
-      'x-axis [R_G]',
-      (13 / 16) * windowWidth,
-      windowHeight / 2 + 20
-    );
-
-    // ctx.closePath();
-
-    // draw black hole
-
-    // ctx.beginPath();
-    ctx.arc(blackHoleX, blackHoleY, 25, 0, 2 * Math.PI);
-    ctx.fillStyle = 'rgb(0,0,0)';
-    ctx.strokeStyle = '#000000';
-
-    ctx.fill();
-    ctx.stroke();
     ctx.closePath();
   };
 
@@ -611,7 +504,6 @@ function Trace2D(props) {
   };
 
   const drawBg2 = () => {
-    //console.log()
     let ctx = canvas2.getContext('2d');
 
     const image = new CanvasImage(canvas2);
@@ -620,8 +512,6 @@ function Trace2D(props) {
       require('../assets/trans-2D-cart-axis.png')
     );
     image.src = asset.uri;
-
-    //console.log('loaded it woo');
 
     ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
   };
@@ -636,77 +526,35 @@ function Trace2D(props) {
     );
     image.src = asset.uri;
 
-    //console.log('loaded it woo');
-
     ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
   };
 
   const redrawCanvas = () => {
-    // drawBg();
-
-    //console.log("drew image")
-
     drawRaySourceAndDelta0();
   };
 
   const handleCanvas = (can) => {
     if (can !== null) {
-      // console.log('not null');
-      // console.log('HANDING CANVAS ==================================');
       if (canvas !== can) {
         canvas = can;
         can.height = windowHeight;
         can.width = windowWidth;
-        // console.log('DIFF ==================================');
       }
-
-      // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
-      // if (randomFlag) {
-      //   // drawCoordinateAxes();
-      //   // drawLegend();
-      //   // drawBlackHole();
-      //   drawStuff();
-      //   randomFlag = false;
-      // }
-
-      //console.log('about to redraw canvas');
-
-      // redrawCanvas();
     }
   };
 
   const handleCanvas2 = (can) => {
     if (can !== null) {
-      // console.log('not null');
-      // console.log('222222222 ==================================');
-
       if (canvas2 !== can) {
-        // console.log('JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ');
         canvas2 = can;
         can.height = windowHeight;
         can.width = windowWidth;
-      } else {
-        // return;
-        // console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
       }
 
       let ctx = can.getContext('2d');
-      // ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      // ctx.fillRect(0, 0, windowWidth, windowHeight);
-
-      // drawBg2();
-
       if (!(can instanceof Canvas)) {
         return;
       }
-
-      // let ctx = canvas2.getContext('2d');
-
-      // drawCoordinateAxes();
-      // drawLegend();
-      // drawBlackHole();
-
-      // drawStuff();
 
       const image = new CanvasImage(can);
 
@@ -715,27 +563,15 @@ function Trace2D(props) {
       );
       image.src = asset.uri;
 
-      //console.log('loaded it woo');
-
       ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
-
-      // this is a temporary fix, for some reason drawing image on canvas is really delayed so this makes sure the user sees something initially. The perfect over lap of the pictures and the vcanvas drawing makes this possible.
-      // if (randomFlag) {
-      //   // drawCoordinateAxes();
-      //   // drawLegend();
-      //   // drawBlackHole();
-      //   drawStuff();
-      //   randomFlag = false;
-      // }
-
-      //console.log('about to redraw canvas');
-
-      // redrawCanvas();
     }
+
+    drawCoordinateAxes();
+    drawLegend();
+    drawBlackHole();
   };
 
   const canvasPress = (e) => {
-    // console.log('CANVAS PRESS IN');
     // https://stackoverflow.com/questions/36862765/react-native-get-the-coordinates-of-my-touch-event
 
     press_x = e.nativeEvent.locationX;
@@ -761,7 +597,6 @@ function Trace2D(props) {
     } else if (releaseY < pressY && releaseX < pressX) {
       // down left
       theta = -(180 - theta);
-      // console.log('theta: ', theta);
       delta0 = -(Math.abs(theta) + phi);
       if (delta0 < -180) {
         delta0 = 180 - (Math.abs(delta0) - 180);
@@ -771,10 +606,6 @@ function Trace2D(props) {
   };
 
   const getDelta0 = (press_x, release_x, press_y, release_y) => {
-    //console.log(pressY)
-    //console.log(releaseY)
-    //console.log(pressX)
-    //console.log(releaseX)
     let blackHoleObj = convertPixelToCartesian(blackHoleX, blackHoleY);
     let theta; // angle to line parallel to x axis
     theta =
@@ -896,20 +727,11 @@ function Trace2D(props) {
   };
 
   const canvasRelease = (e) => {
-    // console.log('release');
-    // console.log('-------');
-    //console.log(e.nativeEvent.locationX)
-    //console.log(e.nativeEvent.locationY)
-
-    // console.log('currentlyDrawing: ', currentlyDrawing);
-
     if (currentlyDrawing) {
       setInputErrorText('Please wait for current trace to render');
     } else {
       currentlyDrawing = true;
       showLoadingDiv();
-
-      // console.log('INSIDE currentlyDrawing: ', currentlyDrawing);
 
       x_trace = [];
       y_trace = [];
@@ -934,16 +756,10 @@ function Trace2D(props) {
       let ctx = canvas.getContext('2d');
       ctx.fillStyle = 'rgba(255, 255, 255, 1)';
       ctx.fillRect(0, 0, windowWidth, windowHeight);
-      // console.log('canvas cleared');
 
       redrawCanvas();
 
       requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
-      //console.log('desired ans: ', ans);
-      //console.log("x_trace: ", x_trace)
-      //console.log("y_trace: ", y_trace)
-
-      // setCurrentlyDrawing(false);
     }
   };
 
@@ -959,7 +775,6 @@ function Trace2D(props) {
   });
 
   const clickAnalysisBtn = () => {
-    // console.log('button click');
     set_container_style({
       position: 'absolute',
       paddingTop: 50,
@@ -987,7 +802,6 @@ function Trace2D(props) {
   };
 
   const clickBuildBtn = () => {
-    // console.log('button click');
     set_container_style({
       position: 'absolute',
       paddingTop: 50,
@@ -1102,10 +916,6 @@ function Trace2D(props) {
     } else if (delta0Manual > 180 || delta0Manual < -180) {
       setInputErrorText('delta0 range: [-180, 180]');
     } else {
-      // console.log('x: ', xManual);
-      // console.log('y: ', yManual);
-      // console.log('delta0: ', delta0Manual);
-
       setInputErrorText('');
 
       requestRayTrace(xManual, yManual, delta0Manual);
@@ -1116,13 +926,11 @@ function Trace2D(props) {
     setLoadingDivStyle({
       top: windowHeight,
       width: 150,
-      // width: windowWidth,
       display: 'flex',
       left: windowWidth / 2 - 88,
       justifyContent: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       alignItems: 'center',
-      // padding: 10,
       borderTopLeftRadius: 5,
       borderTopRightRadius: 5,
     });
@@ -1132,13 +940,11 @@ function Trace2D(props) {
     setLoadingDivStyle({
       top: windowHeight,
       width: 0,
-      // width: windowWidth,
       display: 'flex',
       left: windowWidth / 2 - 88,
       justifyContent: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       alignItems: 'center',
-      // padding: 10,
       borderTopLeftRadius: 5,
       borderTopRightRadius: 5,
     });
@@ -1155,7 +961,6 @@ function Trace2D(props) {
       <View style={styles.canvasDiv}>
         <TouchableOpacity onPressIn={canvasPress} onPressOut={canvasRelease}>
           <Canvas ref={handleCanvas} />
-          {/*<Text>Hi there</Text>*/}
           <Canvas ref={handleCanvas2} style={styles.thingDiv} />
         </TouchableOpacity>
 
@@ -1274,21 +1079,17 @@ const styles = StyleSheet.create({
   thingDiv: {
     position: 'absolute',
     top: 0,
-    // zIndex: -10,
   },
   inputErrorTextDiv: {
     position: 'absolute',
     top: 30,
-    left: '5%',
-    // width: (2 * windowWidth) / 5,
-    width: windowWidth,
-    backgroundColor: 'rgba(255,255,255, 0)',
+    left: 10,
+    width: windowWidth - 20,
     padding: 10,
     borderRadius: 5,
   },
 
   inline: {
-    // marginRight: 25,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
