@@ -51,12 +51,14 @@ function Landing() {
     top: windowHeight - 100,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   });
 
   const [checkbox3DContainer, setCheckbox3DContainer] = useState({
     top: windowHeight - 100,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   });
 
   const [btn1Container, setBtn1Container] = useState({
@@ -73,7 +75,7 @@ function Landing() {
     left: windowWidth / 2 - 200 / 2,
   });
 
-  const [btnBackContainer, setBtnBackContainer] = useState({
+  const [btnHomeContainer, setBtnHomeContainer] = useState({
     position: 'absolute',
     width: 0,
     top: windowHeight - 50,
@@ -148,12 +150,16 @@ function Landing() {
       top: windowHeight - 100,
       alignItems: 'center',
       justifyContent: 'center',
+
+      flexDirection: 'row',
     });
 
     setCheckbox3DContainer({
       alignItems: 'center',
       justifyContent: 'center',
       top: windowHeight - 100,
+
+      flexDirection: 'row',
     });
   };
 
@@ -207,7 +213,7 @@ function Landing() {
     console.log('credits btn clicked');
     setCreditsVisibility(true);
     hideAllButtons();
-    setBtnBackContainer({
+    setBtnHomeContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
@@ -219,7 +225,7 @@ function Landing() {
     console.log('guide btn clicked');
     setGuideVisibility(true);
     hideAllButtons();
-    setBtnBackContainer({
+    setBtnHomeContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
@@ -231,7 +237,7 @@ function Landing() {
     console.log('settings btn clicked');
     setGuideVisibility(true);
     hideAllButtons();
-    setBtnBackContainer({
+    setBtnHomeContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
@@ -246,7 +252,7 @@ function Landing() {
       // setTrace2DVisibility(true)
       setTrace2DVisibility(true);
       hideAllButtons();
-      setBtnBackContainer({
+      setBtnHomeContainer({
         position: 'absolute',
         width: 100,
         top: windowHeight - 50,
@@ -256,7 +262,7 @@ function Landing() {
       // setTrace2DVisibility(true)
       setTrace2DInstrucVisibility(true);
       hideAllButtons();
-      setBtnBackContainer({
+      setBtnHomeContainer({
         position: 'absolute',
         width: 100,
         top: windowHeight - 50,
@@ -278,7 +284,7 @@ function Landing() {
     if (instructions3DHidden) {
       setTrace3DVisibility(true);
       hideAllButtons();
-      setBtnBackContainer({
+      setBtnHomeContainer({
         position: 'absolute',
         width: 100,
         top: windowHeight - 50,
@@ -287,7 +293,7 @@ function Landing() {
     } else {
       setTrace3DInstrucVisibility(true);
       hideAllButtons();
-      setBtnBackContainer({
+      setBtnHomeContainer({
         position: 'absolute',
         width: 100,
         top: windowHeight - 50,
@@ -312,7 +318,7 @@ function Landing() {
     setGuideVisibility(false);
     setTrace2DInstrucVisibility(false);
     setTrace3DInstrucVisibility(false);
-    setBtnBackContainer({
+    setBtnHomeContainer({
       position: 'absolute',
       width: 0,
       top: windowHeight - 50,
@@ -338,7 +344,7 @@ function Landing() {
     console.log('go 2D clicked');
     setTrace2DVisibility(true);
     setTrace2DInstrucVisibility(false);
-    setBtnBackContainer({
+    setBtnHomeContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
@@ -357,7 +363,7 @@ function Landing() {
     console.log('go 3D clicked');
     setTrace3DVisibility(true);
     setTrace3DInstrucVisibility(false);
-    setBtnBackContainer({
+    setBtnHomeContainer({
       position: 'absolute',
       width: 100,
       top: windowHeight - 50,
@@ -411,8 +417,8 @@ function Landing() {
         <Button onPress={creditsBtnClick} title="Credits" color="black" />
       </View>
 
-      <View style={btnBackContainer}>
-        <Button onPress={backBtnClick} title="Back" color="purple" />
+      <View style={btnHomeContainer}>
+        <Button onPress={backBtnClick} title="Home" color="purple" />
       </View>
 
       <View style={btnGo2DContainer}>

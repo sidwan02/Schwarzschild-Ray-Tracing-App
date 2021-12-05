@@ -72,15 +72,15 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   h1: {
-    fontSize: 50,
+    fontSize: 30,
     textDecorationLine: 'underline',
   },
   h2: {
     fontStyle: 'italic',
-    fontSize: 40,
+    fontSize: 25,
   },
   h3: {
-    fontSize: 25,
+    fontSize: 20,
   },
 });
 

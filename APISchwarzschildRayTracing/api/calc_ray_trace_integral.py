@@ -543,7 +543,7 @@ def get_next_rr(r_acc, theta_acc, condition, maximum_r_change):
 
         delta_rr = min(delta_rr, 1)
 
-        print("delta_rr", delta_rr)
+        # print("delta_rr", delta_rr)
 
         if condition:
             rr = r_acc[-1] + delta_rr
@@ -622,6 +622,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
         #     if r_acc[-1] <= rstop:
         #         recursionCompleted = True
 
+        print("cur r: ", r_acc[-1])
         if r_acc[-1] >= rstop:
             recursionCompleted = True
 
@@ -748,7 +749,8 @@ def schwarzschild_get_ray(r0, theta0, delta0, rstop, npoints):
     D = r0 * np.abs(np.sin(delta0)) / np.sqrt(1 - 2 / r0)
     D_minus_Dcrit = D - Dcrit
 
-    # print("D: ", D)
+    print("D: ", D)
+    print("D_minus_Dcrit: ", D_minus_Dcrit)
 
     if (np.abs(D_minus_Dcrit) < abstol):
         print("equal")
@@ -826,7 +828,7 @@ def get_rstop(M, r0, delta0):
         if (2 * M < r0 < 3 * M) & (delta0 < 2 * np.pi) & (np.sin(delta0) < Dcrit * M / B):
             escape_to_inf = True
             print("case 1")
-        elif (r0 == 3 * M) & (delta0 < np.pi):
+        elif (r0 == 3 * M) & (delta0 < np.pi / 2):
             escape_to_inf = True
             print("case 2")
         elif (r0 > 3 * M) & ((delta0 <= np.pi / 2) or ((delta0 > np.pi / 2) & (np.sin(delta0) > Dcrit * M / B))):
@@ -847,10 +849,12 @@ def get_rstop(M, r0, delta0):
             # rstop = 2
             rstop = 1
 
+    # rstop = 1
     # print("delta0: ", delta0)
     if (np.pi / 2 < np.abs(delta0) < np.pi) and (rstop != 1):
-        # print("making rstop negative")
+        print("making rstop negative")
         rstop = -rstop
+        # rstop = rstop
 
     return rstop
 
@@ -926,16 +930,16 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 70, 3)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(21.95449840010015, 0, 8.873346460603003)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 0)
 
 # r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
 # x = 3.1 * np.cos(np.deg2rad(45))
 # y = 3.1 * np.sin(np.deg2rad(45))
 # delta0 = 172.34
 #
-x = 10
-y = 10
-delta0 = 0
+# x = 10
+# y = 10
+# delta0 = 0
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.16)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 30)

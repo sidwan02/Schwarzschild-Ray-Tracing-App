@@ -63,13 +63,21 @@ function Trace2D(props) {
   let periastron = null;
 
   const [chartRow, setChartRow] = useState({
+    // paddingTop: 50,
+    // position: 'absolute',
+    // height: 0,
+    // width: 0,
     paddingTop: 50,
     position: 'absolute',
-    height: 0,
-    width: 0,
+    height: windowHeight + 10,
+    width: windowWidth,
   });
 
   const requestRayTrace = (x, y, delta0) => {
+    setInputErrorText('');
+    currentlyDrawing = true;
+    showLoadingDiv();
+
     if (delta0 < 0) {
       delta0 = delta0; // integral
     }
@@ -730,9 +738,6 @@ function Trace2D(props) {
     if (currentlyDrawing) {
       setInputErrorText('Please wait for current trace to render');
     } else {
-      currentlyDrawing = true;
-      showLoadingDiv();
-
       x_trace = [];
       y_trace = [];
 
@@ -757,24 +762,25 @@ function Trace2D(props) {
       ctx.fillStyle = 'rgba(255, 255, 255, 1)';
       ctx.fillRect(0, 0, windowWidth, windowHeight);
 
-      redrawCanvas();
-
-      requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
+      if (Math.sqrt(pressCoorObj.cartX ** 2 + pressCoorObj.cartY ** 2) < 3) {
+        setInputErrorText(
+          'Light source must be outside the event horizon (r0 >= 3)'
+        );
+      } else {
+        redrawCanvas();
+        requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
+      }
     }
   };
 
   const [container_style, set_container_style] = useState({
-    position: 'absolute',
-    zIndex: 1,
-    paddingTop: 50,
     width: '0%',
     height: '0%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    top: windowHeight,
   });
 
   const clickAnalysisBtn = () => {
+    console.log('setting container style');
     set_container_style({
       position: 'absolute',
       paddingTop: 50,
@@ -803,13 +809,9 @@ function Trace2D(props) {
 
   const clickBuildBtn = () => {
     set_container_style({
-      position: 'absolute',
-      paddingTop: 50,
       width: '0%',
       height: '0%',
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+      top: windowHeight,
     });
 
     setAnalysisBtnDiv({
@@ -818,12 +820,12 @@ function Trace2D(props) {
       right: 10,
     });
 
-    setChartRow({
-      paddingTop: 50,
-      position: 'absolute',
-      height: 0,
-      width: 0,
-    });
+    // setChartRow({
+    //   paddingTop: 50,
+    //   position: 'absolute',
+    //   height: 0,
+    //   width: 0,
+    // });
   };
 
   let bounds1 = convertPixelToCartesian(0, 0);
@@ -1068,6 +1070,7 @@ const styles = StyleSheet.create({
   },
   buildBtnDiv: {
     position: 'absolute',
+    // zIndex: -100,
     top: windowHeight - 50,
     right: 10,
   },
