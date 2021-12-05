@@ -32,6 +32,8 @@ function Trace2D(props) {
     return <View></View>;
   }
 
+  let manualTrace = false;
+
   let x_trace = [];
   let y_trace = [];
 
@@ -74,6 +76,10 @@ function Trace2D(props) {
   });
 
   const requestRayTrace = (x, y, delta0) => {
+    let ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+    ctx.fillRect(0, 0, windowWidth, windowHeight);
+
     setInputErrorText('');
     currentlyDrawing = true;
     showLoadingDiv();
@@ -266,6 +272,29 @@ function Trace2D(props) {
           });
         }
 
+        console.log('manualTrace: ', manualTrace);
+        if (manualTrace) {
+          let delta_x = x_trace[1] - x_trace[0];
+          let delta_y = y_trace[1] - y_trace[0];
+
+          while (Math.pow(delta_x, 2) + Math.pow(delta_y, 2) < 9) {
+            delta_x += delta_x;
+            delta_y += delta_y;
+          }
+
+          const ans = convertCartesianToPixel(
+            x_trace[0] + delta_x,
+            y_trace[0] + delta_y
+          );
+
+          release_x = ans.pixelX;
+          releaseY = ans.pixelY;
+
+          const ans2 = convertCartesianToPixel(xManual, yManual);
+          press_x = ans2.pixelX;
+          press_Y = ans2.pixelY;
+        }
+
         let max_i = x_trace.length - 1;
         let cur_i = 0;
 
@@ -407,6 +436,12 @@ function Trace2D(props) {
 
   const drawRaySourceAndDelta0 = () => {
     let ctx = canvas.getContext('2d');
+
+    // console.log('press_x:', press_x);
+    // console.log('press_Y:', press_Y);
+
+    // console.log('release_x:', release_x);
+    // console.log('releaseY:', releaseY);
 
     ctx.beginPath();
     ctx.arc(press_x, press_Y, 10, 0, 2 * Math.PI);
@@ -767,7 +802,9 @@ function Trace2D(props) {
           'Light source must be outside the event horizon (r0 >= 3)'
         );
       } else {
-        redrawCanvas();
+        // currentlyDrawing = true;
+        manualTrace = false;
+        // redrawCanvas();
         requestRayTrace(pressCoorObj.cartX, pressCoorObj.cartY, delta0);
       }
     }
@@ -917,9 +954,15 @@ function Trace2D(props) {
       );
     } else if (delta0Manual > 180 || delta0Manual < -180) {
       setInputErrorText('delta0 range: [-180, 180]');
+    } else if (currentlyDrawing) {
+      setInputErrorText('Please wait for current trace to render');
     } else {
       setInputErrorText('');
+      currentlyDrawing = true;
 
+      manualTrace = true;
+
+      // drawRaySourceAndDelta0();
       requestRayTrace(xManual, yManual, delta0Manual);
     }
   };
