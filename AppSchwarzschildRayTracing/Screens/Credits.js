@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   h1: {
-    fontSize: 30,
+    fontSize: 40,
     textDecorationLine: 'underline',
   },
   h2: {
     fontStyle: 'italic',
-    fontSize: 25,
+    fontSize: 30,
   },
   h3: {
     fontSize: 20,

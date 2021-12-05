@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { Dimensions, View, Text, Button, CheckBox } from 'react-native';
+import {
+  Dimensions,
+  View,
+  Text,
+  Button,
+  CheckBox,
+  Linking,
+  StyleSheet,
+} from 'react-native';
 import Trace2D from './Trace2D';
 import Trace3D from './Trace3D';
 import Credits from './Credits';
 import Guide from './Guide';
+// import Feedback from './Feedback';
 import Trace3DInstructions from './Trace3DInstructions';
 import Trace2DInstructions from './Trace2DInstructions';
 
@@ -36,25 +45,32 @@ function Landing() {
   const [creditsBtnContainer, setCreditsBtnContainer] = useState({
     position: 'absolute',
     width: 100,
-    top: windowHeight - 150,
+    top: windowHeight - 185,
     left: windowWidth / 2 - 100 / 2,
   });
 
   const [guideBtnContainer, setGuideBtnContainer] = useState({
     position: 'absolute',
     width: 100,
-    top: windowHeight - 200,
+    top: windowHeight - 250,
     left: windowWidth / 2 - 100 / 2,
   });
 
   const [checkbox2DContainer, setCheckbox2DContainer] = useState({
-    top: windowHeight - 100,
+    top: windowHeight - 120,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   });
 
   const [checkbox3DContainer, setCheckbox3DContainer] = useState({
+    top: windowHeight - 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  });
+
+  const [feedbackDiv, setFeedbackDiv] = useState({
     top: windowHeight - 100,
     alignItems: 'center',
     justifyContent: 'center',
@@ -64,14 +80,14 @@ function Landing() {
   const [btn1Container, setBtn1Container] = useState({
     position: 'absolute',
     width: 200,
-    top: (2 * windowHeight) / 5,
+    top: (2.2 * windowHeight) / 5,
     left: windowWidth / 2 - 200 / 2,
   });
 
   const [btn2Container, setBtn2Container] = useState({
     position: 'absolute',
     width: 200,
-    top: (3 * windowHeight) / 5,
+    top: (2.8 * windowHeight) / 5,
     left: windowWidth / 2 - 200 / 2,
   });
 
@@ -110,28 +126,28 @@ function Landing() {
     setBtn1Container({
       position: 'absolute',
       width: 200,
-      top: (2 * windowHeight) / 5,
+      top: (2.2 * windowHeight) / 5,
       left: windowWidth / 2 - 200 / 2,
     });
 
     setBtn2Container({
       position: 'absolute',
       width: 200,
-      top: (3 * windowHeight) / 5,
+      top: (2.8 * windowHeight) / 5,
       left: windowWidth / 2 - 200 / 2,
     });
 
     setCreditsBtnContainer({
       position: 'absolute',
       width: 100,
-      top: windowHeight - 150,
+      top: windowHeight - 185,
       left: windowWidth / 2 - 100 / 2,
     });
 
     setGuideBtnContainer({
       position: 'absolute',
       width: 100,
-      top: windowHeight - 200,
+      top: windowHeight - 250,
       left: windowWidth / 2 - 100 / 2,
     });
 
@@ -146,8 +162,15 @@ function Landing() {
       justifyContent: 'center',
     });
 
-    setCheckbox2DContainer({
+    setFeedbackDiv({
       top: windowHeight - 100,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+    });
+
+    setCheckbox2DContainer({
+      top: windowHeight - 120,
       alignItems: 'center',
       justifyContent: 'center',
 
@@ -157,7 +180,7 @@ function Landing() {
     setCheckbox3DContainer({
       alignItems: 'center',
       justifyContent: 'center',
-      top: windowHeight - 100,
+      top: windowHeight - 120,
 
       flexDirection: 'row',
     });
@@ -189,6 +212,12 @@ function Landing() {
     });
 
     setTitleContainer({
+      position: 'absolute',
+      width: '0%',
+      height: '0%',
+    });
+
+    setFeedbackDiv({
       position: 'absolute',
       width: '0%',
       height: '0%',
@@ -388,13 +417,19 @@ function Landing() {
 
       <Guide visible={guideVisibility} />
       <Credits visible={creditsVisibility} />
+
       <Trace2D visible={trace2DVisibility} />
       <Trace3D visible={trace3DVisibility} />
       <Trace2DInstructions visible={trace2DInstrucVisibility} />
       <Trace3DInstructions visible={trace3DInstrucVisibility} />
 
       <View style={btn1Container}>
-        <Button onPress={trace2DBtnClick} title="2D Trace" color="green" />
+        <Button
+          style={styles.traceBtn}
+          onPress={trace2DBtnClick}
+          title="2D Trace"
+          color="green"
+        />
       </View>
 
       <View style={btn2Container}>
@@ -444,6 +479,19 @@ function Landing() {
         />
         <Text>Skip 3D Trace Instructions</Text>
       </View>
+
+      <View style={feedbackDiv}>
+        <Text
+          style={styles.underline}
+          onPress={() =>
+            Linking.openURL(
+              'https://docs.google.com/forms/d/e/1FAIpQLSc1SUJKyMbDaHpTk3gGEiFAZ5sL2G_-4e5VlNKJi6AfwohCHg/viewform?usp=sf_link'
+            )
+          }
+        >
+          Give Feedback!
+        </Text>
+      </View>
     </View>
   );
 }
@@ -451,3 +499,9 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default Landing;
+
+const styles = StyleSheet.create({
+  underline: {
+    textDecorationLine: 'underline',
+  },
+});
