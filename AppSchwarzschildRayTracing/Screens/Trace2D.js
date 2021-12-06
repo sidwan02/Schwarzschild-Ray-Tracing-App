@@ -38,17 +38,17 @@ function Trace2D(props) {
   let y_trace = [];
 
   const [loadingDivStyle, setLoadingDivStyle] = useState({
-    top: windowHeight,
+    position: 'absolute',
+    top: windowHeight * 2,
+    // zIndex: -10,
     width: 0,
-    // width: windowWidth,
     display: 'flex',
-    left: windowWidth / 2 - 88,
+    // left: windowWidth / 2 - 88,
+    left: 10,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     alignItems: 'center',
-    // padding: 10,
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+    borderRadius: 5,
   });
 
   const [inputErrorText, setInputErrorText] = useState('');
@@ -421,7 +421,7 @@ function Trace2D(props) {
   let blackHoleY = windowHeight / 2;
 
   const drawBlackHole = () => {
-    let ctx = canvas.getContext('2d');
+    let ctx = canvas2.getContext('2d');
 
     // black hole
     ctx.beginPath();
@@ -479,7 +479,7 @@ function Trace2D(props) {
   };
 
   const drawLegend = () => {
-    let ctx = canvas.getContext('2d');
+    let ctx = canvas2.getContext('2d');
 
     ctx.beginPath();
 
@@ -515,7 +515,7 @@ function Trace2D(props) {
   };
 
   const drawCoordinateAxes = () => {
-    let ctx = canvas.getContext('2d');
+    let ctx = canvas2.getContext('2d');
 
     ctx.beginPath();
     ctx.strokeStyle = '#000000';
@@ -590,28 +590,28 @@ function Trace2D(props) {
     if (can !== null) {
       if (canvas2 !== can) {
         canvas2 = can;
-        can.height = windowHeight;
+        can.height = windowHeight + 100;
         can.width = windowWidth;
       }
 
-      let ctx = can.getContext('2d');
-      if (!(can instanceof Canvas)) {
-        return;
-      }
+      // let ctx = can.getContext('2d');
+      // if (!(can instanceof Canvas)) {
+      //   return;
+      // }
 
-      const image = new CanvasImage(can);
+      // const image = new CanvasImage(can);
 
-      const asset = Expo.Asset.fromModule(
-        require('../assets/trans-2D-cart-axis.png')
-      );
-      image.src = asset.uri;
+      // const asset = Expo.Asset.fromModule(
+      //   require('../assets/trans-2D-cart-axis.png')
+      // );
+      // image.src = asset.uri;
 
-      ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+      // ctx.drawImage(image, 0, 0, windowWidth, windowHeight);
+
+      drawCoordinateAxes();
+      drawLegend();
+      drawBlackHole();
     }
-
-    drawCoordinateAxes();
-    drawLegend();
-    drawBlackHole();
   };
 
   const canvasPress = (e) => {
@@ -969,29 +969,33 @@ function Trace2D(props) {
 
   const showLoadingDiv = () => {
     setLoadingDivStyle({
-      top: windowHeight,
+      position: 'absolute',
+      top: windowHeight - 100,
+      // zIndex: -10,
       width: 150,
       display: 'flex',
-      left: windowWidth / 2 - 88,
+      // left: windowWidth / 2 - 88,
+      left: 10,
       justifyContent: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       alignItems: 'center',
-      borderTopLeftRadius: 5,
-      borderTopRightRadius: 5,
+      borderRadius: 5,
     });
   };
 
   const hideLoadingDiv = () => {
     setLoadingDivStyle({
-      top: windowHeight,
+      position: 'absolute',
+      top: windowHeight * 2,
+      // zIndex: -10,
       width: 0,
       display: 'flex',
-      left: windowWidth / 2 - 88,
+      // left: windowWidth / 2 - 88,
+      left: 10,
       justifyContent: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       alignItems: 'center',
-      borderTopLeftRadius: 5,
-      borderTopRightRadius: 5,
+      borderRadius: 5,
     });
   };
 
@@ -1120,10 +1124,12 @@ const styles = StyleSheet.create({
   canvasDiv: {
     // display: 'flex',
     position: 'absolute',
+    // height: windowHeight,
     top: 0,
   },
   thingDiv: {
     position: 'absolute',
+    // height: windowHeight,
     top: 0,
   },
   inputErrorTextDiv: {
