@@ -270,6 +270,11 @@ function Trace3D(props) {
                 },
               },
             },
+            // https://community.plotly.com/t/is-it-possible-to-hide-the-floating-toolbar/4911/7
+            // https://plotly.com/javascript/configuration-options/
+            config: {
+              modeBarButtonsToRemove: ['toImage'],
+            },
           });
         } else {
           setStateGraph({
@@ -332,6 +337,9 @@ function Trace3D(props) {
                   },
                 },
               },
+            },
+            config: {
+              modeBarButtonsToRemove: ['toImage'],
             },
           });
         }
@@ -437,6 +445,9 @@ function Trace3D(props) {
           },
         },
       },
+    },
+    config: {
+      modeBarButtonsToRemove: ['toImage'],
     },
   });
 
@@ -726,6 +737,7 @@ function Trace3D(props) {
             data={stateGraph.data}
             layout={stateGraph.layout}
             enableFullPlotly
+            config={stateGraph.config}
           />
         </View>
       </View>

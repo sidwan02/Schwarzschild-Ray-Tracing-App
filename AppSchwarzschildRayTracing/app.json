@@ -10,7 +10,7 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.schwarzschild.ray.tracing",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF"

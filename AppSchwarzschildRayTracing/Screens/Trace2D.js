@@ -237,6 +237,9 @@ function Trace2D(props) {
                 x: 0.01,
               },
             },
+            config: {
+              modeBarButtonsToRemove: ['toImage'],
+            },
           });
         } else {
           setStateGraph({
@@ -268,6 +271,9 @@ function Trace2D(props) {
                 xanchor: 'left',
                 x: 0.01,
               },
+            },
+            config: {
+              modeBarButtonsToRemove: ['toImage'],
             },
           });
         }
@@ -929,6 +935,9 @@ function Trace2D(props) {
         x: 0.01,
       },
     },
+    config: {
+      modeBarButtonsToRemove: ['toImage'],
+    },
   });
 
   const clickManualEntryBtn = () => {
@@ -1081,6 +1090,7 @@ function Trace2D(props) {
           <Plotly
             data={stateGraph.data}
             layout={stateGraph.layout}
+            config={stateGraph.config}
             // onLoad={() => console.log('loaded')}
           />
         </View>
