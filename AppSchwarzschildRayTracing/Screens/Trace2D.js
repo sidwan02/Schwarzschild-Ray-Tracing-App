@@ -37,6 +37,9 @@ function Trace2D(props) {
   let x_trace = [];
   let y_trace = [];
 
+  // const [currentlyDrawingUseState, setCurrentlyDrawingUseState] =
+  useState('false');
+
   const [loadingDivStyle, setLoadingDivStyle] = useState({
     position: 'absolute',
     top: windowHeight * 2,
@@ -82,6 +85,7 @@ function Trace2D(props) {
 
     setInputErrorText('');
     currentlyDrawing = true;
+    // setCurrentlyDrawingUseState('true');
     showLoadingDiv();
 
     if (delta0 < 0) {
@@ -205,6 +209,10 @@ function Trace2D(props) {
         if (typeof delta0 === 'string') {
           delta0 = parseInt(delta0);
         }
+
+        // console.log('googoo');
+
+        // setCurrentlyDrawingUseState('false');
 
         if (flag_no_periastron) {
           setStateGraph({
@@ -380,19 +388,19 @@ function Trace2D(props) {
           }
           cur_i++;
 
-          let buffer = 2; //2
+          let buffer = 0; //2
           if (
             x_end_cart > 10 + buffer ||
             x_end_cart < -10 - buffer ||
             y_end_cart > 18 + buffer ||
             y_end_cart < -18 - buffer ||
-            Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 1
+            Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 2
           ) {
             let i = 0;
 
             let ctx = canvas.getContext('2d');
 
-            while (i < 20) {
+            while (i < 30) {
               ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
 
               ctx.fillRect(0, 0, windowWidth, windowHeight);
@@ -405,11 +413,17 @@ function Trace2D(props) {
           }
         });
 
+        // setCurrentlyDrawingUseState('true');
+
         setTimeout(function () {
           currentlyDrawing = false;
+          // setCurrentlyDrawingUseState(false);
           setInputErrorText('');
           hideLoadingDiv();
-        }, 8000);
+        }, 5000);
+
+        // func2();
+        // interval;
       })
       .catch(function (error) {
         console.log(error);
@@ -771,6 +785,8 @@ function Trace2D(props) {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.fillRect(0, 0, windowWidth, windowHeight);
 
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     ctx.closePath();
     redrawCanvas();
   };
@@ -1026,6 +1042,7 @@ function Trace2D(props) {
           <Button
             onPress={clickAnalysisBtn}
             title={'Trace Analysis'}
+            // title={currentlyDrawingUseState}
             color={'#00a3ff'}
           />
         </View>
@@ -1103,6 +1120,7 @@ function Trace2D(props) {
           />
         </View>
       </View>
+      {/* <Text>{currentlyDrawingUseState}</Text> */}
     </View>
   );
 }
