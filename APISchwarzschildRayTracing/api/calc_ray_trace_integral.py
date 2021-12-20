@@ -207,21 +207,52 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                     y_prev = r_acc[-1] * np.sin(theta_acc[-1])
                     
                     rr = r_acc[-1]
-                    
+                    delta = 1e-5
                     while True:
+                        # if step_dist is None:
+                        #     pass
+                        # elif step_dist > maximum_r_change:
+                        #     if condition:
+                        #         rr += 1e-5
+                        #     else:
+                        #         rr -= 1e-5
+                        #     break
+                        # else: 
+                        #     if condition:
+                        #         rr += 1e-5
+                        #     else:
+                        #         rr -= 1e-5
                         if step_dist is None:
                             pass
+                        elif abs(step_dist - maximum_r_change) < 1e-4:
+                            break
+                        elif step_dist < maximum_r_change:
+                            if condition:
+                                rr += delta
+                            else:
+                                rr -= delta
+                            
                         elif step_dist > maximum_r_change:
                             if condition:
-                                rr += 1e-5
+                                rr -= delta
                             else:
-                                rr -= 1e-5
-                            break
+                                rr += delta
+                            
+                            # do the while loop but using a smaller delta increment
+                            
+                            delta /= 2
+                            
+                            if condition:
+                                rr += delta
+                            else:
+                                rr -= delta
+                            
                         else: 
                             if condition:
-                                rr += 1e-5
+                                rr += delta
                             else:
-                                rr -= 1e-5
+                                rr -= delta
+                            
                             
                         theta = get_theta(rr)
                         
@@ -317,20 +348,52 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         
                         rr = r_acc[-1]
                         
+                        delta = 1e-5
                         while True:
+                            # if step_dist is None:
+                            #     pass
+                            # elif step_dist > maximum_r_change:
+                            #     if condition:
+                            #         rr += 1e-5
+                            #     else:
+                            #         rr -= 1e-5
+                            #     break
+                            # else: 
+                            #     if condition:
+                            #         rr += 1e-5
+                            #     else:
+                            #         rr -= 1e-5
                             if step_dist is None:
                                 pass
+                            elif abs(step_dist - maximum_r_change) < 1e-4:
+                                break
+                            elif step_dist < maximum_r_change:
+                                if condition:
+                                    rr += delta
+                                else:
+                                    rr -= delta
+                                
                             elif step_dist > maximum_r_change:
                                 if condition:
-                                    rr += 1e-5
+                                    rr -= delta
                                 else:
-                                    rr -= 1e-5
-                                break
+                                    rr += delta
+                                
+                                # do the while loop but using a smaller delta increment
+                                
+                                delta /= 2
+                                
+                                if condition:
+                                    rr += delta
+                                else:
+                                    rr -= delta
+                                
                             else: 
                                 if condition:
-                                    rr += 1e-5
+                                    rr += delta
                                 else:
-                                    rr -= 1e-5
+                                    rr -= delta
+                                
                                 
                             theta = get_theta(rr)
                             
@@ -398,6 +461,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("x_prev: ", x_prev)
                         # print("y_prev: ", y_prev)
                         rr = r_acc[-1]
+                        delta = 1e-5
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -407,13 +471,27 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                             #     rr -= 1e-6
                             # else: 
                             #     rr += 1e-5
+                            # if step_dist is None:
+                            #     pass
+                            # elif step_dist > maximum_r_change:
+                            #     rr += 1e-5
+                            #     break
+                            # else: 
+                            #     rr += 1e-5
                             if step_dist is None:
                                 pass
-                            elif step_dist > maximum_r_change:
-                                rr += 1e-5
+                            elif abs(step_dist - maximum_r_change) < 1e-4:
                                 break
+                            elif step_dist < maximum_r_change:
+                                rr += delta
+                            elif step_dist > maximum_r_change:
+                                rr -= delta
+                                # do the while loop but using a smaller delta increment
+                                
+                                delta /= 2
+                                rr += delta
                             else: 
-                                rr += 1e-5
+                                rr += delta
                                 
                             # print("rr: ", rr)
                             # print("step_dist: ", step_dist)
@@ -532,6 +610,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("x_prev: ", x_prev)
                         # print("y_prev: ", y_prev)
                         rr = r_acc[-1]
+                        delta = 1e-5
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -541,13 +620,27 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                             #     rr -= 1e-6
                             # else: 
                             #     rr += 1e-5
+                            # if step_dist is None:
+                            #     pass
+                            # elif step_dist > maximum_r_change:
+                            #     rr += 1e-5
+                            #     break
+                            # else: 
+                            #     rr += 1e-5
                             if step_dist is None:
                                 pass
-                            elif step_dist > maximum_r_change:
-                                rr += 1e-5
+                            elif abs(step_dist - maximum_r_change) < 1e-4:
                                 break
+                            elif step_dist < maximum_r_change:
+                                rr += delta
+                            elif step_dist > maximum_r_change:
+                                rr -= delta
+                                # do the while loop but using a smaller delta increment
+                                
+                                delta /= 2
+                                rr += delta
                             else: 
-                                rr += 1e-5
+                                rr += delta
                                 
                             # print("rr: ", rr)
                             # print("step_dist: ", step_dist)
@@ -654,6 +747,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("x_prev: ", x_prev)
                         # print("y_prev: ", y_prev)
                         rr = r_acc[-1]
+                        delta = 1e-5
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -663,13 +757,27 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                             #     rr -= 1e-6
                             # else: 
                             #     rr += 1e-5
+                            # if step_dist is None:
+                            #     pass
+                            # elif step_dist > maximum_r_change:
+                            #     rr += 1e-5
+                            #     break
+                            # else: 
+                            #     rr += 1e-5
                             if step_dist is None:
                                 pass
-                            elif step_dist > maximum_r_change:
-                                rr += 1e-5
+                            elif abs(step_dist - maximum_r_change) < 1e-4:
                                 break
+                            elif step_dist < maximum_r_change:
+                                rr += delta
+                            elif step_dist > maximum_r_change:
+                                rr -= delta
+                                # do the while loop but using a smaller delta increment
+                                
+                                delta /= 2
+                                rr += delta
                             else: 
-                                rr += 1e-5
+                                rr += delta
                                 
                             # print("rr: ", rr)
                             # print("step_dist: ", step_dist)
@@ -1019,6 +1127,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 
                 # print("x_prev: ", x_prev)
                 # print("y_prev: ", y_prev)
+                delta = 1e-5
                 rr = r_acc[-1]
                 while True:
                     # if step_dist is None:
@@ -1029,13 +1138,27 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                     #     rr -= 1e-6
                     # else: 
                     #     rr += 1e-5
+                    # if step_dist is None:
+                    #     pass
+                    # elif step_dist > maximum_r_change:
+                    #     rr += 1e-5
+                    #     break
+                    # else: 
+                    #     rr += 1e-5
                     if step_dist is None:
                         pass
-                    elif step_dist > maximum_r_change:
-                        rr += 1e-5
+                    elif abs(step_dist - maximum_r_change) < 1e-4:
                         break
+                    elif step_dist < maximum_r_change:
+                        rr += delta
+                    elif step_dist > maximum_r_change:
+                        rr -= delta
+                        # do the while loop but using a smaller delta increment
+                        
+                        delta /= 2
+                        rr += delta
                     else: 
-                        rr += 1e-5
+                        rr += delta
                         
                     # print("rr: ", rr)
                     # print("step_dist: ", step_dist)
