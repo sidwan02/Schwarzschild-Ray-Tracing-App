@@ -207,7 +207,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                     y_prev = r_acc[-1] * np.sin(theta_acc[-1])
                     
                     rr = r_acc[-1]
-                    delta = 1e-5
+                    delta = 1e-1
                     while True:
                         # if step_dist is None:
                         #     pass
@@ -348,7 +348,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         
                         rr = r_acc[-1]
                         
-                        delta = 1e-5
+                        delta = 1e-1
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -461,7 +461,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("x_prev: ", x_prev)
                         # print("y_prev: ", y_prev)
                         rr = r_acc[-1]
-                        delta = 1e-5
+                        delta = 1e-1
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -610,7 +610,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("x_prev: ", x_prev)
                         # print("y_prev: ", y_prev)
                         rr = r_acc[-1]
-                        delta = 1e-5
+                        delta = 1e-1
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -728,7 +728,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("b1: ", b1)
                         # print("m: ", m)
                         phi_in = np.arcsin(np.sqrt(np.abs(b2 - uu_in) / np.abs(b1 - uu_in) / m))
-                        print(phi_in)
+                        # print(phi_in)
                         Fi_in = -updn * CC * ei(phi_in, m)
                         return Fi_in
                     
@@ -747,7 +747,7 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         # print("x_prev: ", x_prev)
                         # print("y_prev: ", y_prev)
                         rr = r_acc[-1]
-                        delta = 1e-5
+                        delta = 1e-1
                         while True:
                             # if step_dist is None:
                             #     pass
@@ -838,11 +838,11 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             # rr_out, Fi_out, count = gt_recurring_1([r_in], [], True, 0, maximum_r_change=0.01)
             # # rr_out, Fi_out, count = (np.array([]), np.array([]), 0)
 
-            rr_out, Fi_out, count = gt_recurring_1([periastron], [], True, 0, maximum_r_change=0.01)
+            rr_out, Fi_out, count = gt_recurring_1([periastron], [], True, 0, maximum_r_change=0.1)
             # rr_out, Fi_out, count = (np.array([]), np.array([]), 0)
 
             print(count)
-            rr_in, Fi_in, count = gt_recurring_2([periastron], [], True, 0, maximum_r_change=0.001)
+            rr_in, Fi_in, count = gt_recurring_2([periastron], [], True, 0, maximum_r_change=0.1)
             # rr_in, Fi_in, count = (np.array([]), np.array([]), 0)
 
             print(count)
@@ -1127,7 +1127,7 @@ def if_D_lt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 
                 # print("x_prev: ", x_prev)
                 # print("y_prev: ", y_prev)
-                delta = 1e-5
+                delta = 1e-1
                 rr = r_acc[-1]
                 while True:
                     # if step_dist is None:
@@ -1462,7 +1462,7 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-7.854910932268416, -19.758335949125744, 166.15841300952945)
 
 # hi
-r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(90), 10, 183)
+# r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(90), 10, 183)
 
 # same side
 # the the fourth param is a default rstop idiot that's why it wasn't fricking working
@@ -1472,6 +1472,7 @@ r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(90), 10, 183)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(4.568303484235491, 1.7663091750372018, 124.53541588641113)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 0)
@@ -1495,13 +1496,13 @@ r_arr, theta_arr = schwarzschild_get_ray(3.1, 0, np.deg2rad(90), 10, 183)
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
-plt.axes(projection='polar')
-plt.polar(theta_arr, r_arr, 'b-', marker='o')
+# plt.axes(projection='polar')
+# plt.polar(theta_arr, r_arr, 'b-', marker='o')
 
-plt.figure(figsize=(12, 12))
+# plt.figure(figsize=(12, 12))
 
 # fig = plt.figure()
 # ax = fig.add_subplot(111)
@@ -1515,4 +1516,4 @@ plt.figure(figsize=(12, 12))
 
 # plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
 #
-plt.show()
+# plt.show()
