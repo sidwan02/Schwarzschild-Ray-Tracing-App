@@ -398,7 +398,7 @@ function Trace2D(props) {
             x_end_cart < -10 - buffer ||
             y_end_cart > 18 + buffer ||
             y_end_cart < -18 - buffer ||
-            Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 2
+            Math.sqrt(x_end_cart ** 2 + y_end_cart ** 2) < 1
           ) {
             let i = 0;
 
@@ -424,7 +424,7 @@ function Trace2D(props) {
           // setCurrentlyDrawingUseState(false);
           setInputErrorText('');
           hideLoadingDiv();
-        }, 5000);
+        }, 3000);
 
         // func2();
         // interval;

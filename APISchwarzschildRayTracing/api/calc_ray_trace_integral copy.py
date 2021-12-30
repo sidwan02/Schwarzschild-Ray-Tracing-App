@@ -194,12 +194,16 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                 Fi = updn * CC * ei(phi, m)
 
                 # print("Fi: ", Fi)
+                
+                print("x: ", rr * np.cos(Fi))
+                print("y: ", rr * np.sin(Fi))
 
                 r_acc.append(rr)
                 theta_acc.append(Fi)
 
                 # print("r_acc: ", r_acc)
                 # print("theta_acc: ", theta_acc)
+                # raise("gogo")
 
                 return gt_recurring(r_acc, theta_acc, condition, count + 1, maximum_r_change)
 
@@ -930,7 +934,8 @@ def cur_delta(x_arr, y_arr):
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(6, 70, 3)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
-x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 0)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 0)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(2.061160539899554, 4.921190824962798, 81.33888855136273)
 
 # r_arr, theta_arr = schwarzschild_get_ray(6, np.deg2rad(70), np.deg2rad(45), 10, 183)
 # x = 3.1 * np.cos(np.deg2rad(45))
@@ -951,24 +956,24 @@ x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 0)
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+
+# plt.axes(projection='polar')
+# plt.polar(theta7_arr, r_arr, 'b-', marker='o')
+#
+# plt.figure(figsize=(12, 12))
+#
+fig = plt.figure()
+ax = fig.add_subplot(111)
+# #
+# #
+ax.set_aspect('equal', adjustable='box')
 #
 #
-# # plt.axes(projection='polar')
-# # plt.polar(theta7_arr, r_arr, 'b-', marker='o')
-# #
-# # plt.figure(figsize=(12, 12))
-# #
-# # fig = plt.figure()
-# # ax = fig.add_subplot(111)
-# # #
-# # #
-# # ax.set_aspect('equal', adjustable='box')
-# #
-# #
-# plt.plot(x_arr, y_arr, marker='o')
-# # plt.plot(x_arr, y_arr)
-#
+plt.plot(x_arr, y_arr, marker='o')
+# plt.plot(x_arr, y_arr)
+
 # plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
-# #
-# plt.show()
+#
+plt.show()

@@ -207,8 +207,10 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                     y_prev = r_acc[-1] * np.sin(theta_acc[-1])
                     
                     rr = r_acc[-1]
+                    # print("rr: ", rr)
                     delta = 1e-1
                     while True:
+                        print("rr: ", rr)
                         # if step_dist is None:
                         #     pass
                         # elif step_dist > maximum_r_change:
@@ -259,15 +261,16 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
                         x_curr = rr * np.cos(theta)
                         y_curr = rr * np.sin(theta)
                         
-                        # print("x_prev: ", x_prev)
-                        # print("y_prev: ", y_prev)
-                        # print("x_curr: ", x_curr)
-                        # print("y_curr: ", y_curr)
+                        print("x_prev: ", x_prev)
+                        print("y_prev: ", y_prev)
+                        print("x_curr: ", x_curr)
+                        print("y_curr: ", y_curr)
                         
-                        # print("step_dist: ", step_dist)
                         
                         step_dist = np.sqrt((x_prev - x_curr) **2 + (y_prev - y_curr )**2)
+                        # print("step_dist: ", step_dist)
                         
+                        raise("blo")
                     # print("rr: ", rr)
                     print("step_dist FINAL: ", step_dist)
                     
@@ -291,6 +294,8 @@ def if_D_gt_Dcrit_get_ray_recusive_main(D, r0, theta0, delta0, rstop, npoints):
             condition = True
         else:
             condition = False
+            
+        print("condition: ", condition)
 
         # rr, Fi, count = gt_recurring([r0], [theta0], condition, 0, 0.01)
         # rr, Fi, count = gt_recurring([r0], [], condition, 0, maximum_r_change=0.1)
@@ -1472,7 +1477,8 @@ def cur_delta(x_arr, y_arr):
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(-12.575892530168806, -28.240477062406995, 172.3370949374974)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
-x_arr, y_arr = schwarzschild_get_ray_cartesian(4.568303484235491, 1.7663091750372018, 124.53541588641113)
+# x_arr, y_arr = schwarzschild_get_ray_cartesian(4.568303484235491, 1.7663091750372018, 124.53541588641113)
+x_arr, y_arr = schwarzschild_get_ray_cartesian(2.061160539899554, 4.921190824962798, 81.33888855136273)
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3.1, 0, 93.2)
 
 # x_arr, y_arr = schwarzschild_get_ray_cartesian(3, 0, 0)
@@ -1496,7 +1502,7 @@ x_arr, y_arr = schwarzschild_get_ray_cartesian(4.568303484235491, 1.766309175037
 # (rstop < -periastron) and (r0 != rf)
 # r_arr, theta_arr = schwarzschild_get_ray(3.1, np.deg2rad(45), np.deg2rad(94), 10, 183)
 # #
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 # plt.axes(projection='polar')
@@ -1504,16 +1510,16 @@ x_arr, y_arr = schwarzschild_get_ray_cartesian(4.568303484235491, 1.766309175037
 
 # plt.figure(figsize=(12, 12))
 
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
+fig = plt.figure()
+ax = fig.add_subplot(111)
 
 
-# ax.set_aspect('equal', adjustable='box')
+ax.set_aspect('equal', adjustable='box')
 
 
-# plt.plot(x_arr, y_arr, marker='o')
-# plt.plot(x_arr, y_arr)
+plt.plot(x_arr, y_arr, marker='o')
+plt.plot(x_arr, y_arr)
 
 # plt.title('Ray from (' + str(round(x_arr[0], 2)) + ', ' + str(round(y_arr[0], 2)) + ') with delta0 ' + str(delta0))
 #
-# plt.show()
+plt.show()
